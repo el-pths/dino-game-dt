@@ -28,7 +28,7 @@ public class Field {
 	public static void printCactuses(Graphics g) {
 		for (int u = 0; u < objects$Amount; u++) {
 			int[][] cactus = returnByNumber(object$sType[u]);
-			if (cactus[0][1] * Settings.PIXEL >= Dino.thisBounce$sHeight
+			if ((cactus[0][1] - 5) * Settings.PIXEL >= Dino.thisBounce$sHeight
 					&& distToObject[u] <= (int) (Settings.SCREEN_WIDTH * 0.1 + Settings.PIXEL * 17)
 					&& (distToObject[u] + cactus[0][0] * Settings.PIXEL) >= (int) (Settings.SCREEN_WIDTH * 0.1)
 							+ Settings.PIXEL * 17)
