@@ -29,7 +29,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>denisdino.MainAndWindow</mainClass>
+                            <mainClass>dinosaur.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
