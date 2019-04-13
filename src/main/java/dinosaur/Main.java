@@ -2,14 +2,15 @@ package dinosaur;
 
 public class Main {
 	
-	static boolean inGame = true;
+	public static boolean inGame = true;
 	
 	public static void main(String[] args) {
 		FrameAndListener.setFrame();
 	}
 
 	public static void startGame() {
-		GameOver.again.setSize(0, 0);
+		FrameAndListener.score = 0;
+		GameOver.restartButton.setSize(0, 0);
 		Dino.rightLegUp = true;
 		Dino.isJump = false;
 		Dino.isNowInAir = false;

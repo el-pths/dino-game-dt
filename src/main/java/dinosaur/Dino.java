@@ -7,7 +7,7 @@ public class Dino {
 	static boolean isNowInAir = false, isJump = false, isOurMoveUp = true, rightLegUp = true;
 	final static int amountSteps = 7;
 	
-	static Image dinodead = Graphic.loadImage("/dinodead.png");
-	static Image dinoright = Graphic.loadImage("/dinoright.png");
-	static Image dinoleft = Graphic.loadImage("/dinoleft.png");
+	static Image dinodead = Graphic.loadImage("/resources/dinoisamazed.png");
+	static Image dinoright = Graphic.loadImage("/resources/dinoright.png");
+	static Image dinoleft = Graphic.loadImage("/resources/dinoleft.png");
 }

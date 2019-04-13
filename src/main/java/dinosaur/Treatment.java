@@ -100,6 +100,7 @@ public class Treatment {
 
 	public static final void check() {
 		if (Dino.pedometr >= Dino.amountSteps) {
+			FrameAndListener.score++;
 			Dino.pedometr = 0;
 			if (Dino.rightLegUp)
 				Dino.rightLegUp = false;
