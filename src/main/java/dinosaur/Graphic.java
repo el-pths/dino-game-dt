@@ -12,8 +12,9 @@ public class Graphic {
 		g.setColor(Color.RED);
 		g.setFont(new Font("Comic Sans MS", Font.BOLD, 28));
 		g.drawString(Integer.toString(FrameAndListener.score), (int) (Sets.width * 17 / 20), Sets.height / 8);
+		g.drawString("Your score :", (int) (Sets.width * 17 / 20), Sets.height / 15);
 	}
-	
+
 	public static void drawDino(Graphics g) {
 		Dino.pedometr++;
 		if (Main.inGame)
@@ -48,11 +49,11 @@ public class Graphic {
 	public static void drawCactuses(Graphics g) {
 		for (int u = 0; u < Cactuses.cactusesAmount; u++) {
 			int[][] cactus = Treatment.returnByNumber(Cactuses.cactusesType[u]);
-		//	if ((cactus[0][1] - 5) * Sets.PIXEL >= Dino.nowBounceHeight
-					//&& Cactuses.distToCactus[u] <= (int) (Sets.width * 0.1 + Sets.PIXEL * 17)
-					//&& (Cactuses.distToCactus[u] + cactus[0][0] * Sets.PIXEL) >= (int) (Sets.width * 0.1)
-					//		+ Sets.PIXEL * 17)
-				//Main.inGame = false;
+			if ((cactus[0][1] - 5) * Sets.PIXEL >= Dino.nowBounceHeight
+					&& Cactuses.distToCactus[u] <= (int) (Sets.width * 0.1 + Sets.PIXEL * 17)
+					&& (Cactuses.distToCactus[u] + cactus[0][0] * Sets.PIXEL) >= (int) (Sets.width * 0.1)
+							+ Sets.PIXEL * 17)
+				Main.inGame = false;
 			for (int i = 1; i < cactus.length; i++) {
 				int x = 0;
 				for (int j = 0; j < cactus[i].length; j++) {
