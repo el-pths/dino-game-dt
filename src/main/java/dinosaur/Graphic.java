@@ -11,8 +11,10 @@ public class Graphic {
 	public static void writeScore(Graphics g) {
 		g.setColor(Color.RED);
 		g.setFont(new Font("Comic Sans MS", Font.BOLD, 28));
-		g.drawString(Integer.toString(FrameAndListener.score), (int) (Sets.width * 17 / 20), Sets.height / 8);
+		g.drawString("Jumped cactuses :", (int) (Sets.width * 12 / 20), Sets.height / 15);
+		g.drawString(Integer.toString(FrameAndListener.cactusesBehind), (int) (Sets.width * 12 / 20), Sets.height / 8);
 		g.drawString("Your score :", (int) (Sets.width * 17 / 20), Sets.height / 15);
+		g.drawString(Integer.toString(FrameAndListener.score), (int) (Sets.width * 17 / 20), Sets.height / 8);
 	}
 
 	public static void drawDino(Graphics g) {
@@ -33,7 +35,6 @@ public class Graphic {
 		g.setColor(Color.WHITE);
 		if (Main.inGame) {
 			g.fillRect(0, 0, Sets.width, Sets.height);
-
 		} else {
 			g.fillRect(0, 0, Sets.width, Sets.againY);
 			g.fillRect(0, Sets.againY, Sets.againX, Sets.againYY);
@@ -47,32 +48,11 @@ public class Graphic {
 	}
 
 	public static void drawCactuses(Graphics g) {
-		for (int u = 0; u < Cactuses.cactusesAmount; u++) {
-			int[][] cactus = Treatment.returnByNumber(Cactuses.cactusesType[u]);
-			if ((cactus[0][1] - 5) * Sets.PIXEL >= Dino.nowBounceHeight
-					&& Cactuses.distToCactus[u] <= (int) (Sets.width * 0.1 + Sets.PIXEL * 17)
-					&& (Cactuses.distToCactus[u] + cactus[0][0] * Sets.PIXEL) >= (int) (Sets.width * 0.1)
-							+ Sets.PIXEL * 17)
+		for (int i = 0; i < Cactuses.cactusesAmount; i++) {
+			g.drawImage(Treatment.returnByNumber(Cactuses.cactusesType[i]), Cactuses.distToCactus[i],
+					(int) (Sets.height * 0.45) + Sets.PIXEL * 10, Cactuses.widthSize, Cactuses.heightSize, null);
+			if (Treatment.isDinoInCactus(i))
 				Main.inGame = false;
-			for (int i = 1; i < cactus.length; i++) {
-				int x = 0;
-				for (int j = 0; j < cactus[i].length; j++) {
-					if (j % 2 != 0) {
-						g.setColor(Color.BLACK);
-						g.fillRect(Sets.PIXEL * i + Cactuses.distToCactus[u],
-								(int) (Sets.height * 0.45) + Sets.PIXEL * x + 10 * Sets.PIXEL, Sets.PIXEL,
-								Sets.PIXEL * cactus[i][j]);
-						x += cactus[i][j];
-					} else {
-						g.setColor(Color.WHITE);
-						g.fillRect(Sets.PIXEL * i + Cactuses.distToCactus[u],
-								(int) (Sets.height * 0.45) + Sets.PIXEL * x + 10 * Sets.PIXEL, Sets.PIXEL,
-								Sets.PIXEL * cactus[i][j]);
-						x += cactus[i][j];
-					}
-				}
-			}
-
 		}
 	}
 

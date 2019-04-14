@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 
 public class GameOver {
 
-	private static Image gameover = Graphic.loadImage("/omg.png");
+	private static Image gameover = Graphic.loadImage("/gameover.png");
 	private static Image restartButtonImg = Graphic.loadImage("/restartButton.png");
 
 	static JFrame frame = new JFrame("Dino Game");

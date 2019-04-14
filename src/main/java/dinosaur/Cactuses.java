@@ -1,18 +1,19 @@
 package dinosaur;
 
+import java.awt.Image;
+
 public class Cactuses {
 	public static int cactusesAmount = 0;
 	static public int[] distToCactus = new int[50], cactusesType = new int[50];
+	public static int widthSize, heightSize;
 	
-	public static int[][] cactusBig = { { 15, 30 }, { 6, 6 }, { 5, 8 }, { 6, 8 }, { 11, 3 }, { 11, 3, 15 }, { 1, 29 },
-			{ 0, 30 }, { 0, 30 }, { 0, 30 }, { 1, 29 }, { 13, 3, 13 }, { 13, 3 }, { 7, 9 }, { 6, 9 }, { 7, 7 } };
-	public static int[][] cactusSmall = { { 14, 20 }, { 20 }, { 13, 6 }, { 12, 7 }, { 13, 7 }, { 17, 3, 8 }, { 9, 19 },
-			{ 8, 20 }, { 8, 20 }, { 9, 19 }, { 17, 3, 8 }, { 13, 7 }, { 12, 7 }, { 13, 6 }, { 20 } };
-	public static int[][] cactusMid = { { 13, 28 }, { 9, 8, 11 }, { 9, 10 }, { 10, 10 }, { 16, 4, 10 }, { 3, 27 },
-			{ 2, 28 }, { 2, 28 }, { 3, 27 }, { 12, 4, 14 }, { 12, 4 }, { 8, 7 }, { 7, 7 }, { 8, 5 } };
-	public static int[][] cactusTrio1 = { { 37, 30 }, { 11, 8 }, { 10, 10 }, { 11, 10 }, { 17, 4, 10 }, { 4, 27 },
-			{ 3, 28 }, { 3, 28 }, { 4, 27 }, { 11, 4, 16 }, { 11, 4, 16 }, { 7, 7 }, { 6, 7, 3, 5 }, { 7, 5, 3, 7, 9 },
-			{ 16, 7, 8 }, { 20, 3, 8 }, { 12, 19 }, { 11, 20 }, { 11, 20 }, { 12, 19 }, { 20, 3, 8 }, { 16, 7, 8 },
-			{ 15, 7, 9 }, { 8, 6, 2 }, { 7, 8, 7 }, { 8, 8, 6 }, { 13, 3, 6 }, { 13, 3, 15 }, { 1, 29 }, { 0, 30 },
-			{ 0, 30 }, { 0, 30 }, { 1, 29 }, { 14, 3, 13 }, { 14, 3 }, { 7, 9 }, { 6, 9 }, { 7, 7 } };
+	public static Image b1ig1 = Graphic.loadImage("/b1ig1.png");
+	public static Image b1ig2 = Graphic.loadImage("/b1ig2.png");
+	public static Image b1ig3 = Graphic.loadImage("/b1ig3.png");
+	public static Image b1ig4 = Graphic.loadImage("/b1ig4.png");
+	public static Image b1ig5 = Graphic.loadImage("/b1ig5.png");
+	public static Image b1ig6 = Graphic.loadImage("/b1ig6.png");
+	public static Image d3if1 = Graphic.loadImage("/d3if1.png");
+	public static Image m2id1 = Graphic.loadImage("/m2id1.png");
+	public static Image m2id2 = Graphic.loadImage("/m2id2.png");
 }

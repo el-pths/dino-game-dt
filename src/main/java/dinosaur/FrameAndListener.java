@@ -16,7 +16,7 @@ public class FrameAndListener extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 42L;
 	public static JFrame frame;
 	private Timer timer = new Timer(1000 / Sets.speed, this);
-	public static int score = 0;
+	public static int score = 0, cactusesBehind = 0;
 
 	public FrameAndListener() {
 		if (Port.isPortSetted) {

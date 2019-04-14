@@ -6,6 +6,6 @@ public class Generators {
 	}
 
 	public static int generateNumberOfThisCactus$sType() {
-		return (int) (Math.round(Math.random() * 3 + 1));
+		return (int) (Math.round(Math.random() * 8 + 1));
 	}
 }

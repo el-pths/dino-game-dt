@@ -1,9 +1,20 @@
 package dinosaur;
 
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 
 public class Treatment {
-	static void processedPressedKey(int key) {
+
+	public static boolean isDinoInCactus(int i) {
+		boolean is = false;
+		if (Dino.nowBounceHeight < (Cactuses.heightSize - Sets.PIXEL * 8)
+				&& (((int) (Sets.width * 0.1) + Sets.PIXEL * 20)) > (Cactuses.distToCactus[i])
+				&& (int) (Sets.width * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize + Sets.PIXEL * 4))
+			is = true;
+		return is;
+	}
+
+	public static void processedPressedKey(int key) {
 		if (Main.inGame) {
 			if (!Dino.isNowInAir) {
 				if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_1 || key == KeyEvent.VK_2 || key == KeyEvent.VK_3))
@@ -37,23 +48,56 @@ public class Treatment {
 			Cactuses.cactusesAmount--;
 		}
 		for (int i = 0; i < Cactuses.cactusesAmount; i++) {
+			if (Cactuses.distToCactus[i] > (int) (Sets.width * 0.1)
+					&& (Cactuses.distToCactus[i] - Sets.width / 180) < (int) (Sets.width * 0.1))
+				FrameAndListener.cactusesBehind++;
 			Cactuses.distToCactus[i] -= Sets.width / 180;
 		}
 	}
 
-	public static int[][] returnByNumber(int a) {
-		if (a == 1)
-			return Cactuses.cactusBig;
-		if (a == 2)
-			return Cactuses.cactusMid;
-		if (a == 3)
-			return Cactuses.cactusSmall;
-		else
-			return Cactuses.cactusMid;
+	public static Image returnByNumber(int a) {
+		switch (a) {
+		case 1:
+			Cactuses.widthSize = Sets.PIXEL * 16;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.b1ig1;
+		case 2:
+			Cactuses.widthSize = Sets.PIXEL * 16;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.b1ig2;
+		case 3:
+			Cactuses.widthSize = Sets.PIXEL * 16;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.b1ig3;
+		case 4:
+			Cactuses.widthSize = Sets.PIXEL * 16;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.b1ig4;
+		case 5:
+			Cactuses.widthSize = Sets.PIXEL * 16;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.b1ig5;
+		case 6:
+			Cactuses.widthSize = Sets.PIXEL * 16;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.b1ig6;
+		case 7:
+			Cactuses.widthSize = Sets.PIXEL * 44;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.d3if1;
+		case 8:
+			Cactuses.widthSize = Sets.PIXEL * 32;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.m2id1;
+		default:
+			Cactuses.widthSize = Sets.PIXEL * 32;
+			Cactuses.heightSize = Sets.PIXEL * 31;
+			return Cactuses.m2id2;
+		}
 	}
 
 	public static void ifDinoIsInBounce() {
-		if (Dino.isNowInAir){
+		if (Dino.isNowInAir) {
 			if (Dino.isOurMoveUp
 					&& Dino.nowBounceHeight + giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight) >= Dino.jumpHeight) {
 				Dino.nowBounceHeight = Dino.jumpHeight;
