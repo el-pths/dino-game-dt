@@ -12,9 +12,10 @@ public class Things {
 	public static boolean isButtonRemoved = true;
 	public static Image remove = Graphic.loadImage("/delite.png");
 	public static JButton replay = new JButton("");
-	
+	public static double koefX = 1, koefY = 1;
+
 	public static void setButtonRemovePort() {
-		removePort.setBounds(Sets.closePortX, Sets.closePortY, Sets.closePortXX, Sets.closePortYY);
+		removePort.setBounds(Settings.closePortX, Settings.closePortY, Settings.closePortXX, Settings.closePortYY);
 		removePort.setOpaque(false);
 		removePort.setContentAreaFilled(false);
 		removePort.setBorderPainted(false);
@@ -28,10 +29,15 @@ public class Things {
 		});
 		FrameAndListener.frame.add(removePort);
 	}
-	
+
 	public static void setButtonReplay() {
-		replay.setBounds(Sets.gameoverLabelX + (Sets.gameoverLabelXX - Sets.restartXX) / 2,
-				Sets.gameoverLabelY + Sets.gameoverLabelYY + Sets.height / 16, Sets.restartXX, Sets.restartYY);
+		double koefX = (FrameAndListener.frame.getWidth() / Settings.START_WIDTH);
+		double koefY = (FrameAndListener.frame.getHeight() / Settings.START_HEIGHT);
+		replay.setBounds(
+				(int) (koefX * (Settings.gameoverLabelX + (Settings.gameoverLabelXX - Settings.restartXX) / 2)),
+				(int) (koefY * (Settings.gameoverLabelY + Settings.gameoverLabelYY
+						+ FrameAndListener.frame.getHeight() / 16)),
+				(int) (Settings.restartXX * koefX), (int) (koefY * Settings.restartYY));
 		replay.setOpaque(false);
 		replay.setContentAreaFilled(false);
 		replay.setBorderPainted(false);
@@ -42,7 +48,7 @@ public class Things {
 				Main.startGame();
 			}
 		});
-		FrameAndListener.frame.add(replay);
+		FrameAndListener.frame.getContentPane().add(replay);
 	}
-	
+
 }

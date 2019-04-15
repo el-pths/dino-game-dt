@@ -14,14 +14,17 @@ public class GameOver {
 	static JFrame frame = new JFrame("Dino Game");
 	static JButton restartButton = new JButton("");
 
-	public static void gameOver(Graphics g, JFrame f) {
+	public static void gameOver(Graphics g) {
 		Things.setButtonReplay();
 		Graphic.drawFirstFloor(g);
 		Graphic.drawCactuses(g);
 		Graphic.drawDino(g);
 		Graphic.writeScore(g);
-		g.drawImage(gameover, Sets.gameoverLabelX, Sets.gameoverLabelY, Sets.gameoverLabelXX, Sets.gameoverLabelYY, null);
-		g.drawImage(restartButtonImg, Sets.gameoverLabelX + (Sets.gameoverLabelXX - Sets.restartXX) / 2,
-				Sets.gameoverLabelY + Sets.gameoverLabelYY + Sets.height / 16, Sets.restartXX, Sets.restartYY, null);
+		g.drawImage(restartButtonImg, Settings.gameoverLabelX + (Settings.gameoverLabelXX - Settings.restartXX) / 2,
+				Settings.gameoverLabelY + Settings.gameoverLabelYY + Settings.height / 16, Settings.restartXX,
+				Settings.restartYY, null);
+		g.drawImage(gameover, Settings.gameoverLabelX, Settings.gameoverLabelY, Settings.gameoverLabelXX,
+				Settings.gameoverLabelYY, null);
+
 	}
 }

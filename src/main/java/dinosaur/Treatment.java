@@ -7,9 +7,9 @@ public class Treatment {
 
 	public static boolean isDinoInCactus(int i) {
 		boolean is = false;
-		if (Dino.nowBounceHeight < (Cactuses.heightSize - Sets.PIXEL * 8)
-				&& (((int) (Sets.width * 0.1) + Sets.PIXEL * 20)) > (Cactuses.distToCactus[i])
-				&& (int) (Sets.width * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize + Sets.PIXEL * 4))
+		if (Dino.nowBounceHeight < (Cactuses.heightSize - Settings.PIXEL * 8)
+				&& (((int) (Settings.START_WIDTH * 0.1) + Settings.PIXEL * 20)) > (Cactuses.distToCactus[i])
+				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize + Settings.PIXEL * 4))
 			is = true;
 		return is;
 	}
@@ -48,50 +48,50 @@ public class Treatment {
 			Cactuses.cactusesAmount--;
 		}
 		for (int i = 0; i < Cactuses.cactusesAmount; i++) {
-			if (Cactuses.distToCactus[i] > (int) (Sets.width * 0.1)
-					&& (Cactuses.distToCactus[i] - Sets.width / 180) < (int) (Sets.width * 0.1))
+			if (Cactuses.distToCactus[i] > (int) (Settings.START_WIDTH * 0.1)
+					&& (Cactuses.distToCactus[i] - Settings.START_WIDTH / 180) < (int) (Settings.START_WIDTH * 0.1))
 				FrameAndListener.cactusesBehind++;
-			Cactuses.distToCactus[i] -= Sets.width / 180;
+			Cactuses.distToCactus[i] -= Settings.START_WIDTH / 180;
 		}
 	}
 
 	public static Image returnByNumber(int a) {
 		switch (a) {
 		case 1:
-			Cactuses.widthSize = Sets.PIXEL * 16;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 16;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.b1ig1;
 		case 2:
-			Cactuses.widthSize = Sets.PIXEL * 16;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 16;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.b1ig2;
 		case 3:
-			Cactuses.widthSize = Sets.PIXEL * 16;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 16;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.b1ig3;
 		case 4:
-			Cactuses.widthSize = Sets.PIXEL * 16;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 16;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.b1ig4;
 		case 5:
-			Cactuses.widthSize = Sets.PIXEL * 16;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 16;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.b1ig5;
 		case 6:
-			Cactuses.widthSize = Sets.PIXEL * 16;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 16;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.b1ig6;
 		case 7:
-			Cactuses.widthSize = Sets.PIXEL * 44;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 44;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.d3if1;
 		case 8:
-			Cactuses.widthSize = Sets.PIXEL * 32;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 32;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.m2id1;
 		default:
-			Cactuses.widthSize = Sets.PIXEL * 32;
-			Cactuses.heightSize = Sets.PIXEL * 31;
+			Cactuses.widthSize = Settings.PIXEL * 32;
+			Cactuses.heightSize = Settings.PIXEL * 31;
 			return Cactuses.m2id2;
 		}
 	}
@@ -127,15 +127,15 @@ public class Treatment {
 		double i = ((double) (ourHeightNow)) / ((double) (restriction));
 		int j;
 		if (i >= 0.93132749)
-			j = (int) (1 * Sets.koefficient_paraboli);
+			j = (int) (1 * Settings.koefficient_paraboli);
 		else {
 			if (i >= 0.734693873)
-				j = (int) (2.8 * Sets.koefficient_paraboli);
+				j = (int) (2.8 * Settings.koefficient_paraboli);
 			else {
 				if (i >= 0.510204082)
-					j = (int) (4 * Sets.koefficient_paraboli);
+					j = (int) (4 * Settings.koefficient_paraboli);
 				else {
-					j = (int) (5.5 * Sets.koefficient_paraboli);
+					j = (int) (5.5 * Settings.koefficient_paraboli);
 				}
 			}
 		}

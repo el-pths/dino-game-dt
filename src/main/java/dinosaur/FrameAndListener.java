@@ -7,6 +7,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -15,8 +16,9 @@ import javax.swing.Timer;
 public class FrameAndListener extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 42L;
 	public static JFrame frame;
-	private Timer timer = new Timer(1000 / Sets.speed, this);
+	private Timer timer = new Timer(1000 / Settings.speed, this);
 	public static int score = 0, cactusesBehind = 0;
+	BufferedImage screen = new BufferedImage(Settings.START_WIDTH, Settings.START_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 	public FrameAndListener() {
 		if (Port.isPortSetted) {
@@ -24,6 +26,7 @@ public class FrameAndListener extends JPanel implements ActionListener {
 			addKeyListener(new KeyBoard());
 			Things.setButtonRemovePort();
 			Things.isButtonRemoved = false;
+			frame.setResizable(true);
 		}
 		setFocusable(true);
 	}
@@ -32,11 +35,10 @@ public class FrameAndListener extends JPanel implements ActionListener {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.setSize(Sets.START_WIDTH, Sets.START_HEIGHT);
+		frame.setSize(Settings.START_WIDTH, Settings.START_HEIGHT);
 		frame.setLocationRelativeTo(null);
 		frame.add(new FrameAndListener());
 		frame.setVisible(true);
-		frame.setLayout(null);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				if (Start.choseAnyPort && Start.choise != "Without")
@@ -48,13 +50,14 @@ public class FrameAndListener extends JPanel implements ActionListener {
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(Graphics g1) {
+		Graphics g = screen.getGraphics();
 		if (Port.isPortSetted) {
 			if (Main.inGame) {
 				if (Cactuses.cactusesAmount == 0
-						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Sets.width * 2 / 3)) {
+						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH * 2 / 3)) {
 					Cactuses.distToCactus[Cactuses.cactusesAmount] = Generators.generateDistanceToNextCactus()
-							+ Sets.width / 2;
+							+ Settings.START_WIDTH / 2;
 					Cactuses.cactusesType[Cactuses.cactusesAmount] = Generators.generateNumberOfThisCactus$sType();
 					Cactuses.cactusesAmount++;
 				}
@@ -65,10 +68,14 @@ public class FrameAndListener extends JPanel implements ActionListener {
 				Graphic.drawDino(g);
 				Graphic.writeScore(g);
 			} else {
-				GameOver.gameOver(g, frame);
+				GameOver.gameOver(g);
 			}
-		} else
+			frame.getContentPane().setBounds(0, 0, frame.getWidth(), frame.getHeight());
+			g1.drawImage(screen, 0, 0, frame.getWidth(), frame.getHeight(), null);
+			screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);// = new BufferedImage(Settings.START_WIDTH, Settings.START_HEIGHT, BufferedImage.TYPE_INT_RGB);
+		} else {
 			Start.haveToChoosePort(frame);
+		}
 	}
 
 	@Override
