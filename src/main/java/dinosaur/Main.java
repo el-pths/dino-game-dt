@@ -5,7 +5,7 @@ public class Main {
 	public static boolean inGame = true;
 	
 	public static void main(String[] args) {
-		FrameAndListener.setFrame();
+		Start.haveToChoosePort();
 	}
 
 	public static void startGame() {

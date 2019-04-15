@@ -12,19 +12,20 @@ public class Start {
 
 	public static String choise = "Without";
 	public static boolean choseAnyPort = true;
-
-	public static void haveToChoosePort(JFrame frame) {
+	private static JFrame firstFrame;
+	
+	public static void haveToChoosePort() {
 		if (Port.ports.length < 1) {
 			throw new RuntimeException("No serial ports found at all");
 		}
-
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setSize(265, 145);
-		frame.setLocationRelativeTo(null);
-		frame.setFocusable(true);
-		frame.setVisible(true);
-		frame.setLayout(null);
+		firstFrame = new JFrame();
+		firstFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		firstFrame.setResizable(false);
+		firstFrame.setSize(265, 145);
+		firstFrame.setLocationRelativeTo(null);
+		firstFrame.setFocusable(true);
+		firstFrame.setVisible(true);
+		firstFrame.setLayout(null);
 
 		String[] extports = new String[Port.ports.length + 1];
 
@@ -41,28 +42,28 @@ public class Start {
 			}
 		});
 		comboBox.setBounds(10, 10, 240, 40);
-		frame.add(comboBox);
+		firstFrame.add(comboBox);
 
 		JButton button = new JButton("I've chose");
 		button.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		button.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent event) {
 				button.removeActionListener(this);
 				ActionListener[] actl = comboBox.getActionListeners();
 				for (int i = 0; i < actl.length; i++)
 					comboBox.removeActionListener(actl[i]);
-
-				frame.hide();
+				firstFrame.dispose();
 				if (choise == "Without") {
 					choseAnyPort = false;
 					Port.app.closePort();
 				}
 				Port.setPort();
+				FrameAndListener.setFrame();
 			}
 		});
 		button.setBounds(10, 60, 240, 40);
-		frame.add(button);
+		button.setVisible(true);
+		firstFrame.add(button);
 	}
 
 }

@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class FrameAndListener extends JPanel implements ActionListener {
+	Main main;
+
 	private static final long serialVersionUID = 42L;
 	public static JFrame frame;
 	private Timer timer = new Timer(1000 / Settings.speed, this);
@@ -37,7 +39,7 @@ public class FrameAndListener extends JPanel implements ActionListener {
 		frame.setResizable(false);
 		frame.setSize(Settings.START_WIDTH, Settings.START_HEIGHT);
 		frame.setLocationRelativeTo(null);
-		frame.add(new FrameAndListener());
+		frame.setContentPane(new FrameAndListener());
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -52,7 +54,6 @@ public class FrameAndListener extends JPanel implements ActionListener {
 	@Override
 	public void paint(Graphics g1) {
 		Graphics g = screen.getGraphics();
-		if (Port.isPortSetted) {
 			if (Main.inGame) {
 				if (Cactuses.cactusesAmount == 0
 						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH * 2 / 3)) {
@@ -70,12 +71,8 @@ public class FrameAndListener extends JPanel implements ActionListener {
 			} else {
 				GameOver.gameOver(g);
 			}
-			frame.getContentPane().setBounds(0, 0, frame.getWidth(), frame.getHeight());
 			g1.drawImage(screen, 0, 0, frame.getWidth(), frame.getHeight(), null);
-			screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);// = new BufferedImage(Settings.START_WIDTH, Settings.START_HEIGHT, BufferedImage.TYPE_INT_RGB);
-		} else {
-			Start.haveToChoosePort(frame);
-		}
+			screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);
 	}
 
 	@Override
