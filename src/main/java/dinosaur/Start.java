@@ -44,7 +44,7 @@ public class Start {
 		comboBox.setBounds(10, 10, 240, 40);
 		firstFrame.add(comboBox);
 
-		JButton button = new JButton("I've chose");
+		JButton button = new JButton("Choose");
 		button.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
