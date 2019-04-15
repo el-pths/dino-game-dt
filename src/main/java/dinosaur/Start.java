@@ -58,7 +58,6 @@ public class Start {
 					Port.app.closePort();
 				}
 				Port.setPort();
-				FrameAndListener.setFrame();
 			}
 		});
 		button.setBounds(10, 60, 240, 40);
