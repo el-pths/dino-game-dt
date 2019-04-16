@@ -54,25 +54,25 @@ public class FrameAndListener extends JPanel implements ActionListener {
 	@Override
 	public void paint(Graphics g1) {
 		Graphics g = screen.getGraphics();
-			if (Main.inGame) {
-				if (Cactuses.cactusesAmount == 0
-						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH * 2 / 3)) {
-					Cactuses.distToCactus[Cactuses.cactusesAmount] = Generators.generateDistanceToNextCactus()
-							+ Settings.START_WIDTH / 2;
-					Cactuses.cactusesType[Cactuses.cactusesAmount] = Generators.generateNumberOfThisCactus$sType();
-					Cactuses.cactusesAmount++;
-				}
-				Treatment.recordField();
-				Graphic.drawFirstFloor(g);
-				Graphic.drawCactuses(g);
-				Treatment.ifDinoIsInBounce();
-				Graphic.drawDino(g);
-				Graphic.writeScore(g);
-			} else {
-				GameOver.gameOver(g);
+		if (Main.inGame) {
+			if (Cactuses.cactusesAmount == 0
+					|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH * 2 / 3)) {
+				Cactuses.distToCactus[Cactuses.cactusesAmount] = Generators.generateDistanceToNextCactus()
+						+ Settings.START_WIDTH / 2;
+				Cactuses.cactusesType[Cactuses.cactusesAmount] = Generators.generateNumberOfThisCactus$sType();
+				Cactuses.cactusesAmount++;
 			}
-			g1.drawImage(screen, 0, 0, frame.getWidth(), frame.getHeight(), null);
-			screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);
+			Treatment.recordField();
+			Graphic.drawFirstFloor(g);
+			Graphic.drawCactuses(g);
+			Treatment.ifDinoIsInBounce();
+			Graphic.drawDino(g);
+			Graphic.writeScore(g);
+		} else {
+			GameOver.gameOver(g);
+		}
+		g1.drawImage(screen, 0, 0, frame.getWidth(), frame.getHeight(), null);
+		screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);
 	}
 
 	@Override

@@ -31,13 +31,13 @@ public class Things {
 	}
 
 	public static void setButtonReplay() {
-		double koefX = (FrameAndListener.frame.getWidth() / Settings.START_WIDTH);
-		double koefY = (FrameAndListener.frame.getHeight() / Settings.START_HEIGHT);
+		double koefX = (FrameAndListener.frame.getWidth() / ((double) Settings.START_WIDTH));
+		double koefY = (FrameAndListener.frame.getHeight() / ((double) Settings.START_HEIGHT));
 		replay.setBounds(
-				(int) (koefX * (Settings.gameoverLabelX + (Settings.gameoverLabelXX - Settings.restartXX) / 2)),
-				(int) (koefY * (Settings.gameoverLabelY + Settings.gameoverLabelYY
-						+ FrameAndListener.frame.getHeight() / 16)),
-				(int) (Settings.restartXX * koefX), (int) (koefY * Settings.restartYY));
+				(int) (koefX
+						* (double) (Settings.gameoverLabelX + (Settings.gameoverLabelXX - Settings.restartXX) / 2)),
+				(int) (koefY * (double) (Settings.gameoverLabelY + Settings.gameoverLabelYY + Settings.height / 16)),
+				(int) (koefX * ((double) Settings.restartXX)), (int) (koefY * (double) Settings.restartYY));
 		replay.setOpaque(false);
 		replay.setContentAreaFilled(false);
 		replay.setBorderPainted(false);

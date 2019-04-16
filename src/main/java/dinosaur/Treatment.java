@@ -5,11 +5,18 @@ import java.awt.event.KeyEvent;
 
 public class Treatment {
 
+	public static int makeJump() {
+		double realHeight = 6000 + Math.random() * 4000, c = 10000, ceilHeight = 500; 
+		int i = (int) ((1 - Math.exp(-realHeight / c)) * ceilHeight);
+		return i;
+	}
+
 	public static boolean isDinoInCactus(int i) {
 		boolean is = false;
 		if (Dino.nowBounceHeight < (Cactuses.heightSize - Settings.PIXEL * 8)
 				&& (((int) (Settings.START_WIDTH * 0.1) + Settings.PIXEL * 20)) > (Cactuses.distToCactus[i])
-				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize + Settings.PIXEL * 4))
+				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize
+						+ Settings.PIXEL * 4))
 			is = true;
 		return is;
 	}
@@ -20,7 +27,7 @@ public class Treatment {
 				if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_1 || key == KeyEvent.VK_2 || key == KeyEvent.VK_3))
 					Dino.isJump = true;
 				if (key == KeyEvent.VK_SPACE)
-					Dino.jumpHeight = 250;
+					Dino.jumpHeight = makeJump();
 				if (key == KeyEvent.VK_1)
 					Dino.jumpHeight = 400;
 				if (key == KeyEvent.VK_2)

@@ -1,9 +1,9 @@
 package dinosaur;
 
 public class Main {
-	
+
 	public static boolean inGame = true;
-	
+
 	public static void main(String[] args) {
 		Start.haveToChoosePort();
 	}
@@ -20,5 +20,5 @@ public class Main {
 		inGame = true;
 		Cactuses.cactusesAmount = 0;
 	}
-	
+
 }
