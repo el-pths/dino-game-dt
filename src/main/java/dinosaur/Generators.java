@@ -14,6 +14,10 @@ public class Generators {
 		return (int) ((Settings.START_HEIGHT * 0.18) + (Math.random() * Settings.START_HEIGHT * 0.25));
 	}
 
+	public static int generateCloudTypeNum() {
+		return (int) (Math.round(Math.random() * 2 + 1));
+	}
+
 	public static int generateNumberOfThisCactus$sType() {
 		return (int) (Math.round(Math.random() * 8 + 1));
 	}

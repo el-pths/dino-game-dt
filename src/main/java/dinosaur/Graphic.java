@@ -58,7 +58,8 @@ public class Graphic {
 
 	public static void drawClouds(Graphics g) {
 		for (int i = 0; i < Clouds.cloudsAmount; i++) {
-			g.drawImage(Clouds.cloud, Clouds.distToCloud[i], Clouds.cloudHeight[i], 300, 130, null);
+			g.drawImage(Clouds.cloud, Clouds.distToCloud[i], Clouds.cloudHeight[i],
+					Clouds.sizeByType[Clouds.cloudType[i] - 1][0], Clouds.sizeByType[Clouds.cloudType[i] - 1][1], null);
 		}
 	}
 

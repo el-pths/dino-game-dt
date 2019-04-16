@@ -66,6 +66,7 @@ public class FrameAndListener extends JPanel implements ActionListener {
 					|| Clouds.distToCloud[Clouds.cloudsAmount - 1] < (int) (Settings.START_WIDTH * 5 / 6)) {
 				Clouds.distToCloud[Clouds.cloudsAmount] = Generators.generateFistanceToNextCloud();
 				Clouds.cloudHeight[Clouds.cloudsAmount] = Generators.generateCloudHeight();
+				Clouds.cloudType[Clouds.cloudsAmount] = Generators.generateCloudTypeNum();
 				Clouds.cloudsAmount++;
 			}
 			Treatment.recordField();
