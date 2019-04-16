@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 public class Treatment {
 
 	public static int makeJump() {
-		double realHeight = 6000 + Math.random() * 4000, c = 10000, ceilHeight = 500; 
+		double realHeight = 6000 + Math.random() * 4000, c = 10000, ceilHeight = 500;
 		int i = (int) ((1 - Math.exp(-realHeight / c)) * ceilHeight);
 		return i;
 	}
@@ -40,6 +40,22 @@ public class Treatment {
 				Main.startGame();
 			}
 		}
+	}
+
+	public static void recordClouds() {
+		if (Clouds.distToCloud[0] < -300) {
+			for (int i = 0; i < Clouds.cloudsAmount - 1; i++) {
+				Clouds.distToCloud[i] = Clouds.distToCloud[i + 1];
+				Clouds.cloudHeight[i] = Clouds.cloudHeight[i + 1];
+			}
+			if (Clouds.cloudsAmount < 50) {
+				Clouds.distToCloud[Clouds.cloudsAmount - 1] = 0;
+				Clouds.cloudHeight[Clouds.cloudsAmount - 1] = 0;
+			}
+			Clouds.cloudsAmount--;
+		}
+		for (int i = 0; i < Clouds.cloudsAmount; i++)
+			Clouds.distToCloud[i] -= Settings.START_WIDTH / 400;
 	}
 
 	public static void recordField() {

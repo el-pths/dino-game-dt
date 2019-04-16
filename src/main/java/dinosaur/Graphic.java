@@ -56,6 +56,12 @@ public class Graphic {
 		}
 	}
 
+	public static void drawClouds(Graphics g) {
+		for (int i = 0; i < Clouds.cloudsAmount; i++) {
+			g.drawImage(Clouds.cloud, Clouds.distToCloud[i], Clouds.cloudHeight[i], 300, 130, null);
+		}
+	}
+
 	public static Image loadImage(String resourcePath) {
 		try {
 			return ImageIO.read(Graphics.class.getResource(resourcePath));

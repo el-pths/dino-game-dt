@@ -56,15 +56,23 @@ public class FrameAndListener extends JPanel implements ActionListener {
 		Graphics g = screen.getGraphics();
 		if (Main.inGame) {
 			if (Cactuses.cactusesAmount == 0
-					|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH * 2 / 3)) {
+					|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH)) {
 				Cactuses.distToCactus[Cactuses.cactusesAmount] = Generators.generateDistanceToNextCactus()
 						+ Settings.START_WIDTH / 2;
 				Cactuses.cactusesType[Cactuses.cactusesAmount] = Generators.generateNumberOfThisCactus$sType();
 				Cactuses.cactusesAmount++;
 			}
+			if (Clouds.cloudsAmount == 0
+					|| Clouds.distToCloud[Clouds.cloudsAmount - 1] < (int) (Settings.START_WIDTH * 5 / 6)) {
+				Clouds.distToCloud[Clouds.cloudsAmount] = Generators.generateFistanceToNextCloud();
+				Clouds.cloudHeight[Clouds.cloudsAmount] = Generators.generateCloudHeight();
+				Clouds.cloudsAmount++;
+			}
 			Treatment.recordField();
 			Graphic.drawFirstFloor(g);
+			Graphic.drawClouds(g);
 			Graphic.drawCactuses(g);
+			Treatment.recordClouds();
 			Treatment.ifDinoIsInBounce();
 			Graphic.drawDino(g);
 			Graphic.writeScore(g);

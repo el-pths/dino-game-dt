@@ -17,6 +17,7 @@ public class GameOver {
 	public static void gameOver(Graphics g) {
 		Things.setButtonReplay();
 		Graphic.drawFirstFloor(g);
+		Graphic.drawClouds(g);
 		Graphic.drawCactuses(g);
 		Graphic.drawDino(g);
 		Graphic.writeScore(g);

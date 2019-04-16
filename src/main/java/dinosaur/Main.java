@@ -19,6 +19,7 @@ public class Main {
 		Dino.nowBounceHeight = 0;
 		inGame = true;
 		Cactuses.cactusesAmount = 0;
+		Clouds.cloudsAmount = 0;
 	}
 
 }
