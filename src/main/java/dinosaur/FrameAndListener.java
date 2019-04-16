@@ -43,9 +43,8 @@ public class FrameAndListener extends JPanel implements ActionListener {
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if (Start.choseAnyPort && Start.choise != "Without")
-					System.out.println('\n' + "Closing...");
-				Port.app.closePort();
+				if (Start.choseAnyPort && Start.choise != "Without") 
+					Port.app.closePort();
 				System.exit(0);
 			}
 		});

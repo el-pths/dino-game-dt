@@ -13,10 +13,9 @@ public class Treatment {
 
 	public static boolean isDinoInCactus(int i) {
 		boolean is = false;
-		if (Dino.nowBounceHeight < (Cactuses.heightSize - Settings.PIXEL * 8)
-				&& (((int) (Settings.START_WIDTH * 0.1) + Settings.PIXEL * 20)) > (Cactuses.distToCactus[i])
-				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize
-						+ Settings.PIXEL * 4))
+		if (Dino.nowBounceHeight < (Cactuses.heightSize - Settings.PIXEL * 6)
+				&& (((int) (Settings.START_WIDTH * 0.1) + Settings.PIXEL * 18)) > (Cactuses.distToCactus[i])
+				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize - Settings.PIXEL * 5))
 			is = true;
 		return is;
 	}
@@ -78,6 +77,13 @@ public class Treatment {
 				FrameAndListener.cactusesBehind++;
 			Cactuses.distToCactus[i] -= Settings.START_WIDTH / 180;
 		}
+		if (Field.distToNearestPart < -Field.fieldPartWidth) {
+			for (int i = 0; i < Field.fieldType.length - 1; i++)
+				Field.fieldType[i] = Field.fieldType[i + 1];
+			Field.fieldType[Field.fieldType.length - 1] = Generators.generateFieldPartTypeNubm();
+			Field.distToNearestPart += Field.fieldPartWidth;
+		}
+		Field.distToNearestPart -= Settings.START_WIDTH / 180;
 	}
 
 	public static Image returnByNumber(int a) {

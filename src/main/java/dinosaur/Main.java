@@ -20,6 +20,7 @@ public class Main {
 		inGame = true;
 		Cactuses.cactusesAmount = 0;
 		Clouds.cloudsAmount = 0;
+		Field.setField();
 	}
 
 }

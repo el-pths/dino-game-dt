@@ -42,8 +42,9 @@ public class Graphic {
 		if (!Things.isButtonRemoved && Start.choseAnyPort)
 			g.drawImage(Things.remove, Settings.closePortX, Settings.closePortY, Settings.closePortXX,
 					Settings.closePortYY, null);
-		g.setColor(Color.BLACK);
-		g.fillRect(0, (int) (Settings.START_HEIGHT * 0.7), Settings.START_WIDTH, Settings.PIXEL / 2);
+		for (int i = 0; i < Field.fieldType.length; i++)
+			g.drawImage(Field.defaultTypes[Field.fieldType[i] - 1],
+					Field.distToNearestPart + (i - 1) * Field.fieldPartWidth, 367, Field.fieldPartWidth, 50, null);
 	}
 
 	public static void drawCactuses(Graphics g) {

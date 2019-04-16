@@ -13,7 +13,7 @@ public class Start {
 	public static String choise = "Without";
 	public static boolean choseAnyPort = true;
 	private static JFrame firstFrame;
-	
+
 	public static void haveToChoosePort() {
 		if (Port.ports.length < 1) {
 			throw new RuntimeException("No serial ports found at all");
@@ -53,6 +53,7 @@ public class Start {
 				for (int i = 0; i < actl.length; i++)
 					comboBox.removeActionListener(actl[i]);
 				firstFrame.dispose();
+				Field.setField();
 				if (choise == "Without") {
 					choseAnyPort = false;
 					Port.app.closePort();
