@@ -13,7 +13,7 @@ public class Treatment {
 
 	public static boolean isDinoInCactus(int i) {
 		boolean is = false;
-		if (Dino.nowBounceHeight < (Cactuses.heightSize - Settings.PIXEL * 6)
+		if (Dino.nowBounceHeight < (Cactuses.heightSize - Settings.PIXEL * 10)
 				&& (((int) (Settings.START_WIDTH * 0.1) + Settings.PIXEL * 18)) > (Cactuses.distToCactus[i])
 				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize - Settings.PIXEL * 5))
 			is = true;

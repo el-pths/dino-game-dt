@@ -27,7 +27,9 @@ public class Things {
 			public void actionPerformed(ActionEvent e) {
 				getSettings.removeActionListener(this);
 				FrameAndListener.frame.remove(getSettings);
+				MyBlur.setFon(FrameAndListener.screen);
 				Settings.settingWindow = true;
+				Settings.setButtonsToSetSmth();
 			}
 		});
 		FrameAndListener.frame.add(getSettings);

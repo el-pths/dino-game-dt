@@ -26,6 +26,7 @@ public class GameOver {
 				Settings.restartYY, null);
 		g.drawImage(gameover, Settings.gameoverLabelX, Settings.gameoverLabelY, Settings.gameoverLabelXX,
 				Settings.gameoverLabelYY, null);
-
+		Things.setButtonGetSettings();
+		Settings.drawSettingButton(g);
 	}
 }

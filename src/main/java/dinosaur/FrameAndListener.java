@@ -1,7 +1,5 @@
 package dinosaur;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +20,8 @@ public class FrameAndListener extends JPanel implements ActionListener {
 	public static JFrame frame;
 	private Timer timer = new Timer(1000 / Settings.speed, this);
 	public static int score = 0, cactusesBehind = 0;
-	BufferedImage screen = new BufferedImage(Settings.START_WIDTH, Settings.START_HEIGHT, BufferedImage.TYPE_INT_RGB);
+	static BufferedImage screen = new BufferedImage(Settings.START_WIDTH, Settings.START_HEIGHT,
+			BufferedImage.TYPE_INT_RGB);
 
 	public FrameAndListener() {
 		if (Port.isPortSetted) {
@@ -56,11 +55,10 @@ public class FrameAndListener extends JPanel implements ActionListener {
 	public void paint(Graphics g1) {
 		Graphics g = screen.getGraphics();
 		if (Settings.settingWindow) {
+			g.drawImage(MyBlur.fon, 0, 0, Settings.width, Settings.height, null);
 			Settings.getSettingsMenu(g);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Comic Sans MS", Font.BOLD, 100));
-			g.drawString("It's deadscreen", 290, 270);
 		} else {
+			screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);
 			if (Main.inGame) {
 				if (Cactuses.cactusesAmount == 0
 						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH)) {
@@ -93,7 +91,6 @@ public class FrameAndListener extends JPanel implements ActionListener {
 			}
 		}
 		g1.drawImage(screen, 0, 0, frame.getWidth(), frame.getHeight(), null);
-		screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);
 	}
 
 	@Override
