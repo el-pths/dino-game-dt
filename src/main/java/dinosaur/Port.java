@@ -87,7 +87,6 @@ public class Port {
 				String str = incomingLine.substring(0, lineEndPos);
 				char[] chars = str.toCharArray();
 				int[] args = new int[3];
-				//Unused
 				@SuppressWarnings("unused")
 				boolean posfirst = true, possecond = true, posthird = true;
 				boolean first = false, second = false;
@@ -116,12 +115,6 @@ public class Port {
 						else
 							break;
 				}
-				//if (!posfirst)
-					//args[0] *= -1;
-				//if (!possecond)
-					//args[1] *= -1;
-				//if (!posthird)
-					//args[2] *= -1;
 				System.out.println(str);
 				System.out.println("sum : " + (args[0] + args[1] + args[2]));
 				if (Math.abs(args[0] + args[1] + args[2]) > 50000 && !Dino.isNowInAir) {

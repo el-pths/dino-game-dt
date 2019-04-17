@@ -1,5 +1,7 @@
 package dinosaur;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -43,7 +45,7 @@ public class FrameAndListener extends JPanel implements ActionListener {
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				if (Start.choseAnyPort && Start.choise != "Without") 
+				if (Start.choseAnyPort && Start.choise != "Without")
 					Port.app.closePort();
 				System.exit(0);
 			}
@@ -53,31 +55,42 @@ public class FrameAndListener extends JPanel implements ActionListener {
 	@Override
 	public void paint(Graphics g1) {
 		Graphics g = screen.getGraphics();
-		if (Main.inGame) {
-			if (Cactuses.cactusesAmount == 0
-					|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH)) {
-				Cactuses.distToCactus[Cactuses.cactusesAmount] = Generators.generateDistanceToNextCactus()
-						+ Settings.START_WIDTH / 2;
-				Cactuses.cactusesType[Cactuses.cactusesAmount] = Generators.generateNumberOfThisCactus$sType();
-				Cactuses.cactusesAmount++;
-			}
-			if (Clouds.cloudsAmount == 0
-					|| Clouds.distToCloud[Clouds.cloudsAmount - 1] < (int) (Settings.START_WIDTH * 5 / 6)) {
-				Clouds.distToCloud[Clouds.cloudsAmount] = Generators.generateFistanceToNextCloud();
-				Clouds.cloudHeight[Clouds.cloudsAmount] = Generators.generateCloudHeight();
-				Clouds.cloudType[Clouds.cloudsAmount] = Generators.generateCloudTypeNum();
-				Clouds.cloudsAmount++;
-			}
-			Treatment.recordField();
-			Graphic.drawFirstFloor(g);
-			Graphic.drawClouds(g);
-			Graphic.drawCactuses(g);
-			Treatment.recordClouds();
-			Treatment.ifDinoIsInBounce();
-			Graphic.drawDino(g);
-			Graphic.writeScore(g);
+		if (Settings.settingWindow) {
+			Settings.getSettingsMenu(g);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Comic Sans MS", Font.BOLD, 100));
+			g.drawString("It's deadscreen", 290, 270);
 		} else {
-			GameOver.gameOver(g);
+			if (Main.inGame) {
+				if (Cactuses.cactusesAmount == 0
+						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH)) {
+					Cactuses.distToCactus[Cactuses.cactusesAmount] = Generators.generateDistanceToNextCactus()
+							+ Settings.START_WIDTH / 2;
+					Cactuses.cactusesType[Cactuses.cactusesAmount] = Generators.generateNumberOfThisCactus$sType();
+					Cactuses.cactusesAmount++;
+				}
+				if (Clouds.cloudsAmount == 0
+						|| Clouds.distToCloud[Clouds.cloudsAmount - 1] < (int) (Settings.START_WIDTH * 5 / 6)) {
+					Clouds.distToCloud[Clouds.cloudsAmount] = Generators.generateFistanceToNextCloud();
+					Clouds.cloudHeight[Clouds.cloudsAmount] = Generators.generateCloudHeight();
+					Clouds.cloudType[Clouds.cloudsAmount] = Generators.generateCloudTypeNum();
+					Clouds.cloudsAmount++;
+				}
+				Things.koefX = (FrameAndListener.frame.getWidth() / ((double) Settings.START_WIDTH));
+				Things.koefY = (FrameAndListener.frame.getHeight() / ((double) Settings.START_HEIGHT));
+				Treatment.recordField();
+				Graphic.drawFirstFloor(g);
+				Graphic.drawClouds(g);
+				Graphic.drawCactuses(g);
+				Treatment.recordClouds();
+				Treatment.ifDinoIsInBounce();
+				Graphic.drawDino(g);
+				Graphic.writeScore(g);
+				Things.setButtonGetSettings();
+				Settings.drawSettingButton(g);
+			} else {
+				GameOver.gameOver(g);
+			}
 		}
 		g1.drawImage(screen, 0, 0, frame.getWidth(), frame.getHeight(), null);
 		screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);

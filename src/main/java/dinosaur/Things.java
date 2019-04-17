@@ -12,10 +12,31 @@ public class Things {
 	public static boolean isButtonRemoved = true;
 	public static Image remove = Graphic.loadImage("/delite.png");
 	public static JButton replay = new JButton("");
+	public static JButton getSettings = new JButton();
 	public static double koefX = 1, koefY = 1;
 
+	public static void setButtonGetSettings() {
+		getSettings.setBounds((int) (((double) Settings.settingsButtonX) * koefX),
+				(int) (((double) Settings.settingsButtonY) * koefY),
+				(int) (((double) Settings.settingsButtonXX) * koefX),
+				(int) (((double) Settings.settingsButtonYY) * koefY));
+		getSettings.setOpaque(false);
+		getSettings.setContentAreaFilled(false);
+		getSettings.setBorderPainted(false);
+		getSettings.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getSettings.removeActionListener(this);
+				FrameAndListener.frame.remove(getSettings);
+				Settings.settingWindow = true;
+			}
+		});
+		FrameAndListener.frame.add(getSettings);
+	}
+
 	public static void setButtonRemovePort() {
-		removePort.setBounds(Settings.closePortX, Settings.closePortY, Settings.closePortXX, Settings.closePortYY);
+		removePort.setBounds((int) (((double) Settings.closePortX) * koefX),
+				(int) (((double) Settings.closePortY) * koefY), (int) (((double) Settings.closePortXX) * koefX),
+				(int) (((double) Settings.closePortYY) * koefY));
 		removePort.setOpaque(false);
 		removePort.setContentAreaFilled(false);
 		removePort.setBorderPainted(false);
@@ -31,8 +52,6 @@ public class Things {
 	}
 
 	public static void setButtonReplay() {
-		double koefX = (FrameAndListener.frame.getWidth() / ((double) Settings.START_WIDTH));
-		double koefY = (FrameAndListener.frame.getHeight() / ((double) Settings.START_HEIGHT));
 		replay.setBounds(
 				(int) (koefX
 						* (double) (Settings.gameoverLabelX + (Settings.gameoverLabelXX - Settings.restartXX) / 2)),

@@ -68,7 +68,7 @@ public class Graphic {
 		try {
 			return ImageIO.read(Graphics.class.getResource(resourcePath));
 		} catch (Exception e) {
-			throw new RuntimeException("Error while loading " + resourcePath, e);
+			throw new RuntimeException(e);
 		}
 	}
 
