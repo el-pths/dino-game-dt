@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -29,16 +31,18 @@ public class Chart extends JPanel implements ActionListener {
 	private static Scanner sc;
 	private static final long serialVersionUID = 42L;
 	private static JFrame frame;
-	private Timer timer = new Timer(1000 / 50, this);
+	private static int speed = 50;
+	private Timer timer = new Timer(1000 / speed, this);
 	private static int width = 500, height = 400;
 	private static BufferedImage screen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+	private static boolean pause = false;
 
 	public static void main(String... args) {
 		try {
 			if (args.length > 1) {
-    			sc = new Scanner(new File(args[1]));
+				sc = new Scanner(new File(args[1]));
 			} else {
-    			sc = new Scanner(Chart.class.getResourceAsStream("/jumps.txt"));
+				sc = new Scanner(Chart.class.getResourceAsStream("/jumps.txt"));
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -68,32 +72,62 @@ public class Chart extends JPanel implements ActionListener {
 	public Chart() {
 		timer.start();
 		setFocusable(true);
+		addKeyListener(new KeyBoard());
 	}
-    
-    void drawSignal(Graphics g, int[] data, int y0) {
+
+	void drawSignal(Graphics g, int[] data, int y0) {
 		int prev = 0;
 		for (int i = 0; i < data.length; i++) {
-		    g.drawLine(i, y0 - prev, i + 1, y0 - data[i]);
-		    prev = data[i];
+			g.drawLine(i, y0 - prev, i + 1, y0 - data[i] / 2);
+			prev = data[i] / 2;
 		}
-    }
-    
+	}
+
+	void drawVerticalsAndHorisontals(Graphics g) {
+		g.setColor(Color.BLACK);
+		g.drawLine(0, height - 5, width, height - 5);
+		g.drawLine(0, 2 * height / 13, width, 2 * height / 13);
+		g.drawLine(0, 4 * height / 13, width, 4 * height / 13);
+		g.drawLine(0, 6 * height / 13, width, 6 * height / 13);
+		g.drawLine(0, 9 * height / 13, width, 9 * height / 13);
+		int rad = 30;
+		for (int j = 0; j < 5; j++) {
+			int add;
+			if (j == 0)
+				add = 2 * height / 13;
+			else if (j == 1)
+				add = 4 * height / 13;
+			else if (j == 2)
+				add = 6 * height / 13;
+			else if (j == 3)
+				add = 9 * height / 13;
+			else
+				add = height - 5;
+			for (int i = 0; i < 8; i++)
+				g.drawLine((i + 1) * speed + 20, add - rad / 2, (i + 1) * speed + 20, add + rad / 2);
+		}
+		g.drawLine(20, 0, 20, height);
+	}
+
 	@Override
 	public void paint(Graphics g1) {
-		Graphics g = screen.getGraphics();
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, screen.getWidth(), screen.getHeight());
-		((Graphics2D) g).setStroke(new BasicStroke(3));
-		g.setColor(Color.GREEN);
-		drawSignal(g, Data.rms, 9 * height / 11);
-		g.setColor(Color.GRAY);
-		drawSignal(g, Data.jump, height - 5);
-		g.setColor(Color.YELLOW);
-		drawSignal(g, Data.dX, 2 * height / 11);
-		g.setColor(Color.BLUE);
-		drawSignal(g, Data.dY, 4 * height / 11);
-		g.setColor(Color.RED);
-		drawSignal(g, Data.dZ, 6 * height / 11);
+		if (!pause) {
+			Graphics g = screen.getGraphics();
+			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+			((Graphics2D) g).setStroke(new BasicStroke(2));
+			drawVerticalsAndHorisontals(g);
+			g.setColor(Color.GREEN);
+			drawSignal(g, Data.rms, 9 * height / 13);
+			g.setColor(Color.GRAY);
+			drawSignal(g, Data.jump, height - 5);
+			g.setColor(Color.YELLOW);
+			drawSignal(g, Data.dX, 2 * height / 13);
+			g.setColor(Color.BLUE);
+			drawSignal(g, Data.dY, 4 * height / 13);
+			g.setColor(Color.RED);
+			drawSignal(g, Data.dZ, 6 * height / 13);
+		}
 		g1.drawImage(screen, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 
@@ -108,14 +142,26 @@ public class Chart extends JPanel implements ActionListener {
 		}
 	}
 
+	private static class KeyBoard extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent kEvt) {
+			int key = kEvt.getKeyCode();
+			if (key == KeyEvent.VK_SPACE)
+				if (pause)
+					pause = false;
+				else
+					pause = true;
+		}
+	}
+
 }
 
 class Data {
-    
-    public static Filter filter = new Filter();
 
-	public static int[] dX = new int[300], dY = new int[300], dZ = new int[300];
-	public static int[] rms = new int[300], jump = new int[300];
+	public static Filter filter = new Filter();
+
+	public static int[] dX = new int[430], dY = new int[430], dZ = new int[430];
+	public static int[] rms = new int[430], jump = new int[430];
 
 	public static void record(int newX, int newY, int newZ, int r, int j) {
 		for (int i = 0; i < dX.length - 1; i++)
@@ -135,7 +181,7 @@ class Data {
 		jump[jump.length - 1] = j;
 		System.out.println(j);
 	}
-	
+
 	static void nextPoint() {
 		int x = filter.getX() * 50 / filter.getG();
 		int y = filter.getY() * 50 / filter.getG();
@@ -148,7 +194,7 @@ class Data {
 class App {
 
 	private static final int BAUD_RATE = Integer.parseInt(System.getProperty("baud", "115200"));
-	
+
 	private Scanner input;
 	private SerialPort port;
 	private StringBuffer incomingLine = new StringBuffer();
@@ -164,7 +210,7 @@ class App {
 		}
 
 	}
-	
+
 	private void init() {
 		input = new Scanner(System.in);
 		String portName = choosePort();
@@ -256,12 +302,13 @@ class App {
 				String str = incomingLine.substring(0, lineEndPos);
 				Scanner line = new Scanner(str);
 				try {
-    				Data.filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
-	    			Data.nextPoint();
-	    		} catch (Exception e) {
-	    		    // broken line, do nothing about it
-	    		}
-    			incomingLine.delete(0, lineEndPos + 1);
+					Data.filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
+					Data.nextPoint();
+				} catch (Exception e) {
+					// broken line, do nothing about it
+				}
+				line.close();
+				incomingLine.delete(0, lineEndPos + 1);
 			}
 		}
 	}
