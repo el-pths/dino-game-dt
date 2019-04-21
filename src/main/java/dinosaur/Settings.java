@@ -5,8 +5,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 
 public class Settings {
+	public static double koefficient_paraboli = 2.7;
 	public static final int START_WIDTH = 1344, START_HEIGHT = 540, PIXEL = 4;
-	public static int speed = 60, width = START_WIDTH, height = START_HEIGHT, koefficient_paraboli = 3;
+	public static int speed = 60, width = START_WIDTH, height = START_HEIGHT;
 	public static final int againXX = 200, againYY = 60, againX = (width - againXX) / 2, againY = height / 16;
 	public static final int closePortXX = 60, closePortYY = 60, closePortX = (int) (width * 57 / 64),
 			closePortY = (int) (height * 6 / 32);
