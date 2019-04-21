@@ -6,8 +6,9 @@ import java.awt.event.KeyEvent;
 public class Treatment {
 
 	public static int makeJump(int realHeight) {
-		double c = 100, ceilHeight = 320;
-		int i = (int) ((1 - Math.exp(-realHeight / c)) * ceilHeight);
+		double c = 55, ceilHeight = 320;
+		int i = (int) (((1 - Math.exp((-realHeight + ceilHeight / 3.8) / c)) * ceilHeight));
+		System.out.println("realHeight : " + realHeight + "  jump : " + i);
 		return i;
 	}
 

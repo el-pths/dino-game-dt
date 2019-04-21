@@ -14,6 +14,7 @@ public class Port {
 	public static Port app = new Port();
 	public static String[] ports = SerialPortList.getPortNames();
 	private Filter filter = new Filter();
+	private static boolean previousTime = false;
 
 	public static void setPort() {
 		if (Start.choseAnyPort) {
@@ -94,10 +95,15 @@ public class Port {
 				try {
 					filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
 					int jump = filter.jumpDetected();
-					if (jump > 0 && !Dino.isNowInAir) {
-						Treatment.makeJump(jump);
-						Dino.isJump = true;
-					}
+					if (jump > 0) {
+						if (!previousTime && !Dino.isNowInAir) {
+							Treatment.makeJump(jump);
+							Dino.isJump = true;
+						}
+						previousTime = true;
+					} else
+						previousTime = false;
+
 				} catch (Exception e) {
 					// broken line, do nothing about it
 				}
