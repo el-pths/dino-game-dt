@@ -6,10 +6,11 @@ public class Filter {
 
     static final int MAX_LIST_SIZE = 10;
     static final int SMOOTH_COEFF = 2;
+    static final int CALIBRATION_NEEDED = Integer.MAX_VALUE;
     
     LinkedList<Point> points = new LinkedList<Point>();
     
-    int gravity = Integer.MAX_VALUE;
+    int gravity = CALIBRATION_NEEDED;
     
     static class Point {
         int x, y, z;
@@ -28,9 +29,9 @@ public class Filter {
         points.addFirst(p);
         while (points.size() > MAX_LIST_SIZE) {
             points.removeLast();
-            if (gravity == Integer.MAX_VALUE) {
-                calibrate();
-            }
+        }
+        if (gravity == CALIBRATION_NEEDED && points.size() == MAX_LIST_SIZE) {
+            calibrate();
         }
         makeSmooth();
     }
