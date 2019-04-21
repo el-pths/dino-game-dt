@@ -1,4 +1,4 @@
-package dino;
+package chart;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -31,7 +31,11 @@ public class Chart extends JPanel implements ActionListener {
 
 	public static void main(String... args) {
 		try {
-			sc = new Scanner(new File("jumps.txt"));
+			if (args.length > 1) {
+    			sc = new Scanner(new File(args[1]));
+			} else {
+    			sc = new Scanner(Chart.class.getResourceAsStream("/jumps.txt"));
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -145,6 +149,8 @@ class Data {
 
 class App {
 
+	private static final int BAUD_RATE = Integer.parseInt(System.getProperty("baud", "115200"));
+	
 	public static int x = 0, y = 0, z = 0;
 	private Scanner input;
 	private SerialPort port;
@@ -212,7 +218,7 @@ class App {
 			if (!port.openPort()) {
 				throw new RuntimeException("Port opening returns 'false'");
 			}
-			if (!port.setParams(9600, 8, 1, 0)) {
+			if (!port.setParams(BAUD_RATE, 8, 1, 0)) {
 				throw new RuntimeException("Setting port params returns 'false'");
 			}
 		} catch (SerialPortException e) {
@@ -248,42 +254,13 @@ class App {
 		if (b != null) {
 			String s = new String(b);
 			incomingLine.append(s);
-			int lineEndPos = incomingLine.indexOf("\r");
+			int lineEndPos = incomingLine.indexOf("\n");
 			if (lineEndPos >= 0) {
 				String str = incomingLine.substring(0, lineEndPos);
-				char[] chars = str.toCharArray();
-				int[] args = new int[3];
-				@SuppressWarnings("unused")
-				boolean posfirst = true, possecond = true, posthird = true;
-				boolean first = false, second = false;
-				for (int i = 0; i < chars.length; i++) {
-					if (chars[i] == '0' || chars[i] == '1' || chars[i] == '2' || chars[i] == '3' || chars[i] == '4'
-							|| chars[i] == '5' || chars[i] == '6' || chars[i] == '7' || chars[i] == '8'
-							|| chars[i] == '9')
-						if (!first)
-							args[0] = args[0] * 10 + Integer.parseInt(Character.toString(chars[i]));
-						else if (!second)
-							args[1] = args[1] * 10 + Integer.parseInt(Character.toString(chars[i]));
-						else
-							args[2] = args[2] * 10 + Integer.parseInt(Character.toString(chars[i]));
-					else if (chars[i] == '-')
-						if (second)
-							posthird = false;
-						else if (first)
-							possecond = false;
-						else
-							posfirst = false;
-					else if (i > 0)
-						if (args[0] != 0 && args[1] == 0 && args[2] == 0)
-							first = true;
-						else if (args[1] != 0 && args[2] == 0)
-							second = true;
-						else
-							break;
-				}
-				x = args[0];
-				y = args[1];
-				z = args[2];
+				Scanner line = new Scanner(str);
+				x = line.nextInt();
+				y = line.nextInt();
+				z = line.nextInt();
 				incomingLine.delete(0, lineEndPos + 1);
 			}
 		}

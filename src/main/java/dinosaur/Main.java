@@ -5,6 +5,10 @@ public class Main {
 	public static boolean inGame = true;
 
 	public static void main(String[] args) {
+	    if (args.length > 0 && args[0].equals("chart")) {
+	        chart.Chart.main(args);
+	        return;
+	    }
 		Start.haveToChoosePort();
 	}
 
