@@ -75,38 +75,19 @@ public class Chart extends JPanel implements ActionListener {
 		addKeyListener(new KeyBoard());
 	}
 
-	void drawSignal(Graphics g, int[] data, int y0) {
+	void drawSignal(Graphics g, int[] data, int y0, Color color) {
+		int rad = 30;
+		g.drawLine(0, y0, width, y0);
+		for (int i = 0; i < 8; i++)
+			g.drawLine((i + 1) * speed + 20, y0 - rad / 2, (i + 1) * speed + 20, y0 + rad / 2);
 		int prev = 0;
+		g.setColor(color);
 		for (int i = 0; i < data.length; i++) {
 			g.drawLine(i, y0 - prev, i + 1, y0 - data[i] / 2);
 			prev = data[i] / 2;
 		}
-	}
-
-	void drawVerticalsAndHorisontals(Graphics g) {
 		g.setColor(Color.BLACK);
-		g.drawLine(0, height - 5, width, height - 5);
-		g.drawLine(0, 2 * height / 13, width, 2 * height / 13);
-		g.drawLine(0, 4 * height / 13, width, 4 * height / 13);
-		g.drawLine(0, 6 * height / 13, width, 6 * height / 13);
-		g.drawLine(0, 9 * height / 13, width, 9 * height / 13);
-		int rad = 30;
-		for (int j = 0; j < 5; j++) {
-			int add;
-			if (j == 0)
-				add = 2 * height / 13;
-			else if (j == 1)
-				add = 4 * height / 13;
-			else if (j == 2)
-				add = 6 * height / 13;
-			else if (j == 3)
-				add = 9 * height / 13;
-			else
-				add = height - 5;
-			for (int i = 0; i < 8; i++)
-				g.drawLine((i + 1) * speed + 20, add - rad / 2, (i + 1) * speed + 20, add + rad / 2);
-		}
-		g.drawLine(20, 0, 20, height);
+
 	}
 
 	@Override
@@ -116,17 +97,13 @@ public class Chart extends JPanel implements ActionListener {
 			g.setColor(Color.LIGHT_GRAY);
 			g.fillRect(0, 0, screen.getWidth(), screen.getHeight());
 			((Graphics2D) g).setStroke(new BasicStroke(2));
-			drawVerticalsAndHorisontals(g);
-			g.setColor(Color.GREEN);
-			drawSignal(g, Data.rms, 9 * height / 13);
-			g.setColor(Color.GRAY);
-			drawSignal(g, Data.jump, height - 5);
-			g.setColor(Color.YELLOW);
-			drawSignal(g, Data.dX, 2 * height / 13);
-			g.setColor(Color.BLUE);
-			drawSignal(g, Data.dY, 4 * height / 13);
-			g.setColor(Color.RED);
-			drawSignal(g, Data.dZ, 6 * height / 13);
+			g.setColor(Color.BLACK);
+			g.drawLine(20, 0, 20, height);
+			drawSignal(g, Data.rms, 9 * height / 13, Color.GREEN);
+			drawSignal(g, Data.jump, height - 5, Color.GRAY);
+			drawSignal(g, Data.dX, 2 * height / 13, Color.YELLOW);
+			drawSignal(g, Data.dY, 4 * height / 13, Color.BLUE);
+			drawSignal(g, Data.dZ, 6 * height / 13, Color.RED);
 		}
 		g1.drawImage(screen, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
