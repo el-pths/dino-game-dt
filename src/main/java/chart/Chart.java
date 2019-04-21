@@ -1,7 +1,9 @@
 package chart;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -20,6 +22,8 @@ import jssc.SerialPortEvent;
 import jssc.SerialPortException;
 import jssc.SerialPortList;
 
+import dinosaur.Filter;
+
 public class Chart extends JPanel implements ActionListener {
 
 	private static Scanner sc;
@@ -27,7 +31,7 @@ public class Chart extends JPanel implements ActionListener {
 	private static JFrame frame;
 	private Timer timer = new Timer(1000 / 50, this);
 	private static int width = 500, height = 400;
-	private static BufferedImage screen = new BufferedImage(width, (height * 7) / 6, BufferedImage.TYPE_INT_RGB);
+	private static BufferedImage screen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 	public static void main(String... args) {
 		try {
@@ -65,65 +69,40 @@ public class Chart extends JPanel implements ActionListener {
 		timer.start();
 		setFocusable(true);
 	}
-
+    
+    void drawSignal(Graphics g, int[] data, int y0) {
+		int prev = 0;
+		for (int i = 0; i < data.length; i++) {
+		    g.drawLine(i, y0 - prev, i + 1, y0 - data[i]);
+		    prev = data[i];
+		}
+    }
+    
 	@Override
 	public void paint(Graphics g1) {
 		Graphics g = screen.getGraphics();
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+		((Graphics2D) g).setStroke(new BasicStroke(3));
+		g.setColor(Color.GREEN);
+		drawSignal(g, Data.rms, 9 * height / 11);
+		g.setColor(Color.GRAY);
+		drawSignal(g, Data.jump, height - 5);
 		g.setColor(Color.YELLOW);
-		for (int i = 0; i < Data.dX.length; i++) {
-			if (i > 0) {
-				int abs = Math.abs(Data.dX[i] - Data.dX[i - 1]);
-				if (abs != 0)
-					if (Data.dX[i] < Data.dX[i - 1])
-						g.fillRect(i, Data.dX[i] + (int) (2 * height / 12), 1, abs);
-					else
-						g.fillRect(i, Data.dX[i - 1] + (int) (2 * height / 12), 1, abs);
-				else
-					g.fillRect(i, Data.dX[i] + (int) (2 * height / 12), 1, 2);
-			} else
-				g.fillRect(i, Data.dX[i] + (int) (2 * height / 12), 1, 2);
-		}
+		drawSignal(g, Data.dX, 2 * height / 11);
 		g.setColor(Color.BLUE);
-		for (int i = 0; i < Data.dY.length; i++) {
-			if (i > 0) {
-				int abs = Math.abs(Data.dY[i] - Data.dY[i - 1]);
-				if (abs != 0)
-					if (Data.dY[i] < Data.dY[i - 1])
-						g.fillRect(i, Data.dY[i] + height / 3 + (int) (2 * height / 12), 1, abs);
-					else
-						g.fillRect(i, Data.dY[i - 1] + height / 3 + (int) (2 * height / 12), 1, abs);
-				else
-					g.fillRect(i, Data.dY[i] + height / 3 + (int) (2 * height / 12), 1, 2);
-			} else
-				g.fillRect(i, Data.dY[i] + height / 3 + (int) (2 * height / 12), 1, 2);
-		}
+		drawSignal(g, Data.dY, 4 * height / 11);
 		g.setColor(Color.RED);
-		for (int i = 0; i < Data.dZ.length; i++) {
-			if (i > 0) {
-				int abs = Math.abs(Data.dZ[i] - Data.dZ[i - 1]);
-				if (abs != 0)
-					if (Data.dZ[i] < Data.dZ[i - 1])
-						g.fillRect(i, Data.dZ[i] + 2 * height / 3 + (int) (2 * height / 12), 1, abs);
-					else
-						g.fillRect(i, Data.dZ[i - 1] + 2 * height / 3 + (int) (2 * height / 12), 1, abs);
-				else
-					g.fillRect(i, Data.dZ[i] + 2 * height / 3 + (int) (2 * height / 12), 1, 2);
-			} else
-				g.fillRect(i, Data.dZ[i] + 2 * height / 3 + (int) (2 * height / 12), 1, 2);
-		}
-		g1.drawImage(screen, 0, 0, frame.getWidth(), frame.getHeight(), null);
+		drawSignal(g, Data.dZ, 6 * height / 11);
+		g1.drawImage(screen, 0, 0, this.getWidth(), this.getHeight(), null);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Data.record(App.x, App.y, App.z);
 		if (sc.hasNext()) {
 			if (!App.any) {
-				App.x = sc.nextInt() / 2;
-				App.y = sc.nextInt() / 2;
-				App.z = sc.nextInt() / 2;
+				Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt());
+				Data.nextPoint();
 			}
 			repaint();
 		}
@@ -132,9 +111,13 @@ public class Chart extends JPanel implements ActionListener {
 }
 
 class Data {
-	public static int[] dX = new int[300], dY = new int[300], dZ = new int[300];
+    
+    public static Filter filter = new Filter();
 
-	public static void record(int newX, int newY, int newZ) {
+	public static int[] dX = new int[300], dY = new int[300], dZ = new int[300];
+	public static int[] rms = new int[300], jump = new int[300];
+
+	public static void record(int newX, int newY, int newZ, int r, int j) {
 		for (int i = 0; i < dX.length - 1; i++)
 			dX[i] = dX[i + 1];
 		dX[dX.length - 1] = newX;
@@ -144,14 +127,28 @@ class Data {
 		for (int i = 0; i < dZ.length - 1; i++)
 			dZ[i] = dZ[i + 1];
 		dZ[dZ.length - 1] = newZ;
+		for (int i = 0; i < rms.length - 1; i++)
+			rms[i] = rms[i + 1];
+		rms[rms.length - 1] = r;
+		for (int i = 0; i < jump.length - 1; i++)
+			jump[i] = jump[i + 1];
+		jump[jump.length - 1] = j;
+		System.out.println(j);
 	}
+	
+	static void nextPoint() {
+		int x = filter.getX() * 50 / filter.getG();
+		int y = filter.getY() * 50 / filter.getG();
+		int z = filter.getZ() * 50 / filter.getG();
+		Data.record(x, y, z, filter.getRMS(), filter.jumpDetected());
+	}
+
 }
 
 class App {
 
 	private static final int BAUD_RATE = Integer.parseInt(System.getProperty("baud", "115200"));
 	
-	public static int x = 0, y = 0, z = 0;
 	private Scanner input;
 	private SerialPort port;
 	private StringBuffer incomingLine = new StringBuffer();
@@ -167,7 +164,7 @@ class App {
 		}
 
 	}
-
+	
 	private void init() {
 		input = new Scanner(System.in);
 		String portName = choosePort();
@@ -258,10 +255,13 @@ class App {
 			if (lineEndPos >= 0) {
 				String str = incomingLine.substring(0, lineEndPos);
 				Scanner line = new Scanner(str);
-				x = line.nextInt();
-				y = line.nextInt();
-				z = line.nextInt();
-				incomingLine.delete(0, lineEndPos + 1);
+				try {
+    				Data.filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
+	    			Data.nextPoint();
+	    		} catch (Exception e) {
+	    		    // broken line, do nothing about it
+	    		}
+    			incomingLine.delete(0, lineEndPos + 1);
 			}
 		}
 	}
