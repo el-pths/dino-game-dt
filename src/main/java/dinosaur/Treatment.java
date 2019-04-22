@@ -81,7 +81,7 @@ public class Treatment {
 		}
 	}
 
-	public static void recordClouds() {
+	public static void recordClouds(double position) {
 		if (Clouds.distToCloud[0] < -300) {
 			for (int i = 0; i < Clouds.cloudsAmount - 1; i++) {
 				Clouds.distToCloud[i] = Clouds.distToCloud[i + 1];
@@ -96,10 +96,10 @@ public class Treatment {
 			Clouds.cloudsAmount--;
 		}
 		for (int i = 0; i < Clouds.cloudsAmount; i++)
-			Clouds.distToCloud[i] -= Settings.START_WIDTH / 400;
+			Clouds.distToCloud[i] -= (int) (position * (double) Settings.START_WIDTH / 400f);
 	}
 
-	public static void recordField() {
+	public static void recordField(double position) {
 		if (Cactuses.distToCactus[0] < -200) {
 			for (int i = 0; i < Cactuses.cactusesAmount; i++) {
 				Cactuses.distToCactus[i] = Cactuses.distToCactus[i + 1];
@@ -115,7 +115,7 @@ public class Treatment {
 			if (Cactuses.distToCactus[i] > (int) (Settings.START_WIDTH * 0.1)
 					&& (Cactuses.distToCactus[i] - Settings.START_WIDTH / 180) < (int) (Settings.START_WIDTH * 0.1))
 				FrameAndListener.cactusesBehind++;
-			Cactuses.distToCactus[i] -= Settings.START_WIDTH / 180;
+			Cactuses.distToCactus[i] -= (int) (position * (double) Settings.START_WIDTH / 180f);
 		}
 		if (Field.distToNearestPart < -Field.fieldPartWidth) {
 			for (int i = 0; i < Field.fieldType.length - 1; i++)
@@ -123,7 +123,7 @@ public class Treatment {
 			Field.fieldType[Field.fieldType.length - 1] = Generators.generateFieldPartTypeNubm();
 			Field.distToNearestPart += Field.fieldPartWidth;
 		}
-		Field.distToNearestPart -= Settings.START_WIDTH / 180;
+		Field.distToNearestPart -= (int) (position * (double) Settings.START_WIDTH / 180f);
 	}
 
 	public static Image returnByNumber(int a) {
@@ -167,7 +167,7 @@ public class Treatment {
 		}
 	}
 
-	public static void ifDinoIsInBounce() {
+	public static void ifDinoIsInBounce(double position) {
 		if (Dino.isNowInAir) {
 			if (Dino.isOurMoveUp
 					&& Dino.nowBounceHeight + giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight) >= Dino.jumpHeight) {
@@ -180,15 +180,17 @@ public class Treatment {
 			}
 			if (Dino.isNowInAir) {
 				if (Dino.isOurMoveUp) {
-					Dino.nowBounceHeight += giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight);
+					Dino.nowBounceHeight += (int) (position
+							* (double) giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight));
 				} else {
-					Dino.nowBounceHeight -= giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight);
+					Dino.nowBounceHeight -= (int) (position
+							* (double) giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight));
 				}
 			}
 		}
 		if (Dino.isJump) {
 			Dino.isJump = false;
-			Dino.nowBounceHeight += giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight);
+			Dino.nowBounceHeight += (int) (position * (double) giveScenarium(Dino.nowBounceHeight, Dino.jumpHeight));
 			Dino.isOurMoveUp = true;
 			Dino.isNowInAir = true;
 		}
