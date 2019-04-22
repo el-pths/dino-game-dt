@@ -2,39 +2,75 @@ package dinosaur;
 
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
 
 public class Treatment {
 
 	public static int makeJump(int realHeight) {
 		double c = 55, ceilHeight = 320;
 		int i = (int) (((1 - Math.exp((-realHeight + ceilHeight / 3.8) / c)) * ceilHeight));
-		System.out.println("realHeight : " + realHeight + "  jump : " + i);
 		return i;
 	}
 
 	public static boolean isDinoInCactus(int i) {
 		boolean is = false;
-		if (Dino.nowBounceHeight < (Cactuses.heightSize - Settings.PIXEL * 6)
+		boolean firstTest = Dino.nowBounceHeight < (Cactuses.heightSize / 3)
 				&& (((int) (Settings.START_WIDTH * 0.1) + Settings.PIXEL * 18)) > (Cactuses.distToCactus[i])
 				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize
-						- Settings.PIXEL * 5))
+						- Settings.PIXEL * 5);
+		boolean secondTest = Dino.nowBounceHeight > Cactuses.heightSize / 3
+				&& Dino.nowBounceHeight <= Cactuses.heightSize
+				&& (((int) (Settings.START_WIDTH * 0.1) + Settings.PIXEL * 18)) > (Cactuses.distToCactus[i] + 40)
+				&& (int) (Settings.START_WIDTH * 0.1) < (Cactuses.distToCactus[i] + Cactuses.widthSize - 20);
+		if (firstTest || secondTest) {
 			is = true;
+		}
 		return is;
 	}
 
 	public static void processedPressedKey(int key) {
 		if (Main.inGame) {
 			if (!Dino.isNowInAir) {
-				if ((key == KeyEvent.VK_SPACE || key == KeyEvent.VK_1 || key == KeyEvent.VK_2 || key == KeyEvent.VK_3))
-					Dino.isJump = true;
-				if (key == KeyEvent.VK_SPACE)
+				switch (key) {
+				case KeyEvent.VK_SPACE:
 					Dino.jumpHeight = makeJump((int) (165 + Math.random() * 35));
-				if (key == KeyEvent.VK_1)
+					Dino.isJump = true;
+					try {
+						Sound.makeJumpSound();
+					} catch (LineUnavailableException | IOException | InterruptedException e) {
+						e.printStackTrace();
+					}
+					break;
+				case KeyEvent.VK_1:
 					Dino.jumpHeight = 400;
-				if (key == KeyEvent.VK_2)
+					Dino.isJump = true;
+					try {
+						Sound.makeJumpSound();
+					} catch (LineUnavailableException | IOException | InterruptedException e) {
+						e.printStackTrace();
+					}
+					break;
+				case KeyEvent.VK_2:
 					Dino.jumpHeight = 250;
-				if (key == KeyEvent.VK_3)
+					Dino.isJump = true;
+					try {
+						Sound.makeJumpSound();
+					} catch (LineUnavailableException | IOException | InterruptedException e) {
+						e.printStackTrace();
+					}
+					break;
+				case KeyEvent.VK_3:
 					Dino.jumpHeight = 100;
+					Dino.isJump = true;
+					try {
+						Sound.makeJumpSound();
+					} catch (LineUnavailableException | IOException | InterruptedException e) {
+						e.printStackTrace();
+					}
+					break;
+				}
 			}
 		} else {
 			if (key == KeyEvent.VK_R) {

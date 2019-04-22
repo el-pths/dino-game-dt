@@ -10,7 +10,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -50,6 +53,11 @@ public class FrameAndListener extends JPanel implements ActionListener {
 				System.exit(0);
 			}
 		});
+		try {
+			Sound.loadSoundFiles();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@Override
