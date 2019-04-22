@@ -5,11 +5,11 @@ This program interfaces arduino with accelerometer to play game of T-Rex.
 
 ### Build and Run
 
-First, build the code with maven:
+Firstly, build the code with maven:
 
     mvn clean package
 
-If everything is ok, folder `target` is created and the executable `denis-dino.jar` in it.
+If everything is OK, folder `target` is created and the executable `denis-dino.jar` in it.
 
 Run the executable:
 
