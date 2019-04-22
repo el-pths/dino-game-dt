@@ -9,8 +9,10 @@ import javax.sound.sampled.LineUnavailableException;
 public class Treatment {
 
 	public static int makeJump(int realHeight) {
-		double c = 55, ceilHeight = 320;
-		int i = (int) (((1 - Math.exp((-realHeight + ceilHeight / 3.8) / c)) * ceilHeight));
+		double c = 10, ceilHeight = 320;
+		// c = 2.5; May be if we need to more sensitivity we can do realHeight^2
+		int i = (int) (((1 - Math.exp((-realHeight + 170) / c)) * ceilHeight));
+		// System.out.println("Real height : " + realHeight + " jump : " + i);
 		return i;
 	}
 
@@ -35,7 +37,7 @@ public class Treatment {
 			if (!Dino.isNowInAir) {
 				switch (key) {
 				case KeyEvent.VK_SPACE:
-					Dino.jumpHeight = makeJump((int) (165 + Math.random() * 35));
+					Dino.jumpHeight = makeJump((int) (172 + Math.random() * 10));
 					Dino.isJump = true;
 					try {
 						Sound.makeJumpSound();

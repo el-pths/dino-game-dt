@@ -13,7 +13,7 @@ public class Port {
 	private StringBuffer incomingLine = new StringBuffer();
 	public static Port app = new Port();
 	public static String[] ports = SerialPortList.getPortNames();
-	private Filter filter = new Filter();
+	public Filter filter = new Filter();
 	private static boolean previousTime = false;
 
 	public static void setPort() {
@@ -97,7 +97,7 @@ public class Port {
 					int jump = filter.jumpDetected();
 					if (jump > 0) {
 						if (!previousTime && !Dino.isNowInAir) {
-							Treatment.makeJump(jump);
+							Dino.jumpHeight = Treatment.makeJump(jump);
 							Dino.isJump = true;
 						}
 						previousTime = true;

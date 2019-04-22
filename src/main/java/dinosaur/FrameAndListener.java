@@ -96,6 +96,11 @@ public class FrameAndListener extends JPanel implements ActionListener {
 				Graphic.writeScore(g);
 				Things.setButtonGetSettings();
 				Settings.drawSettingButton(g);
+				// if (Dino.isNowInAir) {
+				// g.setColor(Color.RED);
+				// g.fillRect(0, (int) (Settings.START_HEIGHT * 0.58) - Dino.jumpHeight,
+				// Settings.START_WIDTH, 1);
+				// }
 			} else {
 				GameOver.gameOver(g);
 			}
