@@ -15,6 +15,7 @@ public class Port {
 	public static String[] ports = SerialPortList.getPortNames();
 	public Filter filter = new Filter();
 	private static boolean previousTime = false;
+	private static int prevJumpValue = 0;
 
 	public static void setPort() {
 		if (Start.choseAnyPort) {
@@ -85,31 +86,39 @@ public class Port {
 	}
 
 	private void receiveBytes(byte[] b) {
-		if (b != null) {
-			String s = new String(b);
-			incomingLine.append(s);
+		if (b == null) {
+		    return;
+		}
+		String s = new String(b);
+		incomingLine.append(s);
+		while (true) {
 			int lineEndPos = incomingLine.indexOf("\n");
-			if (lineEndPos >= 0) {
-				String str = incomingLine.substring(0, lineEndPos);
-				Scanner line = new Scanner(str);
-				try {
-					filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
-					int jump = filter.jumpDetected();
-					if (jump > 0) {
-						if (!previousTime && !Dino.isNowInAir) {
-							Dino.jumpHeight = Treatment.makeJump(jump);
-							Dino.isJump = true;
-						}
-						previousTime = true;
-					} else
-						previousTime = false;
-
-				} catch (Exception e) {
-					// broken line, do nothing about it
-				}
-				line.close();
-				incomingLine.delete(0, lineEndPos + 1);
+			if (lineEndPos < 0) {
+			    return;
 			}
+			String str = incomingLine.substring(0, lineEndPos);
+			Scanner line = new Scanner(str);
+			try {
+				filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
+				int jump = filter.jumpDetected();
+				if (jump > 0) {
+				    if (jump > prevJumpValue) {
+				        prevJumpValue = jump;
+				    } else {
+					    if (!Dino.isNowInAir) {
+						    Dino.jumpHeight = Treatment.makeJump(prevJumpValue);
+            				System.out.println(prevJumpValue + " " + Dino.jumpHeight);
+						    Dino.isJump = true;
+					    }
+					}
+				} else
+					prevJumpValue = 0;
+
+			} catch (Exception e) {
+				// broken line, do nothing about it
+			}
+			line.close();
+			incomingLine.delete(0, lineEndPos + 1);
 		}
 	}
 }

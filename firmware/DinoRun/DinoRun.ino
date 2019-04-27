@@ -15,7 +15,7 @@ void setup()
   Wire.endTransmission(true);
   pinMode(2 , OUTPUT);
   digitalWrite(2, 1);
-  Serial.begin(9600);
+  Serial.begin(115200);
 
 }
 //================ НАЧАЛО ====================
@@ -25,23 +25,25 @@ void loop()
   //Готовим для чтения регистры с адреса 0x3B.
   Wire.write(0x3B);
   Wire.endTransmission(false);
-  // Запрос состояния 14 регистров.
-  Wire.requestFrom(MPU_addr, 14, true);
-  AcX = Wire.read() << 8 | Wire.read();
-  AcY = Wire.read() << 8 | Wire.read();
-  AcZ = Wire.read() << 8 | Wire.read();
+  // Запрос состояния регистров.
+  Wire.requestFrom(MPU_addr, 6, true);
+  AcX = Wire.read();
+  if (AcX > 127) AcX -= 256;
+  Wire.read();
+  AcY = Wire.read();
+  if (AcY > 127) AcY -= 256;
+  Wire.read();
+  AcZ = Wire.read();
+  if (AcZ > 127) AcZ -= 256;
+  Wire.read();
+  
   // Вывод в порт данных полученных прибора.
-
-  Serial.print(AcY);
-  Serial.print(' ');
   Serial.print(AcX);
+  Serial.print(' ');
+  Serial.print(AcY);
   Serial.print(' ');
   Serial.println(AcZ);
 
-  delay(50);
+  delay(10);
 }
-
-
-
-
 
