@@ -3,8 +3,6 @@ package dinosaur;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
@@ -16,20 +14,21 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
-public class FrameAndListener extends JPanel implements ActionListener {
+public class FrameAndListener extends JPanel implements Runnable {
 	Main main;
 
 	private static final long serialVersionUID = 42L;
 	public static JFrame frame;
-	private Timer timer = new Timer(1000 / Settings.speed, this);
 	public static int score = 0, cactusesBehind = 0;
 	BufferedImage screen = new BufferedImage(Settings.START_WIDTH, Settings.START_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
+	double position = 0;
+	long prevTime = System.currentTimeMillis();
+
 	public FrameAndListener() {
 		if (Port.isPortSetted) {
-			timer.start();
+			new Thread(this).start();
 			addKeyListener(new KeyBoard());
 			Things.setButtonRemovePort();
 			Things.isButtonRemoved = false;
@@ -84,14 +83,9 @@ public class FrameAndListener extends JPanel implements ActionListener {
 					Clouds.cloudType[Clouds.cloudsAmount] = Generators.generateCloudTypeNum();
 					Clouds.cloudsAmount++;
 				}
-				Things.koefX = (FrameAndListener.frame.getWidth() / ((double) Settings.START_WIDTH));
-				Things.koefY = (FrameAndListener.frame.getHeight() / ((double) Settings.START_HEIGHT));
-				Treatment.recordField();
 				Graphic.drawFirstFloor(g);
 				Graphic.drawClouds(g);
 				Graphic.drawCactuses(g);
-				Treatment.recordClouds();
-				Treatment.ifDinoIsInBounce();
 				Graphic.drawDino(g);
 				Graphic.writeScore(g);
 				Things.setButtonGetSettings();
@@ -109,17 +103,41 @@ public class FrameAndListener extends JPanel implements ActionListener {
 		screen.getGraphics().clearRect(0, 0, Settings.START_WIDTH, Settings.START_HEIGHT);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (Main.inGame)
-			Treatment.check();
-		repaint();
-	}
-
 	private class KeyBoard extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent kEvt) {
 			Treatment.processedPressedKey(kEvt.getKeyCode());
+		}
+	}
+
+	void updateState() {
+		long t = System.currentTimeMillis();
+		long timePassed = t - prevTime;
+		position = timePassed / Settings.getFullPassTime();
+		Things.koefX = (FrameAndListener.frame.getWidth() / ((double) Settings.START_WIDTH));
+		Things.koefY = (FrameAndListener.frame.getHeight() / ((double) Settings.START_HEIGHT));
+		if (Main.inGame) {
+			Treatment.recordField(position);
+			Treatment.recordClouds(position);
+			Treatment.ifDinoIsInBounce(position);
+		}
+		prevTime = t;
+	}
+
+	@Override
+	public void run() {
+		while (true) {
+			if (Main.inGame)
+				Treatment.check();
+			updateState();
+			repaint();
+			try {
+				// not necessary, but we don't want
+				// animation happen too often
+				Thread.sleep(15);
+			} catch (InterruptedException e) {
+				return;
+			}
 		}
 	}
 

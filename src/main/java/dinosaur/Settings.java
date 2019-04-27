@@ -7,7 +7,7 @@ import java.awt.Image;
 public class Settings {
 	public static double koefficient_paraboli = 2.5;
 	public static final int START_WIDTH = 1344, START_HEIGHT = 540, PIXEL = 4;
-	public static int speed = 60, width = START_WIDTH, height = START_HEIGHT;
+	public static int width = START_WIDTH, height = START_HEIGHT;
 	public static final int againXX = 200, againYY = 60, againX = (width - againXX) / 2, againY = height / 16;
 	public static final int closePortXX = 60, closePortYY = 60, closePortX = (int) (width * 57 / 64),
 			closePortY = (int) (height * 6 / 32);
@@ -18,6 +18,11 @@ public class Settings {
 
 	public static Image settingButton = Graphic.loadImage("/settingButton.png");
 	public static boolean settingWindow = false;
+	private static final double FULL_PASS_TIME = 20;
+
+	public static double getFullPassTime() {
+		return FULL_PASS_TIME;
+	}
 
 	public static void getSettingsMenu(Graphics g) {
 		g.setColor(Color.RED);
