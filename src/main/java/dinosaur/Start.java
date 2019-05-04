@@ -15,9 +15,6 @@ public class Start {
 	private static JFrame firstFrame;
 
 	public static void haveToChoosePort() {
-		if (Port.ports.length < 1) {
-			throw new RuntimeException("No serial ports found at all");
-		}
 		firstFrame = new JFrame();
 		firstFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		firstFrame.setResizable(false);
