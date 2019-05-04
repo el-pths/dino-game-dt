@@ -110,7 +110,7 @@ public class Chart extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (sc.hasNext()) {
+		if (sc.hasNext() && !pause) {
 			if (!App.any) {
 				Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt());
 				Data.nextPoint();
@@ -213,15 +213,15 @@ class App {
 	}
 
 	private String choosePort() {
+		int choice;
 		String[] ports = SerialPortList.getPortNames();
-		if (ports.length < 1) {
-			throw new RuntimeException("No serial ports found at all");
-		}
-		for (int i = 0; i < ports.length; i++) {
-			System.out.printf("%d) %s%n", i + 1, ports[i]);
+		if (ports.length >= 1) {
+			for (int i = 0; i < ports.length; i++) {
+				System.out.printf("%d) %s%n", i + 1, ports[i]);
+			}
 		}
 		System.out.println((ports.length + 1) + ") File");
-		int choice = input.nextInt();
+		choice = input.nextInt();
 		if (choice == ports.length + 1) {
 			return "None";
 		} else {
