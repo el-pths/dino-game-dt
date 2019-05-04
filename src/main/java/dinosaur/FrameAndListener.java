@@ -94,7 +94,7 @@ public class FrameAndListener extends JPanel implements Runnable {
 				Settings.drawSettingButton(g);
 				if (timeFromStart < 2000) {
 				    Graphic.drawCalibration(g, (int) timeFromStart / 1000);
-				    if (timeFromStart > 1700) {
+				    if (timeFromStart > 1900) {
 				        Port.calibration();
 				    }
 				}
