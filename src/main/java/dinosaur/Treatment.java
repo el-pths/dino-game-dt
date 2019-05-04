@@ -9,10 +9,9 @@ import javax.sound.sampled.LineUnavailableException;
 public class Treatment {
 
 	public static int makeJump(int realHeight) {
-		double c = 10, ceilHeight = 320;
-		// c = 2.5; May be if we need to more sensitivity we can do realHeight^2
-		int i = (int) (((1 - Math.exp((-realHeight + 170) / c)) * ceilHeight));
-		// System.out.println("Real height : " + realHeight + " jump : " + i);
+		double minH = 20, c = 80, ceilHeight = 320;
+		int i = (int) (((1 - Math.exp((-realHeight - minH) / c)) * ceilHeight));
+		System.out.println("Real height : " + realHeight + " jump : " + i);
 		return i;
 	}
 

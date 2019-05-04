@@ -4,6 +4,8 @@ import java.util.LinkedList;
 
 public class Filter {
 
+	static final double MIN_JUMP = Integer.parseInt(System.getProperty("minJump", "150"));
+	static final double GOOD_JUMP = Integer.parseInt(System.getProperty("goodJump", "250"));
 	static final int MAX_LIST_SIZE = 200;
 	static final int SMOOTH_COEFF = 2;
 	static final int CALIBRATION_NEEDED = Integer.MAX_VALUE;
@@ -17,6 +19,20 @@ public class Filter {
 	double gz = gx;
 	double gabs = gx;
 	double dt = 1000;
+	
+	enum State {
+	    CALM, SQUAT, PUSH, IN_JUMP
+	}
+	
+	// variables for analysis
+	State state = State.CALM;
+	double squatMin;
+	double pushMax;
+	double pushAccum;
+	long lastCalmTs;
+	long lastNotCalmTs;
+	long pushStartTs;
+	long jumpStartTs;
 
 	class Point {
 		int x, y, z;
@@ -31,7 +47,6 @@ public class Filter {
 			this.ts = System.currentTimeMillis();
 			rms = (int) (Math.sqrt(x * x + y * y + z * z) + 0.5);
 			vert = (x * gx + y * gy + z * gz) / (gabs * gabs);
-			System.out.println(vert);
 		}
 
 		int rms() {
@@ -46,6 +61,7 @@ public class Filter {
 			points.removeLast();
 		}
 		makeSmooth();
+		analysis();
 	}
 
 	void makeSmooth() {
@@ -107,19 +123,54 @@ public class Filter {
 		gz /= cnt;
 		gabs = Math.sqrt(gx * gx + gy * gy + gz * gz);
 		dt = (points.get(0).ts - points.get(cnt).ts) / (double) cnt;
-		System.out.printf("%f %f %f, %f%n", gx, gy, gz, dt);
+	}
+	
+	public void analysis() {
+	    Point pCur = points.getFirst();
+	    if (pCur.vert > 0.91 && pCur.vert < 1.1) {
+	        lastCalmTs = pCur.ts;
+	        if (lastCalmTs - lastNotCalmTs > 200) {
+	            state = State.CALM;
+	            squatMin = 1;
+	            pushMax = 1;
+	        }
+	    } else {
+	        lastNotCalmTs = pCur.ts;
+	    }
+	    if (state == State.CALM && pCur.vert < 0.85) {
+	        state = State.SQUAT;
+	    }
+	    if (state == State.SQUAT) {
+	        squatMin = Math.min(squatMin, pCur.vert);
+	        if (pCur.vert > 1.0) {
+	            state = State.PUSH;
+	            pushAccum = 0;
+	        }
+	    }
+	    if (state == State.PUSH) {
+	        pushMax = Math.max(pushMax, pCur.vert);
+	        pushAccum += (pCur.vert - 1) * dt;
+	        if (pushMax > pCur.vert + 0.1 && pCur.vert <= 1.1) {
+	            state = State.IN_JUMP;
+	            jumpStartTs = pCur.ts;
+	            System.out.println("JUMPING: " + pushAccum);
+	        }
+	    }
+	    if (state == State.IN_JUMP && pCur.ts - jumpStartTs > 200) {
+	        pushAccum = 0;
+	    }
+	    //System.out.println(state + " " + pCur.vert);
 	}
 
 	// This should return jump height if jump is detected
 	// or 0 if not
-	// jump height is in percents of gravity, not in pixels!
+	// jump height is in percents, not in pixels!
 	public int jumpDetected() {
-	
-		if (getRMS() / (double) gravity > 1.7) {
-			return getRMS() * 100 / gravity;
-		} else {
-			return 0;
-		}
+	    if (state == State.IN_JUMP && pushAccum >= MIN_JUMP) {
+	        return (int) ((pushAccum - MIN_JUMP) / (GOOD_JUMP - MIN_JUMP) * 100);
+	    } else {
+	        return 0;
+	    }
 	}
 
 }
