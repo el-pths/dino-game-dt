@@ -15,6 +15,7 @@ public class Main {
 	public static void startGame() {
 		FrameAndListener.cactusesBehind = 0;
 		FrameAndListener.score = 0;
+	    FrameAndListener.startTime = System.currentTimeMillis();
 		GameOver.restartButton.setSize(0, 0);
 		Dino.rightLegUp = true;
 		Dino.isJump = false;

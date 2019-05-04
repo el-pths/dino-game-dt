@@ -29,6 +29,10 @@ public class Port {
 		isPortSetted = true;
 		FrameAndListener.setFrame();
 	}
+	
+	public static void calibration() {
+	    app.filter.calibrate();
+	}
 
 	private void init() {
 		String portName = Start.choise;

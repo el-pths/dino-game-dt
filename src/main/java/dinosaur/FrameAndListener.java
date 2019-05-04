@@ -21,6 +21,7 @@ public class FrameAndListener extends JPanel implements Runnable {
 	private static final long serialVersionUID = 42L;
 	public static JFrame frame;
 	public static int score = 0, cactusesBehind = 0;
+	public static long startTime = System.currentTimeMillis();
 	BufferedImage screen = new BufferedImage(Settings.START_WIDTH, Settings.START_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 	double position = 0;
@@ -69,8 +70,9 @@ public class FrameAndListener extends JPanel implements Runnable {
 			g.drawString("It's deadscreen", 290, 270);
 		} else {
 			if (Main.inGame) {
-				if (Cactuses.cactusesAmount == 0
-						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH)) {
+			    long timeFromStart = System.currentTimeMillis() - startTime;
+				if (timeFromStart > 2500 && (Cactuses.cactusesAmount == 0
+						|| Cactuses.distToCactus[Cactuses.cactusesAmount - 1] < (int) (Settings.START_WIDTH))) {
 					Cactuses.distToCactus[Cactuses.cactusesAmount] = Generators.generateDistanceToNextCactus()
 							+ Settings.START_WIDTH / 2;
 					Cactuses.cactusesType[Cactuses.cactusesAmount] = Generators.generateNumberOfThisCactus$sType();
@@ -90,6 +92,12 @@ public class FrameAndListener extends JPanel implements Runnable {
 				Graphic.writeScore(g);
 				Things.setButtonGetSettings();
 				Settings.drawSettingButton(g);
+				if (timeFromStart < 2000) {
+				    Graphic.drawCalibration(g, (int) timeFromStart / 1000);
+				    if (timeFromStart > 1700) {
+				        Port.calibration();
+				    }
+				}
 				// if (Dino.isNowInAir) {
 				// g.setColor(Color.RED);
 				// g.fillRect(0, (int) (Settings.START_HEIGHT * 0.58) - Dino.jumpHeight,

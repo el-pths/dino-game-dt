@@ -32,9 +32,6 @@ public class Filter {
 		while (points.size() > MAX_LIST_SIZE) {
 			points.removeLast();
 		}
-		if (gravity == CALIBRATION_NEEDED && points.size() == MAX_LIST_SIZE) {
-			calibrate();
-		}
 		makeSmooth();
 	}
 
@@ -74,6 +71,9 @@ public class Filter {
 	}
 
 	public void calibrate() {
+		if (points.isEmpty()) {
+		    return;
+		}
 		int sum = 0;
 		for (Point p : points) {
 			sum += p.rms();
