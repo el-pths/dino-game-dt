@@ -113,7 +113,7 @@ public class Chart extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (sc.hasNext() && !pause) {
 			if (!App.any) {
-				Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt(), receivedPoints * 12L);
+				Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt(), receivedPoints * 30L);
 				receivedPoints += 1;
 				if (receivedPoints == 10) {
 				    Data.filter.calibrate();
