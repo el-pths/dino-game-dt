@@ -8,12 +8,9 @@ public class Filter {
 	static final double GOOD_JUMP = Integer.parseInt(System.getProperty("goodJump", "250"));
 	static final int MAX_LIST_SIZE = 200;
 	static final int SMOOTH_COEFF = 2;
-	static final int CALIBRATION_NEEDED = Integer.MAX_VALUE;
 
 	LinkedList<Point> points = new LinkedList<Point>();
 
-	int gravity = CALIBRATION_NEEDED;
-	
 	double gx = Double.POSITIVE_INFINITY;
 	double gy = gx;
 	double gz = gx;
@@ -64,6 +61,11 @@ public class Filter {
 		analysis();
 	}
 
+	public void newPoint(int x, int y, int z, long ts) {
+	    this.newPoint(x, y, z);
+	    points.getFirst().ts = ts;
+	}
+	
 	void makeSmooth() {
 		if (points.size() < 2) {
 			return;
@@ -92,7 +94,7 @@ public class Filter {
 	}
 
 	public int getG() {
-		return gravity;
+		return Double.isInfinite(gabs) || Double.isNaN(gabs) ? Integer.MAX_VALUE : (int) gabs;
 	}
 
 	public int getRMS() {
@@ -103,7 +105,7 @@ public class Filter {
 		if (points.isEmpty()) {
 		    return;
 		}
-		long t = System.currentTimeMillis();
+		long t = points.getFirst().ts;
 		int sum = 0;
 		int cnt = 0;
 		gx = gy = gz = 0;
@@ -117,11 +119,13 @@ public class Filter {
 			gz += p.z;
 			cnt += 1;
 		}
-		gravity = Math.round(sum / cnt);
 		gx /= cnt;
 		gy /= cnt;
 		gz /= cnt;
 		gabs = Math.sqrt(gx * gx + gy * gy + gz * gz);
+		if (cnt >= points.size()) {
+		    cnt = points.size() - 1;
+		}
 		dt = (points.get(0).ts - points.get(cnt).ts) / (double) cnt;
 	}
 	

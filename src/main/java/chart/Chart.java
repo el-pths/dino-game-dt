@@ -36,6 +36,7 @@ public class Chart extends JPanel implements ActionListener {
 	private static int width = 500, height = 400;
 	private static BufferedImage screen = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	private static boolean pause = false;
+	static int receivedPoints = 0;
 
 	public static void main(String... args) {
 		try {
@@ -112,7 +113,11 @@ public class Chart extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (sc.hasNext()) {
 			if (!App.any) {
-				Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt());
+				Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt(), receivedPoints * 12L);
+				receivedPoints += 1;
+				if (receivedPoints == 10) {
+				    Data.filter.calibrate();
+				}
 				Data.nextPoint();
 			}
 			repaint();
@@ -280,6 +285,10 @@ class App {
 				Scanner line = new Scanner(str);
 				try {
 					Data.filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
+					Chart.receivedPoints += 1;
+					if (Chart.receivedPoints == 10) {
+					    Data.filter.calibrate();
+					}
 					Data.nextPoint();
 				} catch (Exception e) {
 					// broken line, do nothing about it
