@@ -111,16 +111,21 @@ public class Chart extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (sc.hasNext() && !pause) {
-			if (!App.any) {
-				Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt(), receivedPoints * 30L);
-				receivedPoints += 1;
-				if (receivedPoints == 10) {
-				    Data.filter.calibrate();
+		if (sc.hasNext()) {
+			if (!pause) {
+				if (!App.any) {
+					Data.filter.newPoint(sc.nextInt(), sc.nextInt(), sc.nextInt(), receivedPoints * 30L);
+					receivedPoints += 1;
+					if (receivedPoints == 10) {
+						Data.filter.calibrate();
+					}
+					Data.nextPoint();
 				}
-				Data.nextPoint();
+				repaint();
 			}
-			repaint();
+		} else {
+			System.out.println("Running file again");
+			sc = new Scanner(Chart.class.getResourceAsStream("/jumps.txt"));
 		}
 	}
 
@@ -287,7 +292,7 @@ class App {
 					Data.filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
 					Chart.receivedPoints += 1;
 					if (Chart.receivedPoints == 10) {
-					    Data.filter.calibrate();
+						Data.filter.calibrate();
 					}
 					Data.nextPoint();
 				} catch (Exception e) {
