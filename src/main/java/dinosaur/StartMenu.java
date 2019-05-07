@@ -1,0 +1,36 @@
+package dinosaur;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
+import javax.swing.JFrame;
+
+public class StartMenu {
+
+	private static DButton startGame;
+
+	private static void setStartMenu(JFrame window) {
+		startGame = new DButton(window, 700, 100, 200, 200, Imagies.loadImage("/restartButton.png"), "StartGame");
+	}
+
+	public static void showStartMenu(Graphics graphics, JFrame window, double position) {
+		if (startGame == null)
+			setStartMenu(window);
+		fillFon(graphics);
+		showStartButtonAndCorrectTouchableLocation(graphics, window.getWidth(), window.getHeight());
+		Field.field.drawAndRecordField(graphics);
+		Dino.dino.drawAndRecordDinoParams(graphics);
+	}
+
+	private static void showStartButtonAndCorrectTouchableLocation(Graphics graphics, int windowWidth,
+			int windowHeight) {
+		graphics.drawImage(startGame.icon, startGame.horizontalIndent, startGame.verticalIndent, startGame.width,
+				startGame.height, null);
+		startGame.setTouchableLocation(windowWidth, windowHeight);
+	}
+
+	private static void fillFon(Graphics graphics) {
+		graphics.setColor(Color.WHITE);
+		graphics.fillRect(0, 0, 1344, 540);
+	}
+}

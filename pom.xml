@@ -34,7 +34,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>dinosaur.Main</mainClass>
+                            <mainClass>dinosaur.Control</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -52,7 +52,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>dinosaur.Main</mainClass>
+                                    <mainClass>dinosaur.Controle</mainClass>
                                 </transformer>
                             </transformers>
                         </configuration>
