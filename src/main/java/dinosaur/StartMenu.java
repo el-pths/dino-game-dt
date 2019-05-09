@@ -18,8 +18,18 @@ public class StartMenu {
 			setStartMenu(window);
 		fillFon(graphics);
 		showStartButtonAndCorrectTouchableLocation(graphics, window.getWidth(), window.getHeight());
-		Field.field.drawAndRecordField(graphics);
-		Dino.dino.drawAndRecordDinoParams(graphics);
+		Field.field.draw(graphics);
+		Cactuses.cactuses.draw(graphics);
+		Dino.dino.drawAndRecordParams(graphics, position);
+		if (!Control.pause) {
+			Field.field.recordField(position);
+			Cactuses.cactuses.record(position);
+		}
+	}
+
+	private static void fillFon(Graphics graphics) {
+		graphics.setColor(Color.WHITE);
+		graphics.fillRect(0, 0, 1344, 540);
 	}
 
 	private static void showStartButtonAndCorrectTouchableLocation(Graphics graphics, int windowWidth,
@@ -29,8 +39,4 @@ public class StartMenu {
 		startGame.setTouchableLocation(windowWidth, windowHeight);
 	}
 
-	private static void fillFon(Graphics graphics) {
-		graphics.setColor(Color.WHITE);
-		graphics.fillRect(0, 0, 1344, 540);
-	}
 }

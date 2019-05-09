@@ -14,7 +14,9 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 42L;
 	private static Window window;
 	private static double position = 0;
-	public static BufferedImage screen = new BufferedImage(1344, 540, BufferedImage.TYPE_INT_RGB);
+	public static BImage screen = new BImage(1344, 540, BufferedImage.TYPE_INT_RGB);
+
+	public static double FULL_PASS_TIME = 20.0, NORMALL_FULL_PASS_TIME = FULL_PASS_TIME;
 
 	private Window(String name) {
 		super(name);
@@ -42,35 +44,53 @@ public class Window extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent kEvt) {
 			int keyNum = kEvt.getKeyCode();
-			if (keyNum == KeyEvent.VK_SPACE)
+			switch (keyNum) {
+			case KeyEvent.VK_SPACE:
 				Dino.dino.startJump();
+				break;
+			case KeyEvent.VK_UP:
+				FULL_PASS_TIME += 0.05;
+				System.out.println(FULL_PASS_TIME);
+				break;
+			case KeyEvent.VK_DOWN:
+				FULL_PASS_TIME -= 0.05;
+				System.out.println(FULL_PASS_TIME);
+				break;
+			case KeyEvent.VK_P:
+				if (Control.pause)
+					Control.pause = false;
+				else
+					Control.pause = true;
+				break;
+			}
 		}
 	}
 
 	private class ContentPane extends JPanel implements Runnable {
 		private static final long serialVersionUID = 42L;
 		@SuppressWarnings("unused")
-		private long startTime = System.currentTimeMillis(), previousTime = System.currentTimeMillis(),
-				fullPassTime = 200;
+		private long startTime = System.currentTimeMillis(), previousTime = System.currentTimeMillis();
+		private double fullPassTime;
 
 		public ContentPane() {
 			super();
+			fullPassTime = FULL_PASS_TIME;
 			new Thread(this).start();
 		}
 
 		@Override
 		public void paint(Graphics g) {
+			Control.setModeDependingConditions(window, screen.getGraphics(), position);
 			g.drawImage(screen, 0, 0, this.getWidth(), this.getHeight(), null);
 		}
 
 		@Override
 		public void run() {
+			while (window == null) {
+			}
 			while (true) {
-				if (window == null)
-					continue;
-				Control.setModeDependingConditions(window, screen.getGraphics(), position);
-				repaint();
 				updateState();
+				repaint();
 				try {
 					// not necessary, but we don't want
 					// animation happen too often

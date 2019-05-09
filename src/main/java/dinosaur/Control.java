@@ -6,15 +6,19 @@ import javax.swing.JFrame;
 
 public class Control {
 
+	public static boolean pause = false;
 	public static State state = State.START_MENU;
+	public static double recordingStep = 7.5;
 
 	public static enum State {
 		PRE_START_GAME, GAMMING_PROCESS, SETTINGS_MENU, PAUSE, START_MENU, GAME_OVER;
 	}
 
 	public static void main(String[] args) {
-		Dino.dino = new Dino("my");
-		Field.field = new Field();
+		Dino.dino = new Dino("my", 7, 134, 340, 80, 88, 4.45);
+		Field.field = new Field(70, 21, Dino.dino.height + Dino.dino.verticalIndent - 40, 54);
+		Cactuses.loadCactusesImagies();
+		Cactuses.setCactuses();
 		Window.setWindowAndStartScript("First");
 	}
 
@@ -30,7 +34,7 @@ public class Control {
 	}
 
 	public static void startNewGame() {
-		
+
 	}
-	
+
 }
