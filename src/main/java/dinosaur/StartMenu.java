@@ -8,23 +8,21 @@ import javax.swing.JFrame;
 public class StartMenu {
 
 	private static DButton startGame;
+	public static boolean isMenuSetted = false;
 
-	private static void setStartMenu(JFrame window) {
-		startGame = new DButton(window, 700, 100, 200, 200, Imagies.loadImage("/restartButton.png"), "StartGame");
+	public static void set(JFrame window) {
+		startGame = new DButton(window, 200, 200, Imagies.loadImage("/start4.png"), "StartGame");
+		isMenuSetted = true;
 	}
 
-	public static void showStartMenu(Graphics graphics, JFrame window, double position) {
-		if (startGame == null)
-			setStartMenu(window);
+	public static void drawStartMenu(Graphics graphics) {
 		fillFon(graphics);
-		showStartButtonAndCorrectTouchableLocation(graphics, window.getWidth(), window.getHeight());
 		Field.field.draw(graphics);
+		Clouds.clouds.draw(graphics);
 		Cactuses.cactuses.draw(graphics);
-		Dino.dino.drawAndRecordParams(graphics, position);
-		if (!Control.pause) {
-			Field.field.recordField(position);
-			Cactuses.cactuses.record(position);
-		}
+		Dino.dino.draw(graphics);
+		Window.makeBlur(4);
+		startGame.draw(graphics);
 	}
 
 	private static void fillFon(Graphics graphics) {
@@ -32,11 +30,13 @@ public class StartMenu {
 		graphics.fillRect(0, 0, 1344, 540);
 	}
 
-	private static void showStartButtonAndCorrectTouchableLocation(Graphics graphics, int windowWidth,
-			int windowHeight) {
-		graphics.drawImage(startGame.icon, startGame.horizontalIndent, startGame.verticalIndent, startGame.width,
-				startGame.height, null);
+	public static void correctAndRecord(Graphics graphics, int windowWidth, int windowHeight, double position) {
 		startGame.setTouchableLocation(windowWidth, windowHeight);
+		Field.field.recordField(position);
+		Clouds.clouds.record(position);
+		Cactuses.cactuses.record(position);
+		Dino.dino.record(position);
+		Clouds.clouds.record(position);
 	}
 
 }

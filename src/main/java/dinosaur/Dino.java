@@ -1,6 +1,5 @@
 package dinosaur;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -9,23 +8,21 @@ public class Dino {
 	public static Dino dino;
 	public String name;
 	private DinoState state;
-	private static Image leftLeg = Imagies.loadImage("/dinoleft.png"), rightLeg = Imagies.loadImage("/dinoright.png"),
-			standing = Imagies.loadImage("/dinoisamazed.png");
-	private int heightRestriction, bounceHeight, counterStandingOnTheLeg, restrictionStandingOnTheLeg, horizontalIndent,
-			width;
-	public int verticalIndent, height;
+	private static Image leftLeg, rightLeg, standing;
+	private int heightRestriction, counterStandingOnTheLeg, restrictionStandingOnTheLeg;
+	public int bounceHeight, verticalIndent, height, horizontalIndent, width;
 	public double jumpKoef;
 	private boolean moveUp;
-	private TouchablePoint[] touchPoints;
+	public TouchablePoint[] touchPoints;
 
 	private enum DinoState {
 		JUMP, STAND, RUN_RIGHT_LEG, RUN_LEFT_LEG;
 	}
 
-	public Dino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent, int width,
-			int height, double jumpKoefParab) {
+	private Dino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
+			double jumpKoefParab) {
 		this.name = name;
-		this.state = DinoState.STAND;
+		this.state = DinoState.RUN_RIGHT_LEG;
 		this.bounceHeight = 0;
 		this.heightRestriction = 300;
 		this.moveUp = true;
@@ -33,15 +30,26 @@ public class Dino {
 		this.restrictionStandingOnTheLeg = restrictionStandingOnTheLeg;
 		this.horizontalIndent = horizontalIndent;
 		this.verticalIndent = verticalIndent;
-		this.width = width;
-		this.height = height;
+		this.width = 80;
+		this.height = 82;
 		this.jumpKoef = jumpKoefParab;
 		this.touchPoints = new TouchablePoint[10];
 		this.setTouchRects();
 	}
 
-	private class TouchablePoint {
-		private int leftIndent, upperIndent;
+	public static void loadDinoImagies() {
+		leftLeg = Imagies.loadImage("/dinoleft.png");
+		rightLeg = Imagies.loadImage("/dinoright.png");
+		standing = Imagies.loadImage("/dinoisamazed.png");
+	}
+
+	public static void setDino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
+			double jumpKoefParab) {
+		dino = new Dino(name, restrictionStandingOnTheLeg, horizontalIndent, verticalIndent, jumpKoefParab);
+	}
+
+	public class TouchablePoint {
+		public int leftIndent, upperIndent;
 
 		public TouchablePoint(int leftIndent, int upperIndent) {
 			this.leftIndent = leftIndent;
@@ -62,16 +70,14 @@ public class Dino {
 		touchPoints[9] = new TouchablePoint(3, 54);
 	}
 
-	public void drawAndRecordParams(Graphics graphics, double position) {
+	public void draw(Graphics graphics) {
 		graphics.drawImage(this.getImage(), this.horizontalIndent, this.verticalIndent - this.bounceHeight, this.width,
 				this.height, null);
-		this.recordJumpIfJump(position);
-		this.recordCounterStandingOnTheLeg();
-		graphics.setColor(Color.RED);
-		for (int i = 0; i < touchPoints.length; i++)
-			if (touchPoints[i] != null)
-				graphics.fillRect(touchPoints[i].leftIndent + horizontalIndent,
-						touchPoints[i].upperIndent + verticalIndent, 1, 1);
+	}
+
+	public void record(double position) {
+		recordJumpIfJump(position);
+		recordCounterStandingOnTheLeg();
 	}
 
 	public void startJump() {

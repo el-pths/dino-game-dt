@@ -15,10 +15,14 @@ public class Control {
 	}
 
 	public static void main(String[] args) {
-		Dino.dino = new Dino("my", 7, 134, 340, 80, 88, 4.45);
-		Field.field = new Field(70, 21, Dino.dino.height + Dino.dino.verticalIndent - 40, 54);
+		Dino.loadDinoImagies();
+		Dino.setDino("my", 7, 134, 340, 4.45);
+		Field.loadFieldPartsImagies();
+		Field.setField(70, 21, Dino.dino.height + Dino.dino.verticalIndent - 40, 54);
 		Cactuses.loadCactusesImagies();
 		Cactuses.setCactuses();
+		Clouds.loadCloudImage();
+		Clouds.setClouds();
 		Window.setWindowAndStartScript("First");
 	}
 
@@ -29,7 +33,10 @@ public class Control {
 		} else if (state == State.PAUSE) {
 		} else if (state == State.GAME_OVER) {
 		} else {
-			StartMenu.showStartMenu(graphics, window, position);
+			if (!StartMenu.isMenuSetted)
+				StartMenu.set(window);
+			StartMenu.drawStartMenu(graphics);
+			StartMenu.correctAndRecord(graphics, window.getWidth(), window.getHeight(), position);
 		}
 	}
 

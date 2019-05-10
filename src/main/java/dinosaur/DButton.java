@@ -1,5 +1,6 @@
 package dinosaur;
 
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +37,10 @@ public class DButton extends JButton {
 		window.add(this);
 	}
 
+	public DButton(JFrame window, int width, int height, Image icon, String purpose) {
+		this(window, 672 - width / 2, 270 - height / 2, width, height, icon, purpose);
+	}
+
 	public void setTouchableLocation(int windowWidth, int windowHeight) {
 		calibrateStretchParams(windowWidth, windowHeight);
 		setBounds((int) ((double) (this.horizontalIndent) * horizontalStretch),
@@ -46,6 +51,10 @@ public class DButton extends JButton {
 	private static void calibrateStretchParams(int windowWidth, int windowHeight) {
 		horizontalStretch = windowWidth / 1344.0;
 		verticalStretch = windowHeight / 540.0;
+	}
+
+	public void draw(Graphics graphics) {
+		graphics.drawImage(icon, horizontalIndent, verticalIndent, width, height, null);
 	}
 
 }

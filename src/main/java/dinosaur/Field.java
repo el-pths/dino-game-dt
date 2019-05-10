@@ -10,15 +10,23 @@ public class Field {
 	private FieldPart[] parts;
 
 	private final int fieldPartWidth, verticalIndent, height;
-	private static Image[] defaultTypes = IntStream.rangeClosed(1, 23)
-			.mapToObj(x -> Imagies.loadImage("/field" + x + ".png")).toArray(Image[]::new);
+	private static Image[] defaultTypes;
 
-	public Field(int fieldPartWidth, int partsAmount, int verticalIndent, int height) {
+	private Field(int fieldPartWidth, int partsAmount, int verticalIndent, int height) {
 		this.fieldPartWidth = fieldPartWidth;
 		this.parts = new FieldPart[partsAmount];
 		this.generateWholeField();
 		this.verticalIndent = verticalIndent;
 		this.height = height;
+	}
+
+	public static void loadFieldPartsImagies() {
+		defaultTypes = IntStream.rangeClosed(1, 23).mapToObj(x -> Imagies.loadImage("/field" + x + ".png"))
+				.toArray(Image[]::new);
+	}
+
+	public static void setField(int fieldPartWidth, int partsAmount, int verticalIndent, int height) {
+		field = new Field(fieldPartWidth, partsAmount, verticalIndent, height);
 	}
 
 	private class FieldPart {

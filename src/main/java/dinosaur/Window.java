@@ -14,9 +14,9 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 42L;
 	private static Window window;
 	private static double position = 0;
-	public static BImage screen = new BImage(1344, 540, BufferedImage.TYPE_INT_RGB);
+	private static BImage screen = new BImage(1344, 540, BufferedImage.TYPE_INT_RGB);
 
-	public static double FULL_PASS_TIME = 20.0, NORMALL_FULL_PASS_TIME = FULL_PASS_TIME;
+	public static double FULL_PASS_TIME = 60.0, NORMALL_FULL_PASS_TIME = FULL_PASS_TIME;
 
 	private Window(String name) {
 		super(name);
@@ -108,6 +108,10 @@ public class Window extends JFrame {
 			position = timePassed / fullPassTime;
 			previousTime = currentTime;
 		}
+	}
+
+	public static void makeBlur(int strengeth) {
+		screen.blur(strengeth);
 	}
 
 }
