@@ -23,7 +23,7 @@ public class Clouds {
 	}
 
 	public static void loadCloudImage() {
-		cloudImage = Imagies.loadImage("/cloud.png");
+		cloudImage = DImage.loadImage("/cloud.png");
 	}
 
 	private class Cloud {

@@ -5,13 +5,13 @@ import dinosaur.Cactuses.Cactus;
 public class CollisionLogic {
 
 	public static void reactIfCollisionHappened(Dino dino, Cactuses cactuses) {
-		if (runThoughCactuses(dino, cactuses))
-			Control.state = Control.State.GAME_OVER;
+		if (runThoughCactuses(dino, cactuses)) 
+			Control.state = Control.State.GAME_OVER_SETTING;
 	}
 
 	private static boolean runThoughCactuses(Dino dino, Cactuses cactuses) {
 		boolean collision = false;
-		for (int i = 0; i < cactuses.list.length && !collision; i++)
+		for (int i = 0; i < cactuses.amount && !collision; i++)
 			if (cactuses.list[i].distance > -100 && cactuses.list[i].distance < 400)
 				collision = runThoughTouchRects(dino, cactuses.list[i]);
 		return collision;

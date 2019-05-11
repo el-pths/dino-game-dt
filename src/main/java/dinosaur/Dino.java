@@ -13,6 +13,7 @@ public class Dino {
 	public int bounceHeight, verticalIndent, height, horizontalIndent, width;
 	public double jumpKoef;
 	private boolean moveUp;
+	public boolean isJumpMeaningStartingGameFinished;
 	public TouchablePoint[] touchPoints;
 
 	private enum DinoState {
@@ -22,10 +23,11 @@ public class Dino {
 	private Dino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
 			double jumpKoefParab) {
 		this.name = name;
-		this.state = DinoState.RUN_RIGHT_LEG;
+		this.state = DinoState.STAND;
 		this.bounceHeight = 0;
 		this.heightRestriction = 300;
 		this.moveUp = true;
+		this.isJumpMeaningStartingGameFinished = false;
 		this.counterStandingOnTheLeg = 0;
 		this.restrictionStandingOnTheLeg = restrictionStandingOnTheLeg;
 		this.horizontalIndent = horizontalIndent;
@@ -37,15 +39,15 @@ public class Dino {
 		this.setTouchRects();
 	}
 
-	public static void loadDinoImagies() {
-		leftLeg = Imagies.loadImage("/dinoleft.png");
-		rightLeg = Imagies.loadImage("/dinoright.png");
-		standing = Imagies.loadImage("/dinoisamazed.png");
-	}
-
 	public static void setDino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
 			double jumpKoefParab) {
 		dino = new Dino(name, restrictionStandingOnTheLeg, horizontalIndent, verticalIndent, jumpKoefParab);
+	}
+
+	public static void loadDinoImagies() {
+		leftLeg = DImage.loadImage("/dinoleft.png");
+		rightLeg = DImage.loadImage("/dinoright.png");
+		standing = DImage.loadImage("/dinoisamazed.png");
 	}
 
 	public class TouchablePoint {
@@ -80,24 +82,9 @@ public class Dino {
 		recordCounterStandingOnTheLeg();
 	}
 
-	public void startJump() {
-		this.state = DinoState.JUMP;
-	}
-
-	private Image getImage() {
-		if (Control.state == Control.State.GAME_OVER)
-			return standing;
-		else if (this.state == DinoState.RUN_LEFT_LEG)
-			return leftLeg;
-		else if (this.state == DinoState.RUN_RIGHT_LEG)
-			return rightLeg;
-		else
-			return standing;
-	}
-
 	private void recordJumpIfJump(double position) {
 		if (this.state == DinoState.JUMP) {
-			position *= Window.FULL_PASS_TIME / Window.NORMALL_FULL_PASS_TIME;
+			position *= Window.FULL_PASS_TIME / Window.NORMAL_FULL_PASS_TIME;
 			if (this.moveUp)
 				this.bounceHeight += this.giveScenarium() * position;
 			else
@@ -108,6 +95,8 @@ public class Dino {
 				this.bounceHeight = 0;
 				this.moveUp = true;
 				this.state = DinoState.RUN_RIGHT_LEG;
+				if (!isJumpMeaningStartingGameFinished)
+					isJumpMeaningStartingGameFinished = true;
 			}
 		}
 
@@ -143,6 +132,21 @@ public class Dino {
 			}
 			this.counterStandingOnTheLeg++;
 		}
+	}
+
+	public void startJump() {
+		this.state = DinoState.JUMP;
+	}
+
+	private Image getImage() {
+		if (Control.state == Control.State.GAME_OVER)
+			return standing;
+		else if (this.state == DinoState.RUN_LEFT_LEG)
+			return leftLeg;
+		else if (this.state == DinoState.RUN_RIGHT_LEG)
+			return rightLeg;
+		else
+			return standing;
 	}
 
 }

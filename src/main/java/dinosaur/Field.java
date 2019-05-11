@@ -21,7 +21,7 @@ public class Field {
 	}
 
 	public static void loadFieldPartsImagies() {
-		defaultTypes = IntStream.rangeClosed(1, 23).mapToObj(x -> Imagies.loadImage("/field" + x + ".png"))
+		defaultTypes = IntStream.rangeClosed(1, 23).mapToObj(x -> DImage.loadImage("/field" + x + ".png"))
 				.toArray(Image[]::new);
 	}
 

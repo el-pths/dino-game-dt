@@ -20,28 +20,23 @@ public class Cactuses {
 		this.amount = 0;
 	}
 
-	public Cactus getCactus(int num) {
-		return list[num];
-	}
-
 	public static void setCactuses() {
 		cactuses = new Cactuses();
 	}
 
 	public class Cactus {
-		public int distance;
+		public int distance, verticalIndent;
 		public TouchableRectangle[] touchRects;
 		public Image icon;
 		private int width, height;
-		public int verticalIndent;
 		private String type;
 
 		public Cactus() {
 			this.setType();
 			this.setIcon();
 			this.setSizes();
-			this.distance = 1400;
-			this.verticalIndent = Dino.dino.height + Dino.dino.verticalIndent - height + 15;
+			this.setDistance();
+			this.setVerticalIndent();
 			this.setTouchableRectangles();
 		}
 
@@ -54,6 +49,28 @@ public class Cactuses {
 				this.width = width;
 				this.height = height;
 			}
+		}
+
+		private void setType() {
+			this.type = types[(int) (Math.random() / 0.112)];
+		}
+
+		private void setIcon() {
+			this.icon = imgs[(Arrays.asList(types).indexOf(this.type))];
+		}
+
+		private void setSizes() {
+			this.height = (int) ((double) Dino.dino.height * 1.4);
+			this.width = (int) ((double) this.icon.getWidth(null)
+					* ((double) this.height / (double) this.icon.getHeight(null)));
+		}
+
+		private void setDistance() {
+			distance = 1400;
+		}
+
+		private void setVerticalIndent() {
+			verticalIndent = Dino.dino.height + Dino.dino.verticalIndent - height + 15;
 		}
 
 		private void setTouchableRectangles() {
@@ -119,18 +136,12 @@ public class Cactuses {
 			}
 		}
 
-		private void setType() {
-			this.type = types[(int) (Math.random() / 0.112)];
+		public void draw(Graphics graphics) {
+			graphics.drawImage(icon, distance, verticalIndent, width, height, null);
 		}
 
-		private void setIcon() {
-			this.icon = imgs[(Arrays.asList(types).indexOf(this.type))];
-		}
-
-		private void setSizes() {
-			this.height = (int) ((double) Dino.dino.height * 1.4);
-			this.width = (int) ((double) this.icon.getWidth(null)
-					* ((double) this.height / (double) this.icon.getHeight(null)));
+		private void record(double position) {
+			this.distance -= (int) (Control.recordingStep * position);
 		}
 
 		private void remove() {
@@ -139,15 +150,6 @@ public class Cactuses {
 			}
 			amount--;
 		}
-
-		private void record(double position) {
-			this.distance -= (int) (Control.recordingStep * position);
-		}
-
-		public void draw(Graphics graphics) {
-			graphics.drawImage(icon, distance, verticalIndent, width, height, null);
-		}
-
 	}
 
 	public void draw(Graphics graphics) {
@@ -180,6 +182,6 @@ public class Cactuses {
 	public static void loadCactusesImagies() {
 		imgs = new Image[types.length];
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = Imagies.loadImage((String) ("/" + types[i] + ".png"));
+			imgs[i] = DImage.loadImage((String) ("/" + types[i] + ".png"));
 	}
 }

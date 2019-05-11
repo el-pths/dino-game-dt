@@ -13,10 +13,15 @@ import javax.swing.JPanel;
 public class Window extends JFrame {
 	private static final long serialVersionUID = 42L;
 	private static Window window;
-	private static double position = 0;
-	private static BImage screen = new BImage(1344, 540, BufferedImage.TYPE_INT_RGB);
 
-	public static double FULL_PASS_TIME = 60.0, NORMALL_FULL_PASS_TIME = FULL_PASS_TIME;
+	public static int bufferedImageWidth = 1344, bufferedImageHeight = 540;
+	public static double FULL_PASS_TIME = 60.0, NORMAL_FULL_PASS_TIME = FULL_PASS_TIME;
+
+	private static double position = 0;
+	private static BImage screen = new BImage(bufferedImageWidth, bufferedImageHeight, BufferedImage.TYPE_INT_RGB);
+
+	private static long smBPreviousTime = 0;
+	private static int smBTimeSum = 0;
 
 	private Window(String name) {
 		super(name);
@@ -25,11 +30,10 @@ public class Window extends JFrame {
 		setSize(1344, 540);
 		setLocationRelativeTo(null);
 		setFocusable(true);
-		addKeyListener(new Keyboard());
 		setVisible(true);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				// Close port
+				Port.closeAllPorts();
 				System.exit(0);
 			}
 		});
@@ -38,6 +42,14 @@ public class Window extends JFrame {
 
 	public static void setWindowAndStartScript(String name) {
 		window = new Window(name);
+	}
+
+	public static void setKeyboardListener() {
+		window.setKbListener();
+	}
+
+	private void setKbListener() {
+		this.addKeyListener(new Keyboard());
 	}
 
 	private class Keyboard extends KeyAdapter {
@@ -54,6 +66,7 @@ public class Window extends JFrame {
 				break;
 			case KeyEvent.VK_DOWN:
 				FULL_PASS_TIME -= 0.05;
+				NORMAL_FULL_PASS_TIME = FULL_PASS_TIME;
 				System.out.println(FULL_PASS_TIME);
 				break;
 			case KeyEvent.VK_P:
@@ -70,11 +83,9 @@ public class Window extends JFrame {
 		private static final long serialVersionUID = 42L;
 		@SuppressWarnings("unused")
 		private long startTime = System.currentTimeMillis(), previousTime = System.currentTimeMillis();
-		private double fullPassTime;
 
 		public ContentPane() {
 			super();
-			fullPassTime = FULL_PASS_TIME;
 			new Thread(this).start();
 		}
 
@@ -105,7 +116,7 @@ public class Window extends JFrame {
 		void updateState() {
 			long currentTime = System.currentTimeMillis();
 			long timePassed = currentTime - previousTime;
-			position = timePassed / fullPassTime;
+			position = timePassed / FULL_PASS_TIME;
 			previousTime = currentTime;
 		}
 	}
@@ -114,4 +125,25 @@ public class Window extends JFrame {
 		screen.blur(strengeth);
 	}
 
+	public static void setFullPassTime(double newFullPassTime) {
+		FULL_PASS_TIME = newFullPassTime;
+		NORMAL_FULL_PASS_TIME = newFullPassTime;
+	}
+
+	public static void makeSmoothBlur(int smBStepsAmount, int smBStep) {
+		if (smBPreviousTime == 0) {
+			smBPreviousTime = System.currentTimeMillis();
+			return;
+		}
+		if (smBTimeSum < smBStepsAmount * smBStep) {
+			smBTimeSum += System.currentTimeMillis() - smBPreviousTime;
+			smBPreviousTime = System.currentTimeMillis();
+		}
+		makeBlur(smBTimeSum / smBStep + 1);
+	}
+
+	public static void setSmoothBlurReady() {
+		smBPreviousTime = 0;
+		smBTimeSum = 0;
+	}
 }
