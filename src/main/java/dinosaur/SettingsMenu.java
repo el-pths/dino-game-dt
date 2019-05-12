@@ -39,19 +39,23 @@ public class SettingsMenu {
 				DComboBox.portsComboBox.leftIndent + DComboBox.portsComboBox.width + buttonHorizontalIndentFromBox,
 				DComboBox.portsComboBox.upperIndent, buttonWidth, buttonHeight, DImage.loadImage("/selected2.png"),
 				buttonPurpose.SELECT_PORT);
+		DButton.setButton(window, Dino.presentable.horizontalIndent + Dino.presentable.width, 450, 60, 60,
+				DImage.plusButton, DButton.buttonPurpose.PLUS_GRAVITY);
+		DButton.setButton(window, Dino.presentable.horizontalIndent - 60, 450, 60, 60, DImage.minusButton,
+				DButton.buttonPurpose.MINUS_GRAVITY);
+		DButton.setButton(window, 1000, 50, 200, 200, DImage.chartsButton, DButton.buttonPurpose.OPEN_CHART);
 	}
 
 	public static void draw(Graphics graphics) {
 		Background.draw(graphics);
-		Field.field.draw(graphics);
-		Clouds.clouds.draw(graphics);
-		Cactuses.cactuses.draw(graphics);
-		Dino.dino.draw(graphics);
-		Window.makeSmoothBlur(3, 500);
 		drawLabel(graphics);
 		DButton.settingsOutButton.draw(graphics);
 		DButton.selectButton.draw(graphics);
 		drawChosenPortName(graphics);
+		DButton.gMinusButton.draw(graphics);
+		DButton.gPlusButton.draw(graphics);
+		DButton.openChartButton.draw(graphics);
+		Dino.presentable.draw(graphics);
 	}
 
 	private static void drawChosenPortName(Graphics graphics) {
@@ -97,6 +101,13 @@ public class SettingsMenu {
 	public static void correctButtonsTouchableSpace(int windowWidth, int windowHeight) {
 		DButton.settingsOutButton.setTouchableLocation(windowWidth, windowHeight);
 		DButton.selectButton.setTouchableLocation(windowWidth, windowHeight);
+		DButton.gMinusButton.setTouchableLocation(windowWidth, windowHeight);
+		DButton.gPlusButton.setTouchableLocation(windowWidth, windowHeight);
+		DButton.openChartButton.setTouchableLocation(windowWidth, windowHeight);
+	}
+
+	public static void recordPresentableDino(double position) {
+		Dino.presentable.record(position);
 	}
 
 }

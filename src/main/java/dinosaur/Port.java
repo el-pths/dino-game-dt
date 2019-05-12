@@ -116,7 +116,7 @@ public class Port {
 			String str = incomingLine.substring(0, lineEndPos);
 			Scanner line = new Scanner(str);
 			try {
-				System.out.println(line.nextLine());
+				Filter.filter.addPoint(line.nextInt(), line.nextInt(), line.nextInt());
 			} catch (Exception e) {
 				// broken line, do nothing about it
 			}

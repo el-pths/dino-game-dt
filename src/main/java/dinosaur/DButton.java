@@ -11,7 +11,7 @@ import dinosaur.Control.State;
 public class DButton extends JButton {
 	private static final long serialVersionUID = 42L;
 	public static DButton startButton, selectButton, restartButton, continueButton, pauseButton, settingInButton,
-			settingsOutButton, gPlusButton, gMinusButton;
+			settingsOutButton, gPlusButton, gMinusButton, openChartButton, closeChartButton;
 
 	private static double horizontalStretch = 1.0, verticalStretch = 1.0;
 
@@ -21,7 +21,7 @@ public class DButton extends JButton {
 
 	public static enum buttonPurpose {
 		START_GAME, SELECT_PORT, RESTART_GAME, CONTINUE_GAME, PAUSE, GET_SETTINGS_MENU, CLOSE_SETTINGS_MENU_S_M,
-		CLOSE_SETTINGS_MENU_P_M, CLOSE_SETTINGS_MENU_GO_M, PLUS_GRAVITY, MINUS_GRAVITY;
+		CLOSE_SETTINGS_MENU_P_M, CLOSE_SETTINGS_MENU_GO_M, PLUS_GRAVITY, MINUS_GRAVITY, OPEN_CHART, CLOSE_CHART;
 	}
 
 	private DButton(Window window, int horizontalIndent, int verticalIndent, int width, int height, Image icon,
@@ -78,21 +78,41 @@ public class DButton extends JButton {
 					break;
 				case CLOSE_SETTINGS_MENU_GO_M:
 					window.tryRemove(settingsOutButton);
+					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
 					Control.state = State.SETTING_GO_M;
 					break;
 				case CLOSE_SETTINGS_MENU_P_M:
 					window.tryRemove(settingsOutButton);
+					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
 					Control.state = State.SETTING_P_M;
 					break;
 				case CLOSE_SETTINGS_MENU_S_M:
 					window.tryRemove(settingsOutButton);
+					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
 					Control.state = State.SETTING_S_M;
 					break;
 				case PLUS_GRAVITY:
-					Dino.dino.changeDinoKoefParab(true);
+					Dino.presentable.changeDinoKoefParab(true);
+					System.out.println(Dino.presentable.getJumpKoef());
 					break;
 				case MINUS_GRAVITY:
-					Dino.dino.changeDinoKoefParab(false);
+					Dino.presentable.changeDinoKoefParab(false);
+					System.out.println(Dino.presentable.getJumpKoef());
+					break;
+				case OPEN_CHART:
+					window.tryRemove(DComboBox.portsComboBox);
+					window.tryRemove(DButton.gMinusButton);
+					window.tryRemove(DButton.gPlusButton);
+					window.tryRemove(DButton.settingsOutButton);
+					window.tryRemove(DButton.selectButton);
+					window.tryRemove(openChartButton);
+					System.out.println("Openning chart");
+					Control.state = State.SETTING_CHART;
+					break;
+				case CLOSE_CHART:
+					window.tryRemove(closeChartButton);
+					System.out.println("Closing chart");
+					Control.state = State.SETTING_ST_M;
 					break;
 				default:
 					System.out.println("break");
@@ -136,6 +156,10 @@ public class DButton extends JButton {
 			return selectButton;
 		case START_GAME:
 			return startButton;
+		case OPEN_CHART:
+			return openChartButton;
+		case CLOSE_CHART:
+			return closeChartButton;
 		default:
 			return null;
 		}
@@ -180,10 +204,20 @@ public class DButton extends JButton {
 			window.add(settingsOutButton);
 			break;
 		case MINUS_GRAVITY:
+			gPlusButton = currentButton;
 			window.add(gPlusButton);
 			break;
 		case PLUS_GRAVITY:
+			gMinusButton = currentButton;
 			window.add(gMinusButton);
+			break;
+		case OPEN_CHART:
+			openChartButton = currentButton;
+			window.add(openChartButton);
+			break;
+		case CLOSE_CHART:
+			closeChartButton = currentButton;
+			window.add(closeChartButton);
 			break;
 		default:
 			break;
@@ -202,8 +236,8 @@ public class DButton extends JButton {
 	}
 
 	private static void calibrateStretchParams(int windowWidth, int windowHeight) {
-		horizontalStretch = windowWidth / 1344.0;
-		verticalStretch = windowHeight / 540.0;
+		horizontalStretch = (double) windowWidth / 1344.0;
+		verticalStretch = (double) windowHeight / 540.0;
 	}
 
 }

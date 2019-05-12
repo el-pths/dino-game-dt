@@ -7,7 +7,7 @@ import dinosaur.Control.State;
 
 public class Dino {
 
-	public static Dino dino;
+	public static Dino dino, presentable;
 	public String name;
 	private DinoState state;
 	private static Image leftLeg, rightLeg, standing;
@@ -33,6 +33,9 @@ public class Dino {
 		if (Control.state != State.SETTING_S_M) {
 			this.isJumpMeaningStartingGameFinished = false;
 			this.state = DinoState.JUMP;
+		} else if (restrictionStandingOnTheLeg == 0) {
+			this.isJumpMeaningStartingGameFinished = true;
+			this.state = DinoState.STAND;
 		} else {
 			this.isJumpMeaningStartingGameFinished = true;
 			this.state = DinoState.RUN_RIGHT_LEG;
@@ -51,6 +54,7 @@ public class Dino {
 	public static void setDino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
 			double jumpKoefParab) {
 		dino = new Dino(name, restrictionStandingOnTheLeg, horizontalIndent, verticalIndent, jumpKoefParab);
+		presentable = new Dino(name, 0, 1000, 340, jumpKoefParab);
 	}
 
 	public static void loadDinoImagies() {
@@ -103,7 +107,10 @@ public class Dino {
 			if (!this.moveUp && this.bounceHeight - this.giveScenarium() * position <= 0) {
 				this.bounceHeight = 0;
 				this.moveUp = true;
-				this.state = DinoState.RUN_RIGHT_LEG;
+				if (restrictionStandingOnTheLeg == 0)
+					this.state = DinoState.STAND;
+				else
+					this.state = DinoState.RUN_RIGHT_LEG;
 				if (!isJumpMeaningStartingGameFinished)
 					isJumpMeaningStartingGameFinished = true;
 			}
@@ -131,7 +138,8 @@ public class Dino {
 	}
 
 	private void recordCounterStandingOnTheLeg() {
-		if (this.state == DinoState.RUN_LEFT_LEG || this.state == DinoState.RUN_RIGHT_LEG) {
+		if ((this.state == DinoState.RUN_LEFT_LEG || this.state == DinoState.RUN_RIGHT_LEG)
+				&& restrictionStandingOnTheLeg != 0) {
 			if (this.counterStandingOnTheLeg > this.restrictionStandingOnTheLeg) {
 				if (this.state == DinoState.RUN_LEFT_LEG)
 					this.state = DinoState.RUN_RIGHT_LEG;
@@ -167,6 +175,10 @@ public class Dino {
 
 	public double getJumpKoef() {
 		return jumpKoef;
+	}
+
+	public void setJumpKoef(double newKoef) {
+		jumpKoef = newKoef;
 	}
 
 }

@@ -49,7 +49,7 @@ public class Window extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent kEvt) {
 			int keyNum = kEvt.getKeyCode();
-			if (Control.state == Control.State.GAMMING_PROCESS || Control.state == Control.State.SETTINGS_MENU) {
+			if (Control.state == Control.State.GAMMING_PROCESS) {
 				System.out.println("Key pressed");
 				switch (keyNum) {
 				case KeyEvent.VK_SPACE:
@@ -71,7 +71,8 @@ public class Window extends JFrame {
 						Control.pause = true;
 					break;
 				}
-			}
+			} else if (Control.state == Control.State.SETTINGS_MENU && keyNum == KeyEvent.VK_SPACE)
+				Dino.presentable.startJump();
 		}
 	}
 

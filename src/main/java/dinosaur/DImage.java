@@ -8,7 +8,8 @@ import javax.imageio.ImageIO;
 public class DImage {
 
 	public static DImage gameoverImg;
-	public static Image one, two, three, restartButtonImg, continueButtonImg, pauseButtonImg, settingsButtonImg;
+	public static Image one, two, three, restartButtonImg, continueButtonImg, pauseButtonImg, settingsButtonImg,
+			plusButton, minusButton, chartsButton;
 	private Image icon;
 	private int leftIndent, upperIndent, width, height;
 
@@ -39,6 +40,8 @@ public class DImage {
 		loadPauseButtonImage();
 		loadContinueButtonImage();
 		loadSettingsButtonImage();
+		loadPlusMinusButtonsImagies();
+		loadChartsImage();
 	}
 
 	private static void loadNumbersImagies() {
@@ -64,8 +67,17 @@ public class DImage {
 	private static void loadPauseButtonImage() {
 		pauseButtonImg = loadImage("/pause.png");
 	}
-	
+
 	private static void loadSettingsButtonImage() {
 		settingsButtonImg = loadImage("/settingButton.png");
+	}
+
+	private static void loadPlusMinusButtonsImagies() {
+		plusButton = loadImage("/plus3.png");
+		minusButton = loadImage("/minus3.png");
+	}
+
+	private static void loadChartsImage() {
+		chartsButton = loadImage("/bluetoothIcon.png");
 	}
 }

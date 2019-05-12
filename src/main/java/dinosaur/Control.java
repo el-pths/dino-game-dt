@@ -10,7 +10,7 @@ public class Control {
 
 	public static enum State {
 		SETTING_S_M, START_MENU, PRE_START_GAME, SETTING_G_P, GAMMING_PROCESS, SETTING_ST_M, SETTINGS_MENU, SETTING_P_M,
-		PAUSE_MENU, SETTING_GO_M, GAME_OVER;
+		PAUSE_MENU, SETTING_GO_M, GAME_OVER, SETTING_CH, SETTING_CHART, CHART;
 	}
 
 	public static void main(String[] args) {
@@ -19,6 +19,7 @@ public class Control {
 		Field.loadFieldPartsImagies();
 		Cactuses.loadCactusesImagies();
 		Clouds.loadCloudImage();
+		Filter.setFilter(200);
 		startNewGame();
 		Window.setWindowAndStartScript("First");
 	}
@@ -28,6 +29,7 @@ public class Control {
 		case SETTING_S_M:
 			StartMenu.set(window);
 			state = State.START_MENU;
+			Window.setFullPassTime(60.0);
 			break;
 		case START_MENU:
 			StartMenu.correctAndRecord(window.getWidth(), window.getHeight(), position);
@@ -51,10 +53,12 @@ public class Control {
 		case SETTING_ST_M:
 			SettingsMenu.setButtons(window);
 			state = State.SETTINGS_MENU;
+			Window.setFullPassTime(25.0);
 			break;
 		case SETTINGS_MENU:
 			SettingsMenu.draw(graphics);
 			SettingsMenu.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
+			SettingsMenu.recordPresentableDino(position);
 			break;
 		case SETTING_P_M:
 			Window.setSmoothBlurReady();
@@ -74,6 +78,13 @@ public class Control {
 			GameOver.draw(graphics);
 			GameOver.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
 			break;
+		case SETTING_CHART:
+			Chart.set(window);
+			state = State.CHART;
+			break;
+		case CHART:
+			Chart.draw(graphics);
+			Chart.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
 		default:
 			break;
 		}
