@@ -2,17 +2,15 @@ package dinosaur;
 
 import java.awt.Graphics;
 
-import javax.swing.JFrame;
-
 public class Control {
 
 	public static boolean pause = false;
-	public static State state = State.STARTMENU_SETTING;
+	public static State state = State.SETTING_S_M;
 	public static double recordingStep = 7.5;
 
 	public static enum State {
-		PRE_START_GAME, GAMMING_PROCESS, SETTINGS_MENU, PAUSE, START_MENU, GAME_OVER, STARTMENU_SETTING,
-		GAME_OVER_SETTING;
+		SETTING_S_M, START_MENU, PRE_START_GAME, SETTING_G_P, GAMMING_PROCESS, SETTING_ST_M, SETTINGS_MENU, SETTING_P_M,
+		PAUSE_MENU, SETTING_GO_M, GAME_OVER;
 	}
 
 	public static void main(String[] args) {
@@ -25,10 +23,23 @@ public class Control {
 		Window.setWindowAndStartScript("First");
 	}
 
-	public static void setModeDependingConditions(JFrame window, Graphics graphics, double position) {
+	public static void setModeDependingConditions(Window window, Graphics graphics, double position) {
 		switch (state) {
+		case SETTING_S_M:
+			StartMenu.set(window);
+			state = State.START_MENU;
+			break;
+		case START_MENU:
+			StartMenu.correctAndRecord(window.getWidth(), window.getHeight(), position);
+			StartMenu.draw(graphics);
+			break;
 		case PRE_START_GAME:
 			Countdown.drawCountdown(graphics);
+			break;
+		case SETTING_G_P:
+			Window.setFullPassTime(22.0);
+			GamingProcess.setPauseButton(window);
+			state = State.GAMMING_PROCESS;
 			break;
 		case GAMMING_PROCESS:
 			GamingProcess.draw(graphics);
@@ -37,11 +48,25 @@ public class Control {
 			} else
 				GamingProcess.checkAndRecord(position, window.getWidth(), window.getHeight());
 			break;
+		case SETTING_ST_M:
+			SettingsMenu.setButtons(window);
+			state = State.SETTINGS_MENU;
+			break;
 		case SETTINGS_MENU:
+			SettingsMenu.draw(graphics);
+			SettingsMenu.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
 			break;
-		case PAUSE:
+		case SETTING_P_M:
+			Window.setSmoothBlurReady();
+			Pause.setPauseButtons(window);
+			state = State.PAUSE_MENU;
 			break;
-		case GAME_OVER_SETTING:
+		case PAUSE_MENU:
+			Pause.draw(graphics);
+			Pause.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
+			break;
+		case SETTING_GO_M:
+			Window.setSmoothBlurReady();
 			GameOver.setRestartButton(window);
 			state = State.GAME_OVER;
 			break;
@@ -49,13 +74,7 @@ public class Control {
 			GameOver.draw(graphics);
 			GameOver.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
 			break;
-		case STARTMENU_SETTING:
-			StartMenu.set(window);
-			state = State.START_MENU;
-			break;
-		case START_MENU:
-			StartMenu.draw(graphics);
-			StartMenu.correctAndRecord(window.getWidth(), window.getHeight(), position);
+		default:
 			break;
 		}
 	}

@@ -1,6 +1,5 @@
 package dinosaur;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -8,7 +7,7 @@ public class Countdown {
 
 	private static long previousTime = -1, sumTime = 0;
 	private static int maxSquareSideValue = 200;
-	private static count countNow = count.ONE;
+	private static count countNow = count.THREE;
 	private static int oneStepTime = 2000, koefOfAnimationSlowness = 1;
 
 	private static enum count {
@@ -21,8 +20,10 @@ public class Countdown {
 		} else {
 			loadSumTime();
 			changeCountIfItNeeds();
-			fillFon(graphics);
+			Background.draw(graphics);
 			Field.field.draw(graphics);
+			Clouds.clouds.draw(graphics);
+			Cactuses.cactuses.draw(graphics);
 			Dino.dino.draw(graphics);
 			int squareSide = (int) ((double) maxSquareSideValue * (1000.0 / (double) sumTime));
 			graphics.drawImage(getImageOfCountNow(), 672 - squareSide / 2, 270 - squareSide / 2, squareSide, squareSide,
@@ -38,28 +39,20 @@ public class Countdown {
 	private static void changeCountIfItNeeds() {
 		if (sumTime > oneStepTime)
 			switch (countNow) {
-			case ONE:
+			case THREE:
 				countNow = count.TWO;
 				sumTime -= oneStepTime;
 				break;
 			case TWO:
-				countNow = count.THREE;
+				countNow = count.ONE;
 				sumTime -= oneStepTime;
 				break;
-			case THREE:
+			case ONE:
 				sumTime = 0;
 				previousTime = -1;
-				countNow = count.ONE;
-				Dino.dino.startJump();
-				Window.setKeyboardListener();
-				Window.setFullPassTime(22.0);
-				Control.state = Control.State.GAMMING_PROCESS;
+				countNow = count.THREE;
+				Control.state = Control.State.SETTING_G_P;
 			}
-	}
-
-	private static void fillFon(Graphics graphics) {
-		graphics.setColor(Color.WHITE);
-		graphics.fillRect(0, 0, 1344, 540);
 	}
 
 	private static Image getImageOfCountNow() {

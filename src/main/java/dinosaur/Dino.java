@@ -3,6 +3,8 @@ package dinosaur;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import dinosaur.Control.State;
+
 public class Dino {
 
 	public static Dino dino;
@@ -11,10 +13,12 @@ public class Dino {
 	private static Image leftLeg, rightLeg, standing;
 	private int heightRestriction, counterStandingOnTheLeg, restrictionStandingOnTheLeg;
 	public int bounceHeight, verticalIndent, height, horizontalIndent, width;
-	public double jumpKoef;
+	private double jumpKoef;
 	private boolean moveUp;
 	public boolean isJumpMeaningStartingGameFinished;
 	public TouchablePoint[] touchPoints;
+
+	private static double koefStep = 0.1;
 
 	private enum DinoState {
 		JUMP, STAND, RUN_RIGHT_LEG, RUN_LEFT_LEG;
@@ -23,11 +27,16 @@ public class Dino {
 	private Dino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
 			double jumpKoefParab) {
 		this.name = name;
-		this.state = DinoState.STAND;
 		this.bounceHeight = 0;
 		this.heightRestriction = 300;
 		this.moveUp = true;
-		this.isJumpMeaningStartingGameFinished = false;
+		if (Control.state != State.SETTING_S_M) {
+			this.isJumpMeaningStartingGameFinished = false;
+			this.state = DinoState.JUMP;
+		} else {
+			this.isJumpMeaningStartingGameFinished = true;
+			this.state = DinoState.RUN_RIGHT_LEG;
+		}
 		this.counterStandingOnTheLeg = 0;
 		this.restrictionStandingOnTheLeg = restrictionStandingOnTheLeg;
 		this.horizontalIndent = horizontalIndent;
@@ -147,6 +156,17 @@ public class Dino {
 			return rightLeg;
 		else
 			return standing;
+	}
+
+	public void changeDinoKoefParab(boolean isThisPlus) {
+		if (isThisPlus)
+			jumpKoef += koefStep;
+		else
+			jumpKoef -= koefStep;
+	}
+
+	public double getJumpKoef() {
+		return jumpKoef;
 	}
 
 }

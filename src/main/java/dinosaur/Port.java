@@ -26,12 +26,13 @@ public class Port {
 			return "Without port";
 	}
 
-	public static void setComboBox(JFrame window) {
+	public static void setComboBox(JFrame window, int leftIndent, int upperIndent, int width, int height) {
 		String[] extports = new String[SerialPortList.getPortNames().length + 1];
 		for (int i = 0; i < extports.length - 1; i++)
 			extports[i + 1] = SerialPortList.getPortNames()[i];
 		extports[0] = "Without port";
-		DComboBox.setPortsComboBox(window, extports, "Without port", new Font("Comic Sans MS", Font.BOLD, 18));
+		DComboBox.setPortsComboBox(window, extports, "Without port", new Font("Comic Sans MS", Font.BOLD, 18),
+				leftIndent, upperIndent, width, height);
 		window.add(DComboBox.portsComboBox);
 	}
 

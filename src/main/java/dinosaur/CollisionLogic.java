@@ -6,7 +6,7 @@ public class CollisionLogic {
 
 	public static void reactIfCollisionHappened(Dino dino, Cactuses cactuses) {
 		if (runThoughCactuses(dino, cactuses)) 
-			Control.state = Control.State.GAME_OVER_SETTING;
+			Control.state = Control.State.SETTING_GO_M;
 	}
 
 	private static boolean runThoughCactuses(Dino dino, Cactuses cactuses) {

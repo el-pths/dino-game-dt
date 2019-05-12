@@ -6,11 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import dinosaur.Control.State;
 
 public class DButton extends JButton {
 	private static final long serialVersionUID = 42L;
-	public static DButton startButton, selectButton, restartButton;
+	public static DButton startButton, selectButton, restartButton, continueButton, pauseButton, settingInButton,
+			settingsOutButton, gPlusButton, gMinusButton;
 
 	private static double horizontalStretch = 1.0, verticalStretch = 1.0;
 
@@ -19,10 +20,11 @@ public class DButton extends JButton {
 	public buttonPurpose purpose;
 
 	public static enum buttonPurpose {
-		START_GAME, SELECT_PORT, RESTART_GAME;
+		START_GAME, SELECT_PORT, RESTART_GAME, CONTINUE_GAME, PAUSE, GET_SETTINGS_MENU, CLOSE_SETTINGS_MENU_S_M,
+		CLOSE_SETTINGS_MENU_P_M, CLOSE_SETTINGS_MENU_GO_M, PLUS_GRAVITY, MINUS_GRAVITY;
 	}
 
-	private DButton(int horizontalIndent, int verticalIndent, int width, int height, Image icon,
+	private DButton(Window window, int horizontalIndent, int verticalIndent, int width, int height, Image icon,
 			buttonPurpose purpose) {
 		super();
 		this.horizontalIndent = horizontalIndent;
@@ -37,40 +39,109 @@ public class DButton extends JButton {
 		setContentAreaFilled(false);
 		setBorderPainted(false);
 		addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				removeActionListener(this);
 				switch (purpose) {
 				case START_GAME:
 					Control.startNewGame();
-					DComboBox.portsComboBox.hide();
-					startButton.hide();
+					window.tryRemove(DComboBox.portsComboBox);
+					window.tryRemove(startButton);
+					window.tryRemove(selectButton);
 					Control.state = Control.State.PRE_START_GAME;
 					break;
 				case SELECT_PORT:
-					System.out.println("Port is selecting");
 					Port.setPort(DComboBox.portsComboBox.portName);
 					break;
 				case RESTART_GAME:
 					Control.startNewGame();
 					Window.setSmoothBlurReady();
+					window.tryRemove(restartButton);
+					window.tryRemove(settingInButton);
 					Control.state = Control.State.PRE_START_GAME;
 					break;
+				case CONTINUE_GAME:
+					window.tryRemove(continueButton);
+					window.tryRemove(settingInButton);
+					Control.state = State.PRE_START_GAME;
+					break;
+				case GET_SETTINGS_MENU:
+					window.tryRemove(settingInButton);
+					window.tryRemove(continueButton);
+					window.tryRemove(restartButton);
+					window.tryRemove(DComboBox.portsComboBox);
+					window.tryRemove(startButton);
+					window.tryRemove(selectButton);
+					Control.state = State.SETTING_ST_M;
+					break;
+				case PAUSE:
+					window.tryRemove(pauseButton);
+					Control.state = State.SETTING_P_M;
+					break;
+				case CLOSE_SETTINGS_MENU_GO_M:
+					window.tryRemove(settingsOutButton);
+					Control.state = State.SETTING_GO_M;
+					break;
+				case CLOSE_SETTINGS_MENU_P_M:
+					window.tryRemove(settingsOutButton);
+					Control.state = State.SETTING_P_M;
+					break;
+				case CLOSE_SETTINGS_MENU_S_M:
+					window.tryRemove(settingsOutButton);
+					Control.state = State.SETTING_S_M;
+					break;
+				case PLUS_GRAVITY:
+					Dino.dino.changeDinoKoefParab(true);
+					break;
+				case MINUS_GRAVITY:
+					Dino.dino.changeDinoKoefParab(false);
+					break;
+				default:
+					System.out.println("break");
+					break;
+
 				}
 			}
 		});
 	}
 
-	public static void setButton(JFrame window, int width, int height, Image icon, buttonPurpose purpose) {
+	public static void setButton(Window window, int width, int height, Image icon, buttonPurpose purpose) {
 		setButton(window, 672 - width / 2, 270 - height / 2, width, height, icon, purpose);
 	}
 
-	public static void setButton(JFrame window, int horizontalIndent, int verticalIndent, int width, int height,
+	public static void setButton(Window window, int horizontalIndent, int verticalIndent, int width, int height,
 			Image icon, buttonPurpose purpose) {
-		setButtonDependingPurpose(new DButton(horizontalIndent, verticalIndent, width, height, icon, purpose), window);
+		if (returnButtonByPurpose(purpose) == null)
+			setButtonDependingPurpose(
+					new DButton(window, horizontalIndent, verticalIndent, width, height, icon, purpose), window);
+		else
+			setButtonDependingPurpose(returnButtonByPurpose(purpose), window);
 	}
 
-	private static void setButtonDependingPurpose(DButton currentButton, JFrame window) {
+	private static DButton returnButtonByPurpose(buttonPurpose purpose) {
+		switch (purpose) {
+		case CLOSE_SETTINGS_MENU_GO_M:
+			return settingsOutButton;
+		case CLOSE_SETTINGS_MENU_P_M:
+			return settingsOutButton;
+		case CLOSE_SETTINGS_MENU_S_M:
+			return settingsOutButton;
+		case CONTINUE_GAME:
+			return continueButton;
+		case GET_SETTINGS_MENU:
+			return settingInButton;
+		case PAUSE:
+			return pauseButton;
+		case RESTART_GAME:
+			return restartButton;
+		case SELECT_PORT:
+			return selectButton;
+		case START_GAME:
+			return startButton;
+		default:
+			return null;
+		}
+	}
+
+	private static void setButtonDependingPurpose(DButton currentButton, Window window) {
 		switch (currentButton.purpose) {
 		case START_GAME:
 			startButton = currentButton;
@@ -83,6 +154,38 @@ public class DButton extends JButton {
 		case RESTART_GAME:
 			restartButton = currentButton;
 			window.add(restartButton);
+			break;
+		case CONTINUE_GAME:
+			continueButton = currentButton;
+			window.add(continueButton);
+			break;
+		case GET_SETTINGS_MENU:
+			settingInButton = currentButton;
+			window.add(settingInButton);
+			break;
+		case PAUSE:
+			pauseButton = currentButton;
+			window.add(pauseButton);
+			break;
+		case CLOSE_SETTINGS_MENU_GO_M:
+			settingsOutButton = currentButton;
+			window.add(settingsOutButton);
+			break;
+		case CLOSE_SETTINGS_MENU_P_M:
+			settingsOutButton = currentButton;
+			window.add(settingsOutButton);
+			break;
+		case CLOSE_SETTINGS_MENU_S_M:
+			settingsOutButton = currentButton;
+			window.add(settingsOutButton);
+			break;
+		case MINUS_GRAVITY:
+			window.add(gPlusButton);
+			break;
+		case PLUS_GRAVITY:
+			window.add(gMinusButton);
+			break;
+		default:
 			break;
 		}
 	}
@@ -102,5 +205,5 @@ public class DButton extends JButton {
 		horizontalStretch = windowWidth / 1344.0;
 		verticalStretch = windowHeight / 540.0;
 	}
-	
+
 }

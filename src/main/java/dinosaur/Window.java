@@ -31,6 +31,7 @@ public class Window extends JFrame {
 		setLocationRelativeTo(null);
 		setFocusable(true);
 		setVisible(true);
+		addKeyListener(new Keyboard());
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				Port.closeAllPorts();
@@ -44,37 +45,32 @@ public class Window extends JFrame {
 		window = new Window(name);
 	}
 
-	public static void setKeyboardListener() {
-		window.setKbListener();
-	}
-
-	private void setKbListener() {
-		this.addKeyListener(new Keyboard());
-	}
-
 	private class Keyboard extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent kEvt) {
 			int keyNum = kEvt.getKeyCode();
-			switch (keyNum) {
-			case KeyEvent.VK_SPACE:
-				Dino.dino.startJump();
-				break;
-			case KeyEvent.VK_UP:
-				FULL_PASS_TIME += 0.05;
-				System.out.println(FULL_PASS_TIME);
-				break;
-			case KeyEvent.VK_DOWN:
-				FULL_PASS_TIME -= 0.05;
-				NORMAL_FULL_PASS_TIME = FULL_PASS_TIME;
-				System.out.println(FULL_PASS_TIME);
-				break;
-			case KeyEvent.VK_P:
-				if (Control.pause)
-					Control.pause = false;
-				else
-					Control.pause = true;
-				break;
+			if (Control.state == Control.State.GAMMING_PROCESS || Control.state == Control.State.SETTINGS_MENU) {
+				System.out.println("Key pressed");
+				switch (keyNum) {
+				case KeyEvent.VK_SPACE:
+					Dino.dino.startJump();
+					break;
+				case KeyEvent.VK_UP:
+					FULL_PASS_TIME += 0.05;
+					System.out.println(FULL_PASS_TIME);
+					break;
+				case KeyEvent.VK_DOWN:
+					FULL_PASS_TIME -= 0.05;
+					NORMAL_FULL_PASS_TIME = FULL_PASS_TIME;
+					System.out.println(FULL_PASS_TIME);
+					break;
+				case KeyEvent.VK_P:
+					if (Control.pause)
+						Control.pause = false;
+					else
+						Control.pause = true;
+					break;
+				}
 			}
 		}
 	}
@@ -119,6 +115,16 @@ public class Window extends JFrame {
 			position = timePassed / FULL_PASS_TIME;
 			previousTime = currentTime;
 		}
+	}
+
+	public void tryRemove(DButton dbutton) {
+		if (dbutton != null)
+			this.remove(dbutton);
+	}
+
+	public void tryRemove(DComboBox dcombobox) {
+		if (dcombobox != null)
+			this.remove(dcombobox);
 	}
 
 	public static void makeBlur(int strengeth) {

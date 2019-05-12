@@ -44,8 +44,9 @@ public class DComboBox extends JComboBox<String> {
 		});
 	}
 
-	public static void setPortsComboBox(JFrame window, String[] extports, String ifDefault, Font textFont) {
-		portsComboBox = new DComboBox(window, extports, ifDefault, textFont, 10, 10, 240, 40,
+	public static void setPortsComboBox(JFrame window, String[] extports, String ifDefault, Font textFont,
+			int leftIndent, int upperIndent, int width, int height) {
+		portsComboBox = new DComboBox(window, extports, ifDefault, textFont, leftIndent, upperIndent, width, height,
 				buttonPurpose.SELECT_PORT);
 	}
 

@@ -3,7 +3,14 @@ package dinosaur;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import dinosaur.DButton.buttonPurpose;
+
 public class GamingProcess {
+
+	public static void setPauseButton(Window window) {
+		int width = 100, height = 100, leftIndent = 10, upperIndent = 10;
+		DButton.setButton(window, leftIndent, upperIndent, width, height, DImage.pauseButtonImg, buttonPurpose.PAUSE);
+	}
 
 	public static void draw(Graphics graphics) {
 		fillFon(graphics);
@@ -11,7 +18,7 @@ public class GamingProcess {
 		Clouds.clouds.draw(graphics);
 		Cactuses.cactuses.draw(graphics);
 		Dino.dino.draw(graphics);
-		// draw pause button
+		DButton.pauseButton.draw(graphics);
 	}
 
 	private static void fillFon(Graphics graphics) {
@@ -20,7 +27,7 @@ public class GamingProcess {
 	}
 
 	public static void checkAndRecord(double position, int windowWidth, int windowHeight) {
-		// Button setTouch
+		DButton.pauseButton.setTouchableLocation(windowWidth, windowHeight);
 		Field.field.recordField(position);
 		Clouds.clouds.record(position);
 		Cactuses.cactuses.record(position);
