@@ -4,7 +4,6 @@ import java.awt.Graphics;
 
 public class Control {
 
-	public static boolean pause = false;
 	public static State state = State.SETTING_S_M;
 	public static double recordingStep = 7.5;
 
@@ -95,6 +94,7 @@ public class Control {
 		Field.setField(70, 21, Dino.dino.height + Dino.dino.verticalIndent - 40, 54);
 		Cactuses.setCactuses();
 		Clouds.setClouds();
+		Pteros.setPteros();
 	}
 
 }

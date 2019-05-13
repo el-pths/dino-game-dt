@@ -7,6 +7,7 @@ public class Filter {
 	public static Filter filter;
 	private static int MAX_LIST_SIZE = 100;
 
+	public int maxInputValue = 0;
 	public LinkedList<Point> points;
 
 	public class Point {
@@ -44,10 +45,20 @@ public class Filter {
 	}
 
 	public void addPoint(int newX, int newY, int newZ) {
+		checkAndSetMaxInputValue();
 		points.add(new Point(newX, newY, newZ));
 		while (points.size() > MAX_LIST_SIZE) {
 			points.remove();
 		}
 		System.out.println(newX + " " + newY + " " + newZ);
+	}
+
+	private void checkAndSetMaxInputValue() {
+		if (maxInputValue < Math.abs(points.getLast().x))
+			maxInputValue = Math.abs(points.getLast().x);
+		if (maxInputValue < Math.abs(points.getLast().y))
+			maxInputValue = Math.abs(points.getLast().y);
+		if (maxInputValue < Math.abs(points.getLast().z))
+			maxInputValue = Math.abs(points.getLast().z);
 	}
 }

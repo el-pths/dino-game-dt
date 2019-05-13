@@ -17,6 +17,7 @@ public class GamingProcess {
 		Field.field.draw(graphics);
 		Clouds.clouds.draw(graphics);
 		Cactuses.cactuses.draw(graphics);
+		Pteros.pteros.draw(graphics);
 		Dino.dino.draw(graphics);
 		DButton.pauseButton.draw(graphics);
 	}
@@ -31,9 +32,11 @@ public class GamingProcess {
 		Field.field.recordField(position);
 		Clouds.clouds.record(position);
 		Cactuses.cactuses.record(position);
+		Pteros.pteros.record(position);
 		Dino.dino.record(position);
 		Clouds.clouds.record(position);
-		CollisionLogic.reactIfCollisionHappened(Dino.dino, Cactuses.cactuses);
+		EnemyLogic.reactIfCollisionHappened(Dino.dino, Cactuses.cactuses);
+		EnemyLogic.generateEnemyIfItNeeds(Cactuses.cactuses, Pteros.pteros);
 	}
 
 }

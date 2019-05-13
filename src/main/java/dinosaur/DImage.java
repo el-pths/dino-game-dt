@@ -7,9 +7,9 @@ import javax.imageio.ImageIO;
 
 public class DImage {
 
-	public static DImage gameoverImg;
+	public static DImage gameoverImg, settingsMenuBackgroud;
 	public static Image one, two, three, restartButtonImg, continueButtonImg, pauseButtonImg, settingsButtonImg,
-			plusButton, minusButton, chartsButton;
+			plusButton, minusButton, chartsButton, pteroUp, pteroDown;
 	private Image icon;
 	private int leftIndent, upperIndent, width, height;
 
@@ -42,6 +42,8 @@ public class DImage {
 		loadSettingsButtonImage();
 		loadPlusMinusButtonsImagies();
 		loadChartsImage();
+		loadSTMFon();
+		loadPteroImagies();
 	}
 
 	private static void loadNumbersImagies() {
@@ -78,6 +80,16 @@ public class DImage {
 	}
 
 	private static void loadChartsImage() {
-		chartsButton = loadImage("/bluetoothIcon.png");
+		chartsButton = loadImage("/landscape.png");
+	}
+
+	private static void loadSTMFon() {
+		settingsMenuBackgroud = new DImage(loadImage("/axilSchemepng.png"), 0, 0, Window.bufferedImageWidth,
+				Window.bufferedImageHeight);
+	}
+
+	private static void loadPteroImagies() {
+		pteroDown = loadImage("/pterodown.png");
+		pteroUp = loadImage("/pteroup.png");
 	}
 }

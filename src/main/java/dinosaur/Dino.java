@@ -1,5 +1,6 @@
 package dinosaur;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -88,6 +89,14 @@ public class Dino {
 	public void draw(Graphics graphics) {
 		graphics.drawImage(this.getImage(), this.horizontalIndent, this.verticalIndent - this.bounceHeight, this.width,
 				this.height, null);
+		drawTouchPoints(graphics);
+	}
+
+	private void drawTouchPoints(Graphics graphics) {
+		graphics.setColor(Color.RED);
+		for (int i = 0; i < touchPoints.length; i++)
+			graphics.fillRect(horizontalIndent + touchPoints[i].leftIndent,
+					verticalIndent + touchPoints[i].upperIndent - bounceHeight, 1, 1);
 	}
 
 	public void record(double position) {

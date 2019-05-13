@@ -50,25 +50,9 @@ public class Window extends JFrame {
 		public void keyPressed(KeyEvent kEvt) {
 			int keyNum = kEvt.getKeyCode();
 			if (Control.state == Control.State.GAMMING_PROCESS) {
-				System.out.println("Key pressed");
 				switch (keyNum) {
 				case KeyEvent.VK_SPACE:
 					Dino.dino.startJump();
-					break;
-				case KeyEvent.VK_UP:
-					FULL_PASS_TIME += 0.05;
-					System.out.println(FULL_PASS_TIME);
-					break;
-				case KeyEvent.VK_DOWN:
-					FULL_PASS_TIME -= 0.05;
-					NORMAL_FULL_PASS_TIME = FULL_PASS_TIME;
-					System.out.println(FULL_PASS_TIME);
-					break;
-				case KeyEvent.VK_P:
-					if (Control.pause)
-						Control.pause = false;
-					else
-						Control.pause = true;
 					break;
 				}
 			} else if (Control.state == Control.State.SETTINGS_MENU && keyNum == KeyEvent.VK_SPACE)

@@ -1,5 +1,6 @@
 package dinosaur;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Arrays;
@@ -8,16 +9,17 @@ public class Cactuses {
 
 	public static Cactuses cactuses;
 
-	public int amount;
+	public int amount, amountGenerated;
 	public Cactus[] list;
 
-	private static final int maxCactusesAmount = 10, edgeOfField = -300, checkDist = 900;
+	private static final int maxCactusesAmount = 10, edgeOfField = -300;
 	private static Image[] imgs;
 	private static String[] types = { "b1ig1", "b1ig2", "b1ig3", "b1ig4", "b1ig5", "b1ig6", "m2id1", "m2id2", "d3if1" };
 
 	public Cactuses() {
 		this.list = new Cactus[maxCactusesAmount];
 		this.amount = 0;
+		this.amountGenerated = 0;
 	}
 
 	public static void setCactuses() {
@@ -25,18 +27,19 @@ public class Cactuses {
 	}
 
 	public class Cactus {
-		public int distance, verticalIndent;
+		public int distance, verticalIndent, width, height;
 		public TouchableRectangle[] touchRects;
 		public Image icon;
-		private int width, height;
 		private String type;
 
 		public Cactus() {
-			this.setType();
-			this.setIcon();
-			this.setSizes();
-			this.setDistance();
-			this.setVerticalIndent();
+			this.type = types[(int) (Math.random() / 0.112)];
+			this.icon = imgs[(Arrays.asList(types).indexOf(this.type))];
+			this.height = (int) ((double) Dino.dino.height * 1.4);
+			this.width = (int) ((double) this.icon.getWidth(null)
+					* ((double) this.height / (double) this.icon.getHeight(null)));
+			this.distance = 1400;
+			this.verticalIndent = Dino.dino.height + Dino.dino.verticalIndent - height + 15;
 			this.setTouchableRectangles();
 		}
 
@@ -49,28 +52,6 @@ public class Cactuses {
 				this.width = width;
 				this.height = height;
 			}
-		}
-
-		private void setType() {
-			this.type = types[(int) (Math.random() / 0.112)];
-		}
-
-		private void setIcon() {
-			this.icon = imgs[(Arrays.asList(types).indexOf(this.type))];
-		}
-
-		private void setSizes() {
-			this.height = (int) ((double) Dino.dino.height * 1.4);
-			this.width = (int) ((double) this.icon.getWidth(null)
-					* ((double) this.height / (double) this.icon.getHeight(null)));
-		}
-
-		private void setDistance() {
-			distance = 1400;
-		}
-
-		private void setVerticalIndent() {
-			verticalIndent = Dino.dino.height + Dino.dino.verticalIndent - height + 15;
 		}
 
 		private void setTouchableRectangles() {
@@ -129,7 +110,7 @@ public class Cactuses {
 				touchRects = new TouchableRectangle[5];
 				touchRects[0] = new TouchableRectangle(2, 39, 9, 31);
 				touchRects[1] = new TouchableRectangle(16, 7, 11, 102);
-				touchRects[2] = new TouchableRectangle(26, 16, 54, 7);
+				touchRects[2] = new TouchableRectangle(26, 16, 54, 70);
 				touchRects[3] = new TouchableRectangle(80, 2, 16, 107);
 				touchRects[4] = new TouchableRectangle(102, 27, 12, 35);
 				break;
@@ -138,17 +119,18 @@ public class Cactuses {
 
 		public void draw(Graphics graphics) {
 			graphics.drawImage(icon, distance, verticalIndent, width, height, null);
+			drawTouchRects(graphics);
+		}
+
+		private void drawTouchRects(Graphics graphics) {
+			graphics.setColor(Color.BLUE);
+			for (int i = 0; i < touchRects.length; i++)
+				graphics.fillRect(touchRects[i].leftIndent + distance, verticalIndent + touchRects[i].upperIndent,
+						touchRects[i].width, touchRects[i].height);
 		}
 
 		private void record(double position) {
 			this.distance -= (int) (Control.recordingStep * position);
-		}
-
-		private void remove() {
-			for (int i = 0; i < amount && i < maxCactusesAmount - 1; i++) {
-				list[i] = list[i + 1];
-			}
-			amount--;
 		}
 	}
 
@@ -160,23 +142,25 @@ public class Cactuses {
 	public void record(double position) {
 		for (int i = 0; i < this.amount; i++)
 			this.list[i].record(position);
-		ifItNeedsGenerateCactus();
 		ifItNeedsDeleteFirst();
 	}
 
-	public void ifItNeedsGenerateCactus() {
-		if (amount < maxCactusesAmount && (amount == 0 || list[amount - 1].distance < checkDist))
-			createNewCactus();
-	}
-
-	public void createNewCactus() {
+	public void generateNewCactus() {
 		list[amount] = new Cactus();
 		amount++;
+		amountGenerated++;
 	}
 
 	public void ifItNeedsDeleteFirst() {
-		if (list[0].distance < edgeOfField)
-			list[0].remove();
+		if (amount > 0 && list[0].distance < edgeOfField)
+			removeFirst();
+	}
+
+	private void removeFirst() {
+		for (int i = 0; i < amount && i < maxCactusesAmount - 1; i++) {
+			list[i] = list[i + 1];
+		}
+		amount--;
 	}
 
 	public static void loadCactusesImagies() {

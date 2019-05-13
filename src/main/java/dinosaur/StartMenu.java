@@ -25,6 +25,7 @@ public class StartMenu {
 		DButton.startButton.draw(graphics);
 		DButton.settingInButton.draw(graphics);
 	}
+
 	public static void correctAndRecord(int windowWidth, int windowHeight, double position) {
 		DButton.startButton.setTouchableLocation(windowWidth, windowHeight);
 		DButton.settingInButton.setTouchableLocation(windowWidth, windowHeight);
@@ -33,6 +34,7 @@ public class StartMenu {
 		Cactuses.cactuses.record(position);
 		Dino.dino.record(position);
 		Clouds.clouds.record(position);
+		PredictLogic.predictCollisionAndReact();
 	}
 
 }

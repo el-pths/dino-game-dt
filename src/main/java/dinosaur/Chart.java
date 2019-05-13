@@ -9,19 +9,20 @@ public class Chart {
 
 	public static State previousState;
 
-	private static Chart x = new Chart(10, 100, 1000, axis.X);
+	private static Chart x = new Chart(120, 10, Window.bufferedImageWidth / 3, Window.bufferedImageHeight / 2, axis.X);
 
-	private int leftIndent, upperIndent, width;
+	private int leftIndent, upperIndent, width, height;
 	private axis purpose;
 
 	private static enum axis {
 		X, Y, Z, RMS;
 	}
 
-	private Chart(int leftIndent, int upperIndent, int width, axis purpose) {
+	private Chart(int leftIndent, int upperIndent, int width, int height, axis purpose) {
 		this.leftIndent = leftIndent;
 		this.upperIndent = upperIndent;
 		this.width = width;
+		this.height = height;
 		this.purpose = purpose;
 	}
 
@@ -45,10 +46,14 @@ public class Chart {
 		}
 	}
 
-	private void drawAxis(Graphics graphics) {
+	private void drawChart(Graphics graphics) {
 		setGraphicsColor(graphics);
 		for (int i = 0; i < Filter.filter.points.size() - 1; i++)
-			graphics.drawLine(i, getPointValue(i), i + 1, getPointValue(i + 1));
+			graphics.drawLine(i * getListSize() / width + leftIndent,
+					-1 * getPointValue(i) * height / getMaxValue() + upperIndent + height / 2,
+					(i + 1) * getListSize() / width + leftIndent,
+					-1 * getPointValue(i + 1) * height / getMaxValue() + upperIndent + height / 2);
+		drawAxis(graphics);
 	}
 
 	private int getPointValue(int i) {
@@ -66,18 +71,31 @@ public class Chart {
 		}
 	}
 
+	private int getListSize() {
+		return Filter.filter.points.size();
+	}
+
+	private int getMaxValue() {
+		return Filter.filter.maxInputValue;
+	}
+
+	private void drawAxis(Graphics graphics) {
+		graphics.setColor(Color.BLACK);
+		graphics.drawLine(leftIndent, upperIndent + height / 2, leftIndent + width, upperIndent + height / 2);
+	}
+
 	public static void draw(Graphics graphics) {
 		Background.draw(graphics);
-		x.drawAxis(graphics);
+		x.drawChart(graphics);
 		DButton.closeChartButton.draw(graphics);
 	}
-	
+
 	public static void correctButtonsTouchableSpace(int windowWidth, int windowHeight) {
 		DButton.closeChartButton.setTouchableLocation(windowWidth, windowHeight);
 	}
 
 	public static void set(Window window) {
-		DButton.setButton(window, 100, 100, 100, 100, DImage.chartsButton, DButton.buttonPurpose.CLOSE_CHART);
+		DButton.setButton(window, 20, 20, 80, 80, DImage.chartsButton, DButton.buttonPurpose.CLOSE_CHART);
 	}
 
 }

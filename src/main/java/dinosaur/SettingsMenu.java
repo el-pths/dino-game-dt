@@ -43,11 +43,11 @@ public class SettingsMenu {
 				DImage.plusButton, DButton.buttonPurpose.PLUS_GRAVITY);
 		DButton.setButton(window, Dino.presentable.horizontalIndent - 60, 450, 60, 60, DImage.minusButton,
 				DButton.buttonPurpose.MINUS_GRAVITY);
-		DButton.setButton(window, 1000, 50, 200, 200, DImage.chartsButton, DButton.buttonPurpose.OPEN_CHART);
+		DButton.setButton(window, 470, 184, 80, 80, DImage.chartsButton, DButton.buttonPurpose.OPEN_CHART);
 	}
 
 	public static void draw(Graphics graphics) {
-		Background.draw(graphics);
+		DImage.settingsMenuBackgroud.draw(graphics);
 		drawLabel(graphics);
 		DButton.settingsOutButton.draw(graphics);
 		DButton.selectButton.draw(graphics);

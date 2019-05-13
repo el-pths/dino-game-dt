@@ -106,12 +106,10 @@ public class DButton extends JButton {
 					window.tryRemove(DButton.settingsOutButton);
 					window.tryRemove(DButton.selectButton);
 					window.tryRemove(openChartButton);
-					System.out.println("Openning chart");
 					Control.state = State.SETTING_CHART;
 					break;
 				case CLOSE_CHART:
 					window.tryRemove(closeChartButton);
-					System.out.println("Closing chart");
 					Control.state = State.SETTING_ST_M;
 					break;
 				default:
