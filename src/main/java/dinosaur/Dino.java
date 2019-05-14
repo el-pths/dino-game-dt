@@ -3,6 +3,9 @@ package dinosaur;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
 
 import dinosaur.Control.State;
 
@@ -18,11 +21,13 @@ public class Dino {
 	private boolean moveUp;
 	public boolean isJumpMeaningStartingGameFinished;
 	public TouchablePoint[] touchPoints;
+	private int saltoStadia, saltoCounter;
+	private static int restrictionStayingInOnePoseWhileSalto = 4;
 
 	private static double koefStep = 0.1;
 
 	private enum DinoState {
-		JUMP, STAND, RUN_RIGHT_LEG, RUN_LEFT_LEG;
+		JUMP, STAND, RUN_RIGHT_LEG, RUN_LEFT_LEG, SALTO;
 	}
 
 	private Dino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
@@ -50,6 +55,8 @@ public class Dino {
 		this.jumpKoef = jumpKoefParab;
 		this.touchPoints = new TouchablePoint[10];
 		this.setTouchRects();
+		this.saltoStadia = 0;
+		this.saltoCounter = 0;
 	}
 
 	public static void setDino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
@@ -105,7 +112,7 @@ public class Dino {
 	}
 
 	private void recordJumpIfJump(double position) {
-		if (this.state == DinoState.JUMP) {
+		if (this.state == DinoState.JUMP || this.state == DinoState.SALTO) {
 			position *= Window.FULL_PASS_TIME / Window.NORMAL_FULL_PASS_TIME;
 			if (this.moveUp)
 				this.bounceHeight += this.giveScenarium() * position;
@@ -161,6 +168,13 @@ public class Dino {
 	}
 
 	public void startJump() {
+		if (Sound.isSettedOn && Dino.dino.state != DinoState.JUMP && Dino.dino.state != DinoState.SALTO
+				&& Dino.presentable.state != DinoState.JUMP && Dino.presentable.state != DinoState.SALTO)
+			try {
+				Sound.makeJumpSound();
+			} catch (LineUnavailableException | IOException | InterruptedException e) {
+				e.printStackTrace();
+			}
 		this.state = DinoState.JUMP;
 	}
 
@@ -171,6 +185,21 @@ public class Dino {
 			return leftLeg;
 		else if (this.state == DinoState.RUN_RIGHT_LEG)
 			return rightLeg;
+		else if (this.state == DinoState.SALTO)
+			if (saltoStadia < DImage.salto.length - 1) {
+				// System.out.println(saltosStadia + "");
+				if (saltoCounter > restrictionStayingInOnePoseWhileSalto) {
+					saltoStadia++;
+					saltoCounter = 0;
+				}
+				saltoCounter++;
+				return DImage.salto[saltoStadia];
+			} else {
+				saltoStadia = 0;
+				saltoCounter = 0;
+				this.state = DinoState.JUMP;
+				return standing;
+			}
 		else
 			return standing;
 	}
@@ -188,6 +217,12 @@ public class Dino {
 
 	public void setJumpKoef(double newKoef) {
 		jumpKoef = newKoef;
+	}
+
+	public void startSalto() {
+		saltoStadia = 0;
+		saltoCounter = 0;
+		state = DinoState.SALTO;
 	}
 
 }

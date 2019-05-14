@@ -20,6 +20,7 @@ public class GameOver {
 		Field.field.draw(graphics);
 		Clouds.clouds.draw(graphics);
 		Cactuses.cactuses.draw(graphics);
+		Pteros.pteros.draw(graphics);
 		Dino.dino.draw(graphics);
 		Window.makeSmoothBlur(3, 500);
 		DImage.gameoverImg.draw(graphics);

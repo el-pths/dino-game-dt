@@ -9,7 +9,8 @@ public class DImage {
 
 	public static DImage gameoverImg, settingsMenuBackgroud;
 	public static Image one, two, three, restartButtonImg, continueButtonImg, pauseButtonImg, settingsButtonImg,
-			plusButton, minusButton, chartsButton, pteroUp, pteroDown;
+			plusButton, minusButton, chartsButton, pteroUp, pteroDown, soundOnImg, soundOffImg;
+	public static Image[] salto = new Image[12];
 	private Image icon;
 	private int leftIndent, upperIndent, width, height;
 
@@ -44,6 +45,8 @@ public class DImage {
 		loadChartsImage();
 		loadSTMFon();
 		loadPteroImagies();
+		loadSaltoImagies();
+		loadSoundSettingButtonsImagies();
 	}
 
 	private static void loadNumbersImagies() {
@@ -91,5 +94,15 @@ public class DImage {
 	private static void loadPteroImagies() {
 		pteroDown = loadImage("/pterodown.png");
 		pteroUp = loadImage("/pteroup.png");
+	}
+
+	private static void loadSaltoImagies() {
+		for (int i = 0; i < salto.length; i++)
+			salto[i] = loadImage("/salto" + (i + 1) + ".png");
+	}
+
+	private static void loadSoundSettingButtonsImagies() {
+		soundOnImg = loadImage("/soundOn.png");
+		soundOffImg = loadImage("/soundOff.png");
 	}
 }

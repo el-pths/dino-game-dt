@@ -54,11 +54,13 @@ public class Filter {
 	}
 
 	private void checkAndSetMaxInputValue() {
-		if (maxInputValue < Math.abs(points.getLast().x))
-			maxInputValue = Math.abs(points.getLast().x);
-		if (maxInputValue < Math.abs(points.getLast().y))
-			maxInputValue = Math.abs(points.getLast().y);
-		if (maxInputValue < Math.abs(points.getLast().z))
-			maxInputValue = Math.abs(points.getLast().z);
+		if (points.size() > 1) {
+			if (maxInputValue < Math.abs(points.getLast().x))
+				maxInputValue = Math.abs(points.getLast().x);
+			if (maxInputValue < Math.abs(points.getLast().y))
+				maxInputValue = Math.abs(points.getLast().y);
+			if (maxInputValue < Math.abs(points.getLast().z))
+				maxInputValue = Math.abs(points.getLast().z);
+		}
 	}
 }

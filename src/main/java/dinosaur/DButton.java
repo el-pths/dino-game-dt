@@ -11,7 +11,7 @@ import dinosaur.Control.State;
 public class DButton extends JButton {
 	private static final long serialVersionUID = 42L;
 	public static DButton startButton, selectButton, restartButton, continueButton, pauseButton, settingInButton,
-			settingsOutButton, gPlusButton, gMinusButton, openChartButton, closeChartButton;
+			settingsOutButton, gPlusButton, gMinusButton, openChartButton, closeChartButton, sound;
 
 	private static double horizontalStretch = 1.0, verticalStretch = 1.0;
 
@@ -21,7 +21,7 @@ public class DButton extends JButton {
 
 	public static enum buttonPurpose {
 		START_GAME, SELECT_PORT, RESTART_GAME, CONTINUE_GAME, PAUSE, GET_SETTINGS_MENU, CLOSE_SETTINGS_MENU_S_M,
-		CLOSE_SETTINGS_MENU_P_M, CLOSE_SETTINGS_MENU_GO_M, PLUS_GRAVITY, MINUS_GRAVITY, OPEN_CHART, CLOSE_CHART;
+		CLOSE_SETTINGS_MENU_P_M, CLOSE_SETTINGS_MENU_GO_M, PLUS_GRAVITY, MINUS_GRAVITY, OPEN_CHART, CLOSE_CHART, SOUND;
 	}
 
 	private DButton(Window window, int horizontalIndent, int verticalIndent, int width, int height, Image icon,
@@ -77,16 +77,25 @@ public class DButton extends JButton {
 					Control.state = State.SETTING_P_M;
 					break;
 				case CLOSE_SETTINGS_MENU_GO_M:
+					window.tryRemove(sound);
+					window.tryRemove(DComboBox.portsComboBox);
+					window.tryRemove(selectButton);
 					window.tryRemove(settingsOutButton);
 					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
 					Control.state = State.SETTING_GO_M;
 					break;
 				case CLOSE_SETTINGS_MENU_P_M:
+					window.tryRemove(sound);
+					window.tryRemove(DComboBox.portsComboBox);
+					window.tryRemove(selectButton);
 					window.tryRemove(settingsOutButton);
 					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
 					Control.state = State.SETTING_P_M;
 					break;
 				case CLOSE_SETTINGS_MENU_S_M:
+					window.tryRemove(sound);
+					window.tryRemove(DComboBox.portsComboBox);
+					window.tryRemove(selectButton);
 					window.tryRemove(settingsOutButton);
 					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
 					Control.state = State.SETTING_S_M;
@@ -111,6 +120,15 @@ public class DButton extends JButton {
 				case CLOSE_CHART:
 					window.tryRemove(closeChartButton);
 					Control.state = State.SETTING_ST_M;
+					break;
+				case SOUND:
+					if (Sound.isSettedOn) {
+						Sound.isSettedOn = false;
+						sound.icon = DImage.soundOffImg;
+					} else {
+						Sound.isSettedOn = true;
+						sound.icon = DImage.soundOnImg;
+					}
 					break;
 				default:
 					System.out.println("break");
@@ -158,6 +176,8 @@ public class DButton extends JButton {
 			return openChartButton;
 		case CLOSE_CHART:
 			return closeChartButton;
+		case SOUND:
+			return sound;
 		default:
 			return null;
 		}
@@ -217,6 +237,9 @@ public class DButton extends JButton {
 			closeChartButton = currentButton;
 			window.add(closeChartButton);
 			break;
+		case SOUND:
+			sound = currentButton;
+			window.add(sound);
 		default:
 			break;
 		}

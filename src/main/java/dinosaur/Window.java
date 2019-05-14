@@ -49,14 +49,33 @@ public class Window extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent kEvt) {
 			int keyNum = kEvt.getKeyCode();
-			if (Control.state == Control.State.GAMMING_PROCESS) {
+			if (Control.state == Control.State.GAMMING_PROCESS)
 				switch (keyNum) {
 				case KeyEvent.VK_SPACE:
 					Dino.dino.startJump();
 					break;
+				case KeyEvent.VK_S:
+					Dino.dino.startSalto();
+					break;
 				}
-			} else if (Control.state == Control.State.SETTINGS_MENU && keyNum == KeyEvent.VK_SPACE)
-				Dino.presentable.startJump();
+			else if (Control.state == Control.State.SETTINGS_MENU)
+				switch (keyNum) {
+				case KeyEvent.VK_SPACE:
+					Dino.presentable.startJump();
+					break;
+				case KeyEvent.VK_S:
+					Dino.presentable.startSalto();
+					break;
+				}
+			else if (Control.state == Control.State.CHART)
+				switch (keyNum) {
+				case KeyEvent.VK_SPACE:
+					if (Chart.pause)
+						Chart.pause = false;
+					else
+						Chart.pause = true;
+					break;
+				}
 		}
 	}
 

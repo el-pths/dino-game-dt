@@ -6,7 +6,6 @@ import java.awt.Image;
 import java.util.Arrays;
 
 public class Cactuses {
-
 	public static Cactuses cactuses;
 
 	public int amount, amountGenerated;

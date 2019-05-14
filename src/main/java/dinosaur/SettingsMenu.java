@@ -44,6 +44,7 @@ public class SettingsMenu {
 		DButton.setButton(window, Dino.presentable.horizontalIndent - 60, 450, 60, 60, DImage.minusButton,
 				DButton.buttonPurpose.MINUS_GRAVITY);
 		DButton.setButton(window, 470, 184, 80, 80, DImage.chartsButton, DButton.buttonPurpose.OPEN_CHART);
+		DButton.setButton(window, 1200, 300, 60, 60, DImage.soundOnImg, DButton.buttonPurpose.SOUND);
 	}
 
 	public static void draw(Graphics graphics) {
@@ -55,6 +56,7 @@ public class SettingsMenu {
 		DButton.gMinusButton.draw(graphics);
 		DButton.gPlusButton.draw(graphics);
 		DButton.openChartButton.draw(graphics);
+		DButton.sound.draw(graphics);
 		Dino.presentable.draw(graphics);
 	}
 
@@ -104,6 +106,7 @@ public class SettingsMenu {
 		DButton.gMinusButton.setTouchableLocation(windowWidth, windowHeight);
 		DButton.gPlusButton.setTouchableLocation(windowWidth, windowHeight);
 		DButton.openChartButton.setTouchableLocation(windowWidth, windowHeight);
+		DButton.sound.setTouchableLocation(windowWidth, windowHeight);
 	}
 
 	public static void recordPresentableDino(double position) {

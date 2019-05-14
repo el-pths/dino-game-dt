@@ -20,6 +20,7 @@ public class StartMenu {
 		Field.field.draw(graphics);
 		Clouds.clouds.draw(graphics);
 		Cactuses.cactuses.draw(graphics);
+		Pteros.pteros.draw(graphics);
 		Dino.dino.draw(graphics);
 		Window.makeBlur(5);
 		DButton.startButton.draw(graphics);

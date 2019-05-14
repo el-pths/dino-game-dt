@@ -8,7 +8,7 @@ import dinosaur.DButton.buttonPurpose;
 public class GamingProcess {
 
 	public static void setPauseButton(Window window) {
-		int width = 100, height = 100, leftIndent = 10, upperIndent = 10;
+		int width = 38, height = 50, leftIndent = 20, upperIndent = 20;
 		DButton.setButton(window, leftIndent, upperIndent, width, height, DImage.pauseButtonImg, buttonPurpose.PAUSE);
 	}
 
@@ -36,6 +36,11 @@ public class GamingProcess {
 		Dino.dino.record(position);
 		Clouds.clouds.record(position);
 		EnemyLogic.reactIfCollisionHappened(Dino.dino, Cactuses.cactuses);
+		if (Control.state != Control.State.GAMMING_PROCESS)
+			return;
+		EnemyLogic.reactIfCollisionHappened(Dino.dino, Pteros.pteros);
+		if (Control.state != Control.State.GAMMING_PROCESS)
+			return;
 		EnemyLogic.generateEnemyIfItNeeds(Cactuses.cactuses, Pteros.pteros);
 	}
 

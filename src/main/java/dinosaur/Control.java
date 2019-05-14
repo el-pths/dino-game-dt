@@ -1,6 +1,10 @@
 package dinosaur;
 
 import java.awt.Graphics;
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Control {
 
@@ -14,6 +18,11 @@ public class Control {
 
 	public static void main(String[] args) {
 		DImage.loadAllImagies();
+		try {
+			Sound.loadSoundFiles();
+		} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+			e.printStackTrace();
+		}
 		Dino.loadDinoImagies();
 		Field.loadFieldPartsImagies();
 		Cactuses.loadCactusesImagies();
@@ -84,6 +93,8 @@ public class Control {
 		case CHART:
 			Chart.draw(graphics);
 			Chart.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
+			if (Port.app != null && Port.app.areWeReadingFile)
+				Chart.readFromFile();
 		default:
 			break;
 		}

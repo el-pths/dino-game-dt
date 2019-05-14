@@ -1,5 +1,6 @@
 package dinosaur;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
@@ -11,7 +12,7 @@ public class Pteros {
 
 	private static final int maxPterosAmount = 10, edgeOfField = -300;
 
-	private static enum State {
+	public static enum State {
 		WING_UP, WING_DOWN;
 	}
 
@@ -27,9 +28,9 @@ public class Pteros {
 
 	public class Ptero {
 		public int distance, verticalIndent;
-		public TouchableRectangle[] touchRects;
+		public TouchableRectangle[] touchRectsWingUp, touchRectsWingDown;
 		private int width, height, counterHoldingWing, restrictionHoldingWing;
-		private State state;
+		public State state;
 
 		public Ptero() {
 			this.state = State.WING_UP;
@@ -39,6 +40,7 @@ public class Pteros {
 			this.verticalIndent = 140;
 			this.counterHoldingWing = 0;
 			this.restrictionHoldingWing = 16;
+			this.setTouchableRectangles();
 		}
 
 		public class TouchableRectangle {
@@ -53,10 +55,20 @@ public class Pteros {
 		}
 
 		private void setTouchableRectangles() {
-
+			touchRectsWingDown = new TouchableRectangle[4];
+			touchRectsWingDown[0] = new TouchableRectangle(22, 18, 8, 23);
+			touchRectsWingDown[1] = new TouchableRectangle(4, 23, 18, 18);
+			touchRectsWingDown[2] = new TouchableRectangle(35, 36, 8, 50);
+			touchRectsWingDown[3] = new TouchableRectangle(43, 45, 54, 18);
+			touchRectsWingUp = new TouchableRectangle[4];
+			touchRectsWingUp[0] = new TouchableRectangle(22, 18, 8, 23);
+			touchRectsWingUp[1] = new TouchableRectangle(4, 23, 18, 18);
+			touchRectsWingUp[2] = new TouchableRectangle(30, 5, 41, 40);
+			touchRectsWingUp[3] = new TouchableRectangle(39, 50, 52, 9);
 		}
 
 		public void draw(Graphics graphics) {
+			setTouchableRectangles();
 			graphics.drawImage(getImageDependingState(), distance, verticalIndent, width, height, null);
 		}
 
@@ -101,6 +113,23 @@ public class Pteros {
 	public void draw(Graphics graphics) {
 		for (int i = 0; i < amount; i++)
 			list[i].draw(graphics);
+		drawTouchRects(graphics);
+	}
+
+	private void drawTouchRects(Graphics graphics) {
+		graphics.setColor(Color.GREEN);
+		for (int i = 0; i < amount; i++)
+			if (pteros.list[i].state == State.WING_DOWN) {
+				for (int j = 0; j < list[i].touchRectsWingDown.length; j++)
+					graphics.fillRect(list[i].distance + list[i].touchRectsWingDown[j].leftIndent,
+							list[i].verticalIndent + list[i].touchRectsWingDown[j].upperIndent,
+							list[i].touchRectsWingDown[j].width, list[i].touchRectsWingDown[j].height);
+			} else {
+				for (int j = 0; j < list[i].touchRectsWingUp.length; j++)
+					graphics.fillRect(list[i].distance + list[i].touchRectsWingUp[j].leftIndent,
+							list[i].verticalIndent + list[i].touchRectsWingUp[j].upperIndent,
+							list[i].touchRectsWingUp[j].width, list[i].touchRectsWingUp[j].height);
+			}
 	}
 
 	public void generateNewPtero() {

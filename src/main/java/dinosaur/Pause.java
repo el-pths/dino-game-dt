@@ -22,6 +22,7 @@ public class Pause {
 		Field.field.draw(graphics);
 		Clouds.clouds.draw(graphics);
 		Cactuses.cactuses.draw(graphics);
+		Pteros.pteros.draw(graphics);
 		Dino.dino.draw(graphics);
 		Window.makeSmoothBlur(5, 200);
 		drawLabel(graphics);

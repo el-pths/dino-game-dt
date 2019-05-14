@@ -2,12 +2,16 @@ package dinosaur;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Scanner;
 
 import dinosaur.Control.State;
 
 public class Chart {
 
 	public static State previousState;
+	public static boolean pause = false;
+
+	private static Scanner sc;
 
 	private static Chart x = new Chart(120, 10, Window.bufferedImageWidth / 3, Window.bufferedImageHeight / 2, axis.X);
 
@@ -49,10 +53,11 @@ public class Chart {
 	private void drawChart(Graphics graphics) {
 		setGraphicsColor(graphics);
 		for (int i = 0; i < Filter.filter.points.size() - 1; i++)
-			graphics.drawLine(i * getListSize() / width + leftIndent,
-					-1 * getPointValue(i) * height / getMaxValue() + upperIndent + height / 2,
-					(i + 1) * getListSize() / width + leftIndent,
-					-1 * getPointValue(i + 1) * height / getMaxValue() + upperIndent + height / 2);
+			if (getMaxValue() != 0)
+				graphics.drawLine(i * getListSize() / width + leftIndent,
+						-1 * getPointValue(i) * height / getMaxValue() + upperIndent + height / 2,
+						(i + 1) * getListSize() / width + leftIndent,
+						-1 * getPointValue(i + 1) * height / getMaxValue() + upperIndent + height / 2);
 		drawAxis(graphics);
 	}
 
@@ -85,9 +90,15 @@ public class Chart {
 	}
 
 	public static void draw(Graphics graphics) {
-		Background.draw(graphics);
-		x.drawChart(graphics);
+		if (!pause) {
+			Background.draw(graphics);
+			drawAllAxises(graphics);
+		}
 		DButton.closeChartButton.draw(graphics);
+	}
+
+	private static void drawAllAxises(Graphics graphics) {
+		x.drawChart(graphics);
 	}
 
 	public static void correctButtonsTouchableSpace(int windowWidth, int windowHeight) {
@@ -96,6 +107,25 @@ public class Chart {
 
 	public static void set(Window window) {
 		DButton.setButton(window, 20, 20, 80, 80, DImage.chartsButton, DButton.buttonPurpose.CLOSE_CHART);
+	}
+
+	public static void readFromFile() {
+		checkScanner();
+		if (!pause)
+			recordFromFile();
+	}
+
+	private static void checkScanner() {
+		if (sc == null || !sc.hasNext())
+			setScanner();
+	}
+
+	private static void setScanner() {
+		sc = new Scanner(Chart.class.getResourceAsStream("/jumps.txt"));
+	}
+
+	private static void recordFromFile() {
+		Filter.filter.addPoint(sc.nextInt(), sc.nextInt(), sc.nextInt());
 	}
 
 }

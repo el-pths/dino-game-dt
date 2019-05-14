@@ -14,10 +14,11 @@ public class Port {
 
 	private static final int BAUD_RATE = Integer.parseInt(System.getProperty("baud", "115200"));
 
-	private static Port app;
+	public static Port app;
 	private StringBuffer incomingLine = new StringBuffer();
 	private SerialPort port;
 	private String portName;
+	public boolean areWeReadingFile = false;
 
 	public static String getSettedPortName() {
 		if (app != null)
@@ -27,10 +28,11 @@ public class Port {
 	}
 
 	public static void setComboBox(JFrame window, int leftIndent, int upperIndent, int width, int height) {
-		String[] extports = new String[SerialPortList.getPortNames().length + 1];
-		for (int i = 0; i < extports.length - 1; i++)
+		String[] extports = new String[SerialPortList.getPortNames().length + 2];
+		for (int i = 0; i < extports.length - 2; i++)
 			extports[i + 1] = SerialPortList.getPortNames()[i];
 		extports[0] = "Without port";
+		extports[extports.length - 1] = "Read file";
 		DComboBox.setPortsComboBox(window, extports, "Without port", new Font("Comic Sans MS", Font.BOLD, 18),
 				leftIndent, upperIndent, width, height);
 		window.add(DComboBox.portsComboBox);
@@ -39,13 +41,23 @@ public class Port {
 	public static void setPort(String portName) {
 		app = new Port();
 		app.portName = portName;
-		if (portName != "Without port")
+		switch (portName) {
+		case "Without port":
+			app.areWeReadingFile = false;
+			break;
+		case "Read file":
+			app.areWeReadingFile = true;
+			break;
+		default:
+			app.areWeReadingFile = false;
 			try {
 				app.connect();
 			} catch (Exception e) {
 				System.out.println("Error during initialization: " + e.getMessage());
 				return;
 			}
+			break;
+		}
 	}
 
 	private void connect() {
