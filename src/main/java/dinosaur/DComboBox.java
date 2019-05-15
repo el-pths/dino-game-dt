@@ -39,7 +39,6 @@ public class DComboBox extends JComboBox<String> {
 			@SuppressWarnings("unchecked")
 			public void actionPerformed(ActionEvent event) {
 				portName = (String) ((JComboBox<String>) event.getSource()).getSelectedItem();
-				System.out.println(portName);
 			}
 		});
 	}

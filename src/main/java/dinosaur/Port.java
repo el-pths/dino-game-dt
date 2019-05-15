@@ -128,7 +128,7 @@ public class Port {
 			String str = incomingLine.substring(0, lineEndPos);
 			Scanner line = new Scanner(str);
 			try {
-				Filter.filter.addPoint(line.nextInt(), line.nextInt(), line.nextInt());
+				Filter.filter.newPoint(line.nextInt(), line.nextInt(), line.nextInt());
 			} catch (Exception e) {
 				// broken line, do nothing about it
 			}
@@ -138,7 +138,7 @@ public class Port {
 	}
 
 	public static void closeAllPorts() {
-		if (app != null && app.portName != "Without port")
+		if (app != null)
 			app.closePort();
 	}
 

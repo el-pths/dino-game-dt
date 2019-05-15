@@ -44,7 +44,7 @@ public class SettingsMenu {
 		DButton.setButton(window, Dino.presentable.horizontalIndent - 60, 450, 60, 60, DImage.minusButton,
 				DButton.buttonPurpose.MINUS_GRAVITY);
 		DButton.setButton(window, 470, 184, 80, 80, DImage.chartsButton, DButton.buttonPurpose.OPEN_CHART);
-		DButton.setButton(window, 1200, 300, 60, 60, DImage.soundOnImg, DButton.buttonPurpose.SOUND);
+		DButton.setButton(window, 590, 184, 80, 80, DImage.soundOnImg, DButton.buttonPurpose.SOUND);
 	}
 
 	public static void draw(Graphics graphics) {
@@ -57,6 +57,7 @@ public class SettingsMenu {
 		DButton.gPlusButton.draw(graphics);
 		DButton.openChartButton.draw(graphics);
 		DButton.sound.draw(graphics);
+		drawDinoJumpKoef(graphics);
 		Dino.presentable.draw(graphics);
 	}
 
@@ -98,6 +99,14 @@ public class SettingsMenu {
 		graphics.setColor(Color.RED);
 		graphics.setFont(font);
 		graphics.drawString("Settings menu", 150, 100);
+	}
+
+	private static void drawDinoJumpKoef(Graphics graphics) {
+		graphics.setColor(Color.RED);
+		graphics.setFont(new Font("Comic Sans MS", Font.BOLD, 40));
+		double realKoef = ((Math.round(Dino.getJumpKoef() * 10))) / 10.0;
+		graphics.drawString((String) ("g : " + ((Math.round((1.0 + Math.sqrt(realKoef) - 2.01950231) * 100))) / 100.0),
+				Dino.presentable.horizontalIndent - 40, 30);
 	}
 
 	public static void correctButtonsTouchableSpace(int windowWidth, int windowHeight) {

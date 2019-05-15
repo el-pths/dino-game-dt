@@ -27,7 +27,6 @@ public class Control {
 		Field.loadFieldPartsImagies();
 		Cactuses.loadCactusesImagies();
 		Clouds.loadCloudImage();
-		Filter.setFilter(200);
 		startNewGame();
 		Window.setWindowAndStartScript("First");
 	}
@@ -95,13 +94,15 @@ public class Control {
 			Chart.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
 			if (Port.app != null && Port.app.areWeReadingFile)
 				Chart.readFromFile();
+			if (!DataInterpretation.isNormalGravityValueSetted())
+				Analisys.setGravityValueIfSELets(Filter.filter);
 		default:
 			break;
 		}
 	}
 
 	public static void startNewGame() {
-		Dino.setDino("my", 7, 134, 340, 4.45);
+		Dino.setDino("my", 7, 134, 340);
 		Field.setField(70, 21, Dino.dino.height + Dino.dino.verticalIndent - 40, 54);
 		Cactuses.setCactuses();
 		Clouds.setClouds();

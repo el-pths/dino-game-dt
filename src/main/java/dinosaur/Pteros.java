@@ -10,7 +10,7 @@ public class Pteros {
 	public Ptero[] list;
 	public int amount, amountGenerated;
 
-	private static final int maxPterosAmount = 10, edgeOfField = -300;
+	private static final int edgeOfField = -300;
 
 	public static enum State {
 		WING_UP, WING_DOWN;
@@ -18,7 +18,7 @@ public class Pteros {
 
 	private Pteros() {
 		this.amount = 0;
-		this.list = new Ptero[maxPterosAmount];
+		this.list = new Ptero[10];
 		this.amountGenerated = 0;
 	}
 
@@ -144,7 +144,7 @@ public class Pteros {
 	}
 
 	private void removeFirst() {
-		for (int i = 0; i < amount && i < maxPterosAmount; i++)
+		for (int i = 0; i < amount && i < list.length - 1; i++)
 			list[i] = list[i + 1];
 		amount--;
 	}

@@ -92,7 +92,7 @@ public class EnemyLogic {
 			longestDistTo = cactuses.list[cactuses.amount - 1].distance;
 		if (pteros.amount > 0 && pteros.list[pteros.amount - 1].distance > longestDistTo)
 			longestDistTo = pteros.list[pteros.amount - 1].distance;
-		if (longestDistTo > reactDist || longestDistTo == 0) {
+		if (longestDistTo < reactDist || longestDistTo == 0) {
 			if (Math.random() * 100 > possobilityPercents)
 				if (pteros.amountGenerated * 3 > cactuses.amountGenerated || cactuses.amountGenerated == 0) {
 					if (cactuses.amount <= cactuses.list.length)

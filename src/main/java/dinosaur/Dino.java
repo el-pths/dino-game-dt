@@ -24,14 +24,13 @@ public class Dino {
 	private int saltoStadia, saltoCounter;
 	private static int restrictionStayingInOnePoseWhileSalto = 4;
 
-	private static double koefStep = 0.1;
+	private static double koefStep = 0.1, jumpKoefParab = 4.45;
 
 	private enum DinoState {
 		JUMP, STAND, RUN_RIGHT_LEG, RUN_LEFT_LEG, SALTO;
 	}
 
-	private Dino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
-			double jumpKoefParab) {
+	private Dino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent) {
 		this.name = name;
 		this.bounceHeight = 0;
 		this.heightRestriction = 300;
@@ -59,10 +58,9 @@ public class Dino {
 		this.saltoCounter = 0;
 	}
 
-	public static void setDino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent,
-			double jumpKoefParab) {
-		dino = new Dino(name, restrictionStandingOnTheLeg, horizontalIndent, verticalIndent, jumpKoefParab);
-		presentable = new Dino(name, 0, 1000, 340, jumpKoefParab);
+	public static void setDino(String name, int restrictionStandingOnTheLeg, int horizontalIndent, int verticalIndent) {
+		dino = new Dino(name, restrictionStandingOnTheLeg, horizontalIndent, verticalIndent);
+		presentable = new Dino(name, 0, 1000, 340);
 	}
 
 	public static void loadDinoImagies() {
@@ -205,14 +203,21 @@ public class Dino {
 	}
 
 	public void changeDinoKoefParab(boolean isThisPlus) {
-		if (isThisPlus)
-			jumpKoef += koefStep;
-		else
-			jumpKoef -= koefStep;
+		if (isThisPlus) {
+			if (jumpKoef < 9.6) {
+				jumpKoef += koefStep;
+				jumpKoefParab += koefStep;
+			}
+		} else {
+			if (jumpKoef > 2.4) {
+				jumpKoef -= koefStep;
+				jumpKoefParab -= koefStep;
+			}
+		}
 	}
 
-	public double getJumpKoef() {
-		return jumpKoef;
+	public static double getJumpKoef() {
+		return jumpKoefParab;
 	}
 
 	public void setJumpKoef(double newKoef) {

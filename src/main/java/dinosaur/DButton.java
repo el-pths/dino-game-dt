@@ -81,7 +81,7 @@ public class DButton extends JButton {
 					window.tryRemove(DComboBox.portsComboBox);
 					window.tryRemove(selectButton);
 					window.tryRemove(settingsOutButton);
-					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
+					Dino.dino.setJumpKoef(Dino.getJumpKoef());
 					Control.state = State.SETTING_GO_M;
 					break;
 				case CLOSE_SETTINGS_MENU_P_M:
@@ -89,7 +89,7 @@ public class DButton extends JButton {
 					window.tryRemove(DComboBox.portsComboBox);
 					window.tryRemove(selectButton);
 					window.tryRemove(settingsOutButton);
-					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
+					Dino.dino.setJumpKoef(Dino.getJumpKoef());
 					Control.state = State.SETTING_P_M;
 					break;
 				case CLOSE_SETTINGS_MENU_S_M:
@@ -97,16 +97,14 @@ public class DButton extends JButton {
 					window.tryRemove(DComboBox.portsComboBox);
 					window.tryRemove(selectButton);
 					window.tryRemove(settingsOutButton);
-					Dino.dino.setJumpKoef(Dino.presentable.getJumpKoef());
+					Dino.dino.setJumpKoef(Dino.getJumpKoef());
 					Control.state = State.SETTING_S_M;
 					break;
 				case PLUS_GRAVITY:
 					Dino.presentable.changeDinoKoefParab(true);
-					System.out.println(Dino.presentable.getJumpKoef());
 					break;
 				case MINUS_GRAVITY:
 					Dino.presentable.changeDinoKoefParab(false);
-					System.out.println(Dino.presentable.getJumpKoef());
 					break;
 				case OPEN_CHART:
 					window.tryRemove(DComboBox.portsComboBox);
@@ -131,7 +129,6 @@ public class DButton extends JButton {
 					}
 					break;
 				default:
-					System.out.println("break");
 					break;
 
 				}

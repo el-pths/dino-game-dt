@@ -11,12 +11,12 @@ public class Cactuses {
 	public int amount, amountGenerated;
 	public Cactus[] list;
 
-	private static final int maxCactusesAmount = 10, edgeOfField = -300;
+	private static final int edgeOfField = -300;
 	private static Image[] imgs;
 	private static String[] types = { "b1ig1", "b1ig2", "b1ig3", "b1ig4", "b1ig5", "b1ig6", "m2id1", "m2id2", "d3if1" };
 
 	public Cactuses() {
-		this.list = new Cactus[maxCactusesAmount];
+		this.list = new Cactus[10];
 		this.amount = 0;
 		this.amountGenerated = 0;
 	}
@@ -156,7 +156,7 @@ public class Cactuses {
 	}
 
 	private void removeFirst() {
-		for (int i = 0; i < amount && i < maxCactusesAmount - 1; i++) {
+		for (int i = 0; i < amount && i < list.length - 1; i++) {
 			list[i] = list[i + 1];
 		}
 		amount--;
