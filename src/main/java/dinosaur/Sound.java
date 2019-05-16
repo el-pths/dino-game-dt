@@ -1,6 +1,7 @@
 package dinosaur;
 
 import java.io.IOException;
+import java.io.BufferedInputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -16,7 +17,8 @@ public class Sound {
 
 	public static void loadSoundFiles() throws UnsupportedAudioFileException, IOException, LineUnavailableException {
 		clip = AudioSystem.getClip();
-		inputStream = AudioSystem.getAudioInputStream(Sound.class.getResourceAsStream("/jump-sound.wav"));
+		inputStream = AudioSystem.getAudioInputStream(
+			new BufferedInputStream(Sound.class.getResourceAsStream("/jump-sound.wav")));
 		clip.open(inputStream);
 	}
 
