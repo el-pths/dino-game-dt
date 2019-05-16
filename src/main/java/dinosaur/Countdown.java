@@ -1,33 +1,34 @@
 package dinosaur;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 
 public class Countdown {
 
 	private static long previousTime = -1, sumTime = 0;
-	private static int maxSquareSideValue = 200;
-	private static count countNow = count.THREE;
-	private static int oneStepTime = 2000, koefOfAnimationSlowness = 1;
+	private static int squareSide = 80;
+	private static Count countNow = Count.NINE;
+	private static int oneStepTime = 1000, koefOfAnimationSlowness = 1;
 
-	private static enum count {
-		ONE, TWO, THREE;
+	private static enum Count {
+		ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE;
 	}
 
 	public static void drawCountdown(Graphics graphics) {
 		if (previousTime == -1) {
 			previousTime = System.currentTimeMillis();
 		} else {
-			loadSumTime();
-			changeCountIfItNeeds();
 			Background.draw(graphics);
 			Field.field.draw(graphics);
 			Clouds.clouds.draw(graphics);
 			Cactuses.cactuses.draw(graphics);
 			Dino.dino.draw(graphics);
-			int squareSide = (int) ((double) maxSquareSideValue * (1000.0 / (double) sumTime));
-			graphics.drawImage(getImageOfCountNow(), 672 - squareSide / 2, 270 - squareSide / 2, squareSide, squareSide,
-					null);
+			drawWords(graphics);
+			graphics.drawImage(getImageOfCountNow(), 617, 275, squareSide, squareSide, null);
+			loadSumTime();
+			changeCountIfItNeeds();
 		}
 	}
 
@@ -39,20 +40,55 @@ public class Countdown {
 	private static void changeCountIfItNeeds() {
 		if (sumTime > oneStepTime)
 			switch (countNow) {
+			case NINE:
+				countNow = Count.EIGHT;
+				sumTime -= oneStepTime;
+				break;
+			case EIGHT:
+				countNow = Count.SEVEN;
+				sumTime -= oneStepTime;
+				break;
+			case SEVEN:
+				countNow = Count.SIX;
+				sumTime -= oneStepTime;
+				break;
+			case SIX:
+				countNow = Count.FIVE;
+				sumTime -= oneStepTime;
+				break;
+			case FIVE:
+				countNow = Count.FOUR;
+				sumTime -= oneStepTime;
+				break;
+			case FOUR:
+				countNow = Count.THREE;
+				sumTime -= oneStepTime;
+				break;
 			case THREE:
-				countNow = count.TWO;
+				countNow = Count.TWO;
 				sumTime -= oneStepTime;
 				break;
 			case TWO:
-				countNow = count.ONE;
+				countNow = Count.ONE;
 				sumTime -= oneStepTime;
 				break;
 			case ONE:
 				sumTime = 0;
 				previousTime = -1;
-				countNow = count.THREE;
-				Control.state = Control.State.SETTING_G_P;
+				countNow = Count.NINE;
+				Control.state = Control.State.CALIBRATION;
 			}
+	}
+
+	private static void drawWords(Graphics graphics) {
+		graphics.setColor(Color.RED);
+		graphics.setFont(new Font("Comic Sans MS", Font.BOLD, 50));
+		graphics.drawString("Get ready to calibrate gravity acceleration value.", 10, 70);
+		graphics.drawString("Please stand and lock in this position.", 10, 200);
+		if (countNow == Count.ONE)
+			graphics.drawString("Calibration will starts in     second.", 10, 330);
+		else
+			graphics.drawString("Calibration will starts in     seconds.", 10, 330);
 	}
 
 	private static Image getImageOfCountNow() {
@@ -61,8 +97,20 @@ public class Countdown {
 			return DImage.one;
 		case TWO:
 			return DImage.two;
-		default:
+		case THREE:
 			return DImage.three;
+		case FOUR:
+			return DImage.four;
+		case FIVE:
+			return DImage.five;
+		case SIX:
+			return DImage.six;
+		case SEVEN:
+			return DImage.seven;
+		case EIGHT:
+			return DImage.eight;
+		default:
+			return DImage.nine;
 		// Add loading icon instead default giving icon of "three"
 		}
 	}

@@ -43,8 +43,8 @@ public class SettingsMenu {
 				DImage.plusButton, DButton.buttonPurpose.PLUS_GRAVITY);
 		DButton.setButton(window, Dino.presentable.horizontalIndent - 60, 450, 60, 60, DImage.minusButton,
 				DButton.buttonPurpose.MINUS_GRAVITY);
-		DButton.setButton(window, 470, 184, 80, 80, DImage.chartsButton, DButton.buttonPurpose.OPEN_CHART);
-		DButton.setButton(window, 590, 184, 80, 80, DImage.soundOnImg, DButton.buttonPurpose.SOUND);
+		DButton.setButton(window, 470, 174, 80, 80, DImage.chartsButton, DButton.buttonPurpose.OPEN_CHART);
+		DButton.setButton(window, 590, 174, 80, 80, DImage.soundOnImg, DButton.buttonPurpose.SOUND);
 	}
 
 	public static void draw(Graphics graphics) {
@@ -63,35 +63,40 @@ public class SettingsMenu {
 
 	private static void drawChosenPortName(Graphics graphics) {
 		graphics.setColor(Color.LIGHT_GRAY);
-		graphics.fillRect(DComboBox.portsComboBox.leftIndent, DComboBox.portsComboBox.upperIndent,
+		int plusUpperIndent = 25;
+		graphics.fillRect(DComboBox.portsComboBox.leftIndent, DComboBox.portsComboBox.upperIndent + plusUpperIndent,
 				DComboBox.portsComboBox.width, DComboBox.portsComboBox.height);
 		graphics.setColor(Color.BLACK);
 		graphics.setFont(new Font("Comic Sans MS", Font.BOLD, DComboBox.portsComboBox.font.getSize() * 2));
 		graphics.drawString(DComboBox.portsComboBox.portName, DComboBox.portsComboBox.leftIndent + 3,
-				DComboBox.portsComboBox.height + DComboBox.portsComboBox.upperIndent - 8);
-		graphics.drawLine(DComboBox.portsComboBox.leftIndent, DComboBox.portsComboBox.upperIndent,
+				DComboBox.portsComboBox.height + DComboBox.portsComboBox.upperIndent - 8 + plusUpperIndent);
+		graphics.drawLine(DComboBox.portsComboBox.leftIndent, DComboBox.portsComboBox.upperIndent + plusUpperIndent,
 				DComboBox.portsComboBox.leftIndent,
-				DComboBox.portsComboBox.upperIndent + DComboBox.portsComboBox.height);
-		graphics.drawLine(DComboBox.portsComboBox.leftIndent, DComboBox.portsComboBox.upperIndent,
+				DComboBox.portsComboBox.upperIndent + plusUpperIndent + DComboBox.portsComboBox.height);
+		graphics.drawLine(DComboBox.portsComboBox.leftIndent, DComboBox.portsComboBox.upperIndent + plusUpperIndent,
 				DComboBox.portsComboBox.leftIndent + DComboBox.portsComboBox.width,
-				DComboBox.portsComboBox.upperIndent);
+				DComboBox.portsComboBox.upperIndent + plusUpperIndent);
 		graphics.drawLine(DComboBox.portsComboBox.leftIndent + DComboBox.portsComboBox.width,
-				DComboBox.portsComboBox.upperIndent, DComboBox.portsComboBox.leftIndent + DComboBox.portsComboBox.width,
-				DComboBox.portsComboBox.upperIndent + DComboBox.portsComboBox.height);
-		graphics.drawLine(DComboBox.portsComboBox.leftIndent,
-				DComboBox.portsComboBox.upperIndent + DComboBox.portsComboBox.height,
+				DComboBox.portsComboBox.upperIndent + plusUpperIndent,
 				DComboBox.portsComboBox.leftIndent + DComboBox.portsComboBox.width,
-				DComboBox.portsComboBox.upperIndent + DComboBox.portsComboBox.height);
+				DComboBox.portsComboBox.upperIndent + plusUpperIndent + DComboBox.portsComboBox.height);
+		graphics.drawLine(DComboBox.portsComboBox.leftIndent,
+				DComboBox.portsComboBox.upperIndent + plusUpperIndent + DComboBox.portsComboBox.height,
+				DComboBox.portsComboBox.leftIndent + DComboBox.portsComboBox.width,
+				DComboBox.portsComboBox.upperIndent + plusUpperIndent + DComboBox.portsComboBox.height);
 		graphics.setFont(
 				new Font("Comic Sans MS", Font.BOLD, (int) ((double) DComboBox.portsComboBox.font.getSize() * 1.5)));
 		graphics.setColor(Color.RED);
 		if (Port.getSettedPortName() != "Without port") {
-			graphics.drawString(("The port " + Port.getSettedPortName() + " is setted"),
+			graphics.drawString(("The port " + Port.getSettedPortName() + " is set"),
 					DComboBox.portsComboBox.leftIndent + 3,
-					DComboBox.portsComboBox.height * 2 + DComboBox.portsComboBox.upperIndent - 8);
+					DComboBox.portsComboBox.height * 2 + DComboBox.portsComboBox.upperIndent + plusUpperIndent - 8);
+		} else if (Port.getSettedPortName() == "Read file") {
+			graphics.drawString("File is set", DComboBox.portsComboBox.leftIndent + 3,
+					DComboBox.portsComboBox.height * 2 + DComboBox.portsComboBox.upperIndent + plusUpperIndent - 8);
 		} else {
-			graphics.drawString("No one port is setted", DComboBox.portsComboBox.leftIndent + 3,
-					DComboBox.portsComboBox.height * 2 + DComboBox.portsComboBox.upperIndent - 8);
+			graphics.drawString("No one port is set", DComboBox.portsComboBox.leftIndent + 3,
+					DComboBox.portsComboBox.height * 2 + DComboBox.portsComboBox.upperIndent + plusUpperIndent - 8);
 		}
 	}
 
@@ -105,7 +110,7 @@ public class SettingsMenu {
 		graphics.setColor(Color.RED);
 		graphics.setFont(new Font("Comic Sans MS", Font.BOLD, 40));
 		double realKoef = ((Math.round(Dino.getJumpKoef() * 10))) / 10.0;
-		graphics.drawString((String) ("g : " + ((Math.round((1.0 + Math.sqrt(realKoef) - 2.01950231) * 100))) / 100.0),
+		graphics.drawString((String) ("g : " + ((Math.round((1.0 + Math.sqrt(realKoef) - 2.11950231) * 100))) / 100.0),
 				Dino.presentable.horizontalIndent - 40, 30);
 	}
 

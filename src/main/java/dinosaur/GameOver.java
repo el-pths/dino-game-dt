@@ -12,7 +12,8 @@ public class GameOver {
 				width, height, DImage.restartButtonImg, buttonPurpose.RESTART_GAME);
 		DButton.setButton(window, 20, 200, 180, 180, DImage.settingsButtonImg, buttonPurpose.GET_SETTINGS_MENU);
 		SettingsMenu.fromWhat = Control.state;
-		window.remove(DButton.pauseButton);
+		if (Port.app != null && Filter.filter.isCalibrated)
+			DButton.setButton(window, 30, 120, 80, 80, DImage.recalibrateImg, buttonPurpose.RECALIBRATE);
 	}
 
 	public static void draw(Graphics graphics) {
@@ -26,11 +27,15 @@ public class GameOver {
 		DImage.gameoverImg.draw(graphics);
 		DButton.restartButton.draw(graphics);
 		DButton.settingInButton.draw(graphics);
+		if (Port.app != null && Filter.filter.isCalibrated)
+			DButton.recalibrate.draw(graphics);
 	}
 
 	public static void correctButtonsTouchableSpace(int windowWidth, int windowHeight) {
 		DButton.restartButton.setTouchableLocation(windowWidth, windowHeight);
 		DButton.settingInButton.setTouchableLocation(windowWidth, windowHeight);
+		if (Port.app != null && Filter.filter.isCalibrated)
+			DButton.recalibrate.setTouchableLocation(windowWidth, windowHeight);
 	}
 
 }

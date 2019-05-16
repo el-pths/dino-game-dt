@@ -15,6 +15,8 @@ public class Pause {
 		DButton.setButton(window, 20, 200, 180, 180, DImage.settingsButtonImg, buttonPurpose.GET_SETTINGS_MENU);
 		DButton.setButton(window, 20, 200, 180, 180, DImage.settingsButtonImg, buttonPurpose.GET_SETTINGS_MENU);
 		SettingsMenu.fromWhat = Control.state;
+		if (Port.app != null && Filter.filter.isCalibrated)
+			DButton.setButton(window, 30, 120, 80, 80, DImage.recalibrateImg, buttonPurpose.RECALIBRATE);
 	}
 
 	public static void draw(Graphics graphics) {
@@ -28,6 +30,8 @@ public class Pause {
 		drawLabel(graphics);
 		DButton.continueButton.draw(graphics);
 		DButton.settingInButton.draw(graphics);
+		if (Port.app != null && Filter.filter.isCalibrated)
+			DButton.recalibrate.draw(graphics);
 	}
 
 	private static void drawLabel(Graphics graphics) {
@@ -39,5 +43,7 @@ public class Pause {
 	public static void correctButtonsTouchableSpace(int windowWidth, int windowHeight) {
 		DButton.continueButton.setTouchableLocation(windowWidth, windowHeight);
 		DButton.settingInButton.setTouchableLocation(windowWidth, windowHeight);
+		if (Port.app != null && Filter.filter.isCalibrated)
+			DButton.recalibrate.setTouchableLocation(windowWidth, windowHeight);
 	}
 }

@@ -11,6 +11,7 @@ public class Filter {
 	static final int MAX_LIST_SIZE = 200;
 	static final int SMOOTH_COEFF = 2;
 
+	public boolean isCalibrated = false;
 	public int maxInputValue = 0;
 
 	LinkedList<Point> points = new LinkedList<Point>();
@@ -135,10 +136,14 @@ public class Filter {
 			cnt = points.size() - 1;
 		}
 		dt = (points.get(0).ts - points.get(cnt).ts) / (double) cnt;
+		isCalibrated = true;
+		System.out.println(gabs + " " + dt + " ");
 	}
 
 	public void analysis() {
 		Point pCur = points.getFirst();
+		System.out.println(state + " " + pCur.vert);
+		// && !jump ++ else if -||- && squat ....
 		if (pCur.vert > 0.91 && pCur.vert < 1.1) {
 			lastCalmTs = pCur.ts;
 			if (lastCalmTs - lastNotCalmTs > 200) {
@@ -165,7 +170,6 @@ public class Filter {
 			if (pushMax > pCur.vert + 0.1 && pCur.vert <= 1.1) {
 				state = State.IN_JUMP;
 				jumpStartTs = pCur.ts;
-				System.out.println("JUMPING: " + pushAccum);
 			}
 		}
 		if (state == State.IN_JUMP && pCur.ts - jumpStartTs > 200) {
@@ -177,9 +181,9 @@ public class Filter {
 	// This should return jump height if jump is detected
 	// or 0 if not
 	// jump height is in percents, not in pixels!
-	public int jumpDetected() {
+	public double jumpDetected() {
 		if (state == State.IN_JUMP && pushAccum >= MIN_JUMP) {
-			return (int) ((pushAccum - MIN_JUMP) / (GOOD_JUMP - MIN_JUMP) * 100);
+			return (((double) pushAccum - (double) MIN_JUMP) / ((double) GOOD_JUMP - (double) MIN_JUMP) * 100.0);
 		} else {
 			return 0;
 		}

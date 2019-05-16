@@ -11,7 +11,7 @@ import dinosaur.Control.State;
 public class DButton extends JButton {
 	private static final long serialVersionUID = 42L;
 	public static DButton startButton, selectButton, restartButton, continueButton, pauseButton, settingInButton,
-			settingsOutButton, gPlusButton, gMinusButton, openChartButton, closeChartButton, sound;
+			settingsOutButton, gPlusButton, gMinusButton, openChartButton, closeChartButton, sound, recalibrate;
 
 	private static double horizontalStretch = 1.0, verticalStretch = 1.0;
 
@@ -21,7 +21,8 @@ public class DButton extends JButton {
 
 	public static enum buttonPurpose {
 		START_GAME, SELECT_PORT, RESTART_GAME, CONTINUE_GAME, PAUSE, GET_SETTINGS_MENU, CLOSE_SETTINGS_MENU_S_M,
-		CLOSE_SETTINGS_MENU_P_M, CLOSE_SETTINGS_MENU_GO_M, PLUS_GRAVITY, MINUS_GRAVITY, OPEN_CHART, CLOSE_CHART, SOUND;
+		CLOSE_SETTINGS_MENU_P_M, CLOSE_SETTINGS_MENU_GO_M, PLUS_GRAVITY, MINUS_GRAVITY, OPEN_CHART, CLOSE_CHART, SOUND,
+		RECALIBRATE;
 	}
 
 	private DButton(Window window, int horizontalIndent, int verticalIndent, int width, int height, Image icon,
@@ -43,9 +44,7 @@ public class DButton extends JButton {
 				switch (purpose) {
 				case START_GAME:
 					Control.startNewGame();
-					window.tryRemove(DComboBox.portsComboBox);
-					window.tryRemove(startButton);
-					window.tryRemove(selectButton);
+					removeAll(window);
 					Control.state = Control.State.PRE_START_GAME;
 					break;
 				case SELECT_PORT:
@@ -53,50 +52,33 @@ public class DButton extends JButton {
 					break;
 				case RESTART_GAME:
 					Control.startNewGame();
-					Window.setSmoothBlurReady();
-					window.tryRemove(restartButton);
-					window.tryRemove(settingInButton);
+					removeAll(window);
 					Control.state = Control.State.PRE_START_GAME;
 					break;
 				case CONTINUE_GAME:
-					window.tryRemove(continueButton);
-					window.tryRemove(settingInButton);
+					removeAll(window);
 					Control.state = State.PRE_START_GAME;
 					break;
 				case GET_SETTINGS_MENU:
-					window.tryRemove(settingInButton);
-					window.tryRemove(continueButton);
-					window.tryRemove(restartButton);
-					window.tryRemove(DComboBox.portsComboBox);
-					window.tryRemove(startButton);
-					window.tryRemove(selectButton);
+					removeAll(window);
 					Control.state = State.SETTING_ST_M;
 					break;
 				case PAUSE:
-					window.tryRemove(pauseButton);
+					removeAll(window);
 					Control.state = State.SETTING_P_M;
 					break;
 				case CLOSE_SETTINGS_MENU_GO_M:
-					window.tryRemove(sound);
-					window.tryRemove(DComboBox.portsComboBox);
-					window.tryRemove(selectButton);
-					window.tryRemove(settingsOutButton);
+					removeAll(window);
 					Dino.dino.setJumpKoef(Dino.getJumpKoef());
 					Control.state = State.SETTING_GO_M;
 					break;
 				case CLOSE_SETTINGS_MENU_P_M:
-					window.tryRemove(sound);
-					window.tryRemove(DComboBox.portsComboBox);
-					window.tryRemove(selectButton);
-					window.tryRemove(settingsOutButton);
+					removeAll(window);
 					Dino.dino.setJumpKoef(Dino.getJumpKoef());
 					Control.state = State.SETTING_P_M;
 					break;
 				case CLOSE_SETTINGS_MENU_S_M:
-					window.tryRemove(sound);
-					window.tryRemove(DComboBox.portsComboBox);
-					window.tryRemove(selectButton);
-					window.tryRemove(settingsOutButton);
+					removeAll(window);
 					Dino.dino.setJumpKoef(Dino.getJumpKoef());
 					Control.state = State.SETTING_S_M;
 					break;
@@ -107,16 +89,11 @@ public class DButton extends JButton {
 					Dino.presentable.changeDinoKoefParab(false);
 					break;
 				case OPEN_CHART:
-					window.tryRemove(DComboBox.portsComboBox);
-					window.tryRemove(DButton.gMinusButton);
-					window.tryRemove(DButton.gPlusButton);
-					window.tryRemove(DButton.settingsOutButton);
-					window.tryRemove(DButton.selectButton);
-					window.tryRemove(openChartButton);
+					removeAll(window);
 					Control.state = State.SETTING_CHART;
 					break;
 				case CLOSE_CHART:
-					window.tryRemove(closeChartButton);
+					removeAll(window);
 					Control.state = State.SETTING_ST_M;
 					break;
 				case SOUND:
@@ -128,12 +105,35 @@ public class DButton extends JButton {
 						sound.icon = DImage.soundOnImg;
 					}
 					break;
+				case RECALIBRATE:
+					Filter.filter.isCalibrated = false;
+					Control.startNewGame();
+					removeAll(window);
+					Control.state = Control.State.PRE_START_GAME;
+					break;
 				default:
 					break;
 
 				}
 			}
 		});
+	}
+
+	private static void removeAll(Window window) {
+		window.tryRemove(DComboBox.portsComboBox);
+		window.tryRemove(gMinusButton);
+		window.tryRemove(gPlusButton);
+		window.tryRemove(openChartButton);
+		window.tryRemove(sound);
+		window.tryRemove(settingsOutButton);
+		window.tryRemove(pauseButton);
+		window.tryRemove(settingInButton);
+		window.tryRemove(continueButton);
+		window.tryRemove(restartButton);
+		window.tryRemove(startButton);
+		window.tryRemove(selectButton);
+		window.tryRemove(closeChartButton);
+		window.tryRemove(recalibrate);
 	}
 
 	public static void setButton(Window window, int width, int height, Image icon, buttonPurpose purpose) {
@@ -175,6 +175,8 @@ public class DButton extends JButton {
 			return closeChartButton;
 		case SOUND:
 			return sound;
+		case RECALIBRATE:
+			return recalibrate;
 		default:
 			return null;
 		}
@@ -237,13 +239,21 @@ public class DButton extends JButton {
 		case SOUND:
 			sound = currentButton;
 			window.add(sound);
+			break;
+		case RECALIBRATE:
+			recalibrate = currentButton;
+			window.add(recalibrate);
+			break;
 		default:
 			break;
 		}
 	}
 
 	public void draw(Graphics graphics) {
-		graphics.drawImage(icon, horizontalIndent, verticalIndent, width, height, null);
+		if (verticalIndent < 100)
+			graphics.drawImage(icon, horizontalIndent, verticalIndent + 10, width, height, null);
+		else
+			graphics.drawImage(icon, horizontalIndent, verticalIndent + 25, width, height, null);
 	}
 
 	public void setTouchableLocation(int windowWidth, int windowHeight) {

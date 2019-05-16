@@ -8,8 +8,9 @@ import javax.imageio.ImageIO;
 public class DImage {
 
 	public static DImage gameoverImg, settingsMenuBackgroud;
-	public static Image one, two, three, restartButtonImg, continueButtonImg, pauseButtonImg, settingsButtonImg,
-			plusButton, minusButton, chartsButton, pteroUp, pteroDown, soundOnImg, soundOffImg;
+	public static Image one, two, three, four, five, six, seven, eight, nine, restartButtonImg, continueButtonImg,
+			pauseButtonImg, settingsButtonImg, plusButton, minusButton, chartsButton, pteroUp, pteroDown, soundOnImg,
+			soundOffImg, recalibrateImg;
 	public static Image[] salto = new Image[12];
 	private Image icon;
 	private int leftIndent, upperIndent, width, height;
@@ -47,12 +48,19 @@ public class DImage {
 		loadPteroImagies();
 		loadSaltoImagies();
 		loadSoundSettingButtonsImagies();
+		loadRecalibrateButtonImage();
 	}
 
 	private static void loadNumbersImagies() {
 		one = loadImage("/one.png");
 		two = loadImage("/two.png");
 		three = loadImage("/three.png");
+		four = loadImage("/four.png");
+		five = loadImage("/five.png");
+		six = loadImage("/six.png");
+		seven = loadImage("/seven.png");
+		eight = loadImage("/eight.png");
+		nine = loadImage("/nine.png");
 	}
 
 	private static void loadGameoverImage() {
@@ -104,5 +112,9 @@ public class DImage {
 	private static void loadSoundSettingButtonsImagies() {
 		soundOnImg = loadImage("/soundOn.png");
 		soundOffImg = loadImage("/soundOff.png");
+	}
+
+	private static void loadRecalibrateButtonImage() {
+		recalibrateImg = loadImage("/recalibrate.png");
 	}
 }

@@ -15,8 +15,8 @@ public class Chart {
 
 	private static Scanner sc;
 
-	private static Chart x = new Chart(84, 20, 336, 189, Axis.X, "Axis X");
-	private static Chart y = new Chart(504, 20, 336, 189, Axis.Y, "Axis Y");
+	private static Chart x = new Chart(124, 20, 336, 189, Axis.X, "Axis X");
+	private static Chart y = new Chart(524, 20, 336, 189, Axis.Y, "Axis Y");
 	private static Chart z = new Chart(924, 20, 336, 189, Axis.Z, "Axis Z");
 	private static Chart rms = new Chart(66, 230, 1220, 430, Axis.RMS, "Axis RMS");
 
@@ -71,13 +71,17 @@ public class Chart {
 							-1 * (int) ((double) nextPoint * (double) height / (2.0 * (double) getMaxValue()))
 									+ upperIndent + height / 2);
 				}
-			} catch (NullPointerException e) {
+			} catch (IndexOutOfBoundsException e) {
 				// Do nothing
+			} catch (NullPointerException e) {
+				//Do nothing
 			}
 		drawAxis(graphics);
 		if (purpose == Axis.RMS)
 			drawNormalG(graphics);
-		System.out.println(Filter.filter.jumpDetected());
+		double j = Filter.filter.jumpDetected();
+		if (j != 0)
+			Dino.dino.jump(j);
 	}
 
 	private int getPointValue(int i) {
@@ -112,11 +116,9 @@ public class Chart {
 		graphics.setColor(Color.ORANGE);
 		graphics.drawLine(leftIndent,
 				upperIndent + height / 2
-						- (int) ((double) DataInterpretation.getNormalGravityValue() * (double) height
-								/ (2.0 * (double) getMaxValue())),
-				leftIndent + width,
-				upperIndent + height / 2 - (int) ((double) DataInterpretation.getNormalGravityValue() * (double) height
-						/ (2.0 * (double) getMaxValue())));
+						- (int) ((double) Filter.filter.gabs * (double) height / (2.0 * (double) getMaxValue())),
+				leftIndent + width, upperIndent + height / 2
+						- (int) ((double) Filter.filter.gabs * (double) height / (2.0 * (double) getMaxValue())));
 	}
 
 	public static void draw(Graphics graphics) {

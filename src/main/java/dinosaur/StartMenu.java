@@ -10,7 +10,7 @@ public class StartMenu {
 
 	public static void set(Window window) {
 		DButton.setButton(window, 200, 200, DImage.loadImage("/start4.png"), DButton.buttonPurpose.START_GAME);
-		DButton.setButton(window, 30, 30, 80, 80, DImage.settingsButtonImg, buttonPurpose.GET_SETTINGS_MENU);
+		DButton.setButton(window, 30, 20, 80, 80, DImage.settingsButtonImg, buttonPurpose.GET_SETTINGS_MENU);
 		SettingsMenu.fromWhat = Control.state;
 		isMenuSetted = true;
 	}

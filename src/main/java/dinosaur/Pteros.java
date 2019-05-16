@@ -113,9 +113,9 @@ public class Pteros {
 	public void draw(Graphics graphics) {
 		for (int i = 0; i < amount; i++)
 			list[i].draw(graphics);
-		drawTouchRects(graphics);
 	}
 
+	@SuppressWarnings("unused")
 	private void drawTouchRects(Graphics graphics) {
 		graphics.setColor(Color.GREEN);
 		for (int i = 0; i < amount; i++)

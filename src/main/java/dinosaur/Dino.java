@@ -24,6 +24,7 @@ public class Dino {
 	private int saltoStadia, saltoCounter;
 	private static int restrictionStayingInOnePoseWhileSalto = 4;
 
+	private static double maxJumpValue = 300.0;
 	private static double koefStep = 0.1, jumpKoefParab = 4.45;
 
 	private enum DinoState {
@@ -105,6 +106,8 @@ public class Dino {
 	}
 
 	public void record(double position) {
+		if (Filter.filter.jumpDetected() != 0)
+			jump(Filter.filter.jumpDetected());
 		recordJumpIfJump(position);
 		recordCounterStandingOnTheLeg();
 	}
@@ -176,6 +179,14 @@ public class Dino {
 		this.state = DinoState.JUMP;
 	}
 
+	public void jump(double realHeight) {
+		double minH = 20, c = 80;
+		int i = (int) (((1 - Math.exp((-realHeight - minH) / c)) * maxJumpValue));
+		System.out.println("Real height : " + realHeight + " jump : " + i);
+		heightRestriction = i;
+		state = DinoState.JUMP;
+	}
+
 	private Image getImage() {
 		if (Control.state == Control.State.GAME_OVER)
 			return standing;
@@ -185,7 +196,6 @@ public class Dino {
 			return rightLeg;
 		else if (this.state == DinoState.SALTO)
 			if (saltoStadia < DImage.salto.length - 1) {
-				// System.out.println(saltosStadia + "");
 				if (saltoCounter > restrictionStayingInOnePoseWhileSalto) {
 					saltoStadia++;
 					saltoCounter = 0;

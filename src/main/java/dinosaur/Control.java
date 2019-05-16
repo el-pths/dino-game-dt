@@ -13,7 +13,7 @@ public class Control {
 
 	public static enum State {
 		SETTING_S_M, START_MENU, PRE_START_GAME, SETTING_G_P, GAMMING_PROCESS, SETTING_ST_M, SETTINGS_MENU, SETTING_P_M,
-		PAUSE_MENU, SETTING_GO_M, GAME_OVER, SETTING_CH, SETTING_CHART, CHART;
+		PAUSE_MENU, SETTING_GO_M, GAME_OVER, SETTING_CH, SETTING_CHART, CHART, CALIBRATION;
 	}
 
 	public static void main(String[] args) {
@@ -43,7 +43,12 @@ public class Control {
 			StartMenu.draw(graphics);
 			break;
 		case PRE_START_GAME:
-			Countdown.drawCountdown(graphics);
+			if (Filter.filter.isCalibrated)
+				state = State.SETTING_G_P;
+			if (Port.app != null)
+				Countdown.drawCountdown(graphics);
+			else
+				state = State.SETTING_G_P;
 			break;
 		case SETTING_G_P:
 			Window.setFullPassTime(22.0);
@@ -94,8 +99,14 @@ public class Control {
 			Chart.correctButtonsTouchableSpace(window.getWidth(), window.getHeight());
 			if (Port.app != null && Port.app.areWeReadingFile)
 				Chart.readFromFile();
-			if (!DataInterpretation.isNormalGravityValueSetted())
+			break;
+		case CALIBRATION:
+			GamingProcess.waitingMode(graphics, position);
+			if (!Filter.filter.isCalibrated)
 				Analisys.setGravityValueIfSELets(Filter.filter);
+			else
+				state = State.SETTING_G_P;
+			break;
 		default:
 			break;
 		}
