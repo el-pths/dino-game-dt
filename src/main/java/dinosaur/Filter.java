@@ -137,13 +137,10 @@ public class Filter {
 		}
 		dt = (points.get(0).ts - points.get(cnt).ts) / (double) cnt;
 		isCalibrated = true;
-		System.out.println(gabs + " " + dt + " ");
 	}
 
 	public void analysis() {
 		Point pCur = points.getFirst();
-		System.out.println(state + " " + pCur.vert);
-		// && !jump ++ else if -||- && squat ....
 		if (pCur.vert > 0.91 && pCur.vert < 1.1) {
 			lastCalmTs = pCur.ts;
 			if (lastCalmTs - lastNotCalmTs > 200) {
@@ -173,7 +170,10 @@ public class Filter {
 			}
 		}
 		if (state == State.IN_JUMP && pCur.ts - jumpStartTs > 200) {
-			pushAccum = 0;
+			if (pCur.ts - jumpStartTs > 200)
+				pushAccum = 0;
+			if (pCur.ts - jumpStartTs > 300)
+				state = State.CALM;
 		}
 		// System.out.println(state + " " + pCur.vert);
 	}

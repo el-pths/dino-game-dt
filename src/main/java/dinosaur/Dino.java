@@ -180,9 +180,9 @@ public class Dino {
 	}
 
 	public void jump(double realHeight) {
-		double minH = 20, c = 80;
-		int i = (int) (((1 - Math.exp((-realHeight - minH) / c)) * maxJumpValue));
-		System.out.println("Real height : " + realHeight + " jump : " + i);
+		int i = (int) (((maxJumpValue - Math.exp((-realHeight / (maxJumpValue / 10) + maxJumpValue / 60)))));
+		// System.out.println("Real height : " + realHeight + " jump : " + i);
+		// 300 - e^(5 + -x / 30)
 		heightRestriction = i;
 		state = DinoState.JUMP;
 	}
